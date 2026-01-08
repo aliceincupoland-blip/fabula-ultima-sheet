@@ -1,23 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk/dist/index.js"></script>
     <style>
         body { 
-            background: #1e1e1e; 
-            color: white; 
-            font-family: sans-serif; 
-            padding: 20px; 
-            min-width: 580px; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #1a1a1a; 
+            color: #f0f0f0; 
+            padding: 20px;
+            margin: 0;
         }
-        .stat { margin-bottom: 10px; font-size: 20px; }
+        h2 { border-bottom: 2px solid #da2128; padding-bottom: 5px; color: #da2128; }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            margin-top: 20px;
+        }
+        .stat-box {
+            background: #2d2d2d;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            text-align: center;
+        }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #aaa; }
+        select, input { 
+            width: 80%; 
+            padding: 5px; 
+            background: #3d3d3d; 
+            color: white; 
+            border: 1px solid #555; 
+            border-radius: 4px;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
-    <h1>Fabula Ultima</h1>
-    <div class="stat">DESTREZZA: <input type="text" value="d6"></div>
-    <div class="stat">INTUITO: <input type="text" value="d6"></div>
+    <h2>Fabula Ultima</h2>
+    <div class="grid">
+        <div class="stat-box">
+            <label>DESTREZZA</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+        </div>
+        <div class="stat-box">
+            <label>INTUITO</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+        </div>
+        <div class="stat-box">
+            <label>VIGORE</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+        </div>
+        <div class="stat-box">
+            <label>VOLONTÀ</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+        </div>
+    </div>
 </body>
-</html>
+</html
