@@ -1,15 +1,11 @@
 {
   "name": "Scheda Fabula Ultima",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "manifest_version": 1,
   "action": {
     "title": "Fabula Ultima",
     "icon": "https://aliceincupoland-blip.github.io/fabula-ultima-sheet/favicon.ico",
     "location": "popover",
-    "popover": {
-      "url": "index.html",
-      "width": 400,
-      "height": 600
-    }
+    "popover": "index.html"
   }
 }
