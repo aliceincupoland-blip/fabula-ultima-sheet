@@ -1,3 +1,10 @@
+Ottimo, allora diamo alla scheda quel tocco magico alla Studio Ghibli: colori pastello, carta invecchiata, un verde bosco rilassante e un blu cielo profondo.
+
+Ho aggiornato il codice per includere tutto: Abilità, Magie, Legami e anche i Punti Fabula.
+
+1. Sovrascrivi il tuo index.html con questo codice "Ghibli Style"
+HTML
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -5,82 +12,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
-            --red-fu: #da2128;
-            --bg-dark: #1a1a1a;
-            --box-bg: #2d2d2d;
-            --text: #f0f0f0;
+            --ghibli-green: #4a6741;
+            --ghibli-blue: #5d8aa8;
+            --ghibli-paper: #fdf6e3;
+            --ghibli-accent: #d97757;
+            --text-dark: #333;
         }
         body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: var(--bg-dark); 
-            color: var(--text); 
+            font-family: 'Segoe UI', 'Palatino Linotype', serif; 
+            background: var(--ghibli-paper); 
+            color: var(--text-dark); 
             padding: 15px; 
             margin: 0;
+            background-image: radial-gradient(#eee 1px, transparent 1px);
+            background-size: 20px 20px;
         }
-        h2 { color: var(--red-fu); border-bottom: 2px solid var(--red-fu); padding-bottom: 5px; text-transform: uppercase; font-size: 1.2rem; }
+        h2 { 
+            color: var(--ghibli-green); 
+            border-bottom: 2px dashed var(--ghibli-blue); 
+            padding-bottom: 5px; 
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
         
-        /* Griglia Statistiche */
-        .grid-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stat-box { background: var(--box-bg); padding: 10px; border-radius: 5px; text-align: center; border: 1px solid #444; }
-        .stat-box label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 5px; }
-        select { background: #3d3d3d; color: white; border: none; padding: 5px; border-radius: 3px; width: 100%; font-size: 1rem; }
+        .header-section { text-align: center; margin-bottom: 20px; }
+        .char-name { 
+            width: 100%; 
+            background: transparent; 
+            border: none; 
+            border-bottom: 2px solid var(--ghibli-blue); 
+            font-size: 1.5rem; 
+            text-align: center;
+            color: var(--ghibli-green);
+            font-weight: bold;
+        }
 
-        /* Risorse (PV, PM, PI) */
-        .resources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .res-box { background: #383838; padding: 10px; border-radius: 5px; text-align: center; border-top: 3px solid var(--red-fu); }
-        input[type="number"] { width: 100%; background: transparent; border: none; color: white; text-align: center; font-size: 1.2rem; font-weight: bold; }
-        
-        /* Note e Equipaggiamento */
-        textarea { width: 100%; background: var(--box-bg); color: white; border: 1px solid #444; border-radius: 5px; padding: 10px; box-sizing: border-box; resize: vertical; }
-        
-        .footer { margin-top: 20px; font-size: 0.7rem; color: #666; text-align: center; }
+        /* Statistiche Ghibli */
+        .grid-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .stat-box { 
+            background: #fff; 
+            padding: 8px; 
+            border-radius: 12px; 
+            border: 2px solid var(--ghibli-blue);
+            box-shadow: 2px 2px 0px var(--ghibli-blue);
+        }
+        .stat-box label { display: block; font-size: 0.7rem; font-weight: bold; color: var(--ghibli-blue); }
+        select { border: none; background: transparent; width: 100%; font-size: 1rem; cursor: pointer; }
+
+        /* Risorse */
+        .resources { display: flex; justify-content: space-around; gap: 10px; margin: 20px 0; }
+        .res-box { 
+            background: white; 
+            padding: 10px; 
+            border-radius: 50% 50% 10px 10px; 
+            border: 2px solid var(--ghibli-accent); 
+            width: 60px; text-align: center;
+        }
+        .res-box label { font-size: 0.8rem; display: block; color: var(--ghibli-accent); }
+        .res-box input { width: 100%; border: none; text-align: center; font-size: 1.1rem; font-weight: bold; background: transparent; }
+
+        /* Sezioni Testo */
+        .section-box { background: rgba(255,255,255,0.6); border-radius: 8px; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; }
+        textarea { 
+            width: 100%; 
+            background: transparent; 
+            border: none; 
+            resize: vertical; 
+            font-family: inherit; 
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .fabula-points {
+            background: var(--ghibli-accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <h2>Personaggio</h2>
-    <div style="margin-bottom: 15px;">
-        <input type="text" placeholder="Nome del Personaggio" style="width: 100%; background: transparent; border: none; border-bottom: 1px solid #555; color: white; font-size: 1.1rem; padding: 5px;">
+
+    <div class="header-section">
+        <input type="text" class="char-name" placeholder="Nome del Viandante">
+        <div style="margin-top: 10px;">
+            <div class="fabula-points">Punti Fabula: <input type="number" value="3" style="background:transparent; border:none; color:white; width:30px; font-weight:bold;"></div>
+        </div>
     </div>
 
     <h2>Caratteristiche</h2>
     <div class="grid-stats">
-        <div class="stat-box">
-            <label>DESTREZZA</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
-        </div>
-        <div class="stat-box">
-            <label>INTUITO</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
-        </div>
-        <div class="stat-box">
-            <label>VIGORE</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
-        </div>
-        <div class="stat-box">
-            <label>VOLONTÀ</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
-        </div>
+        <div class="stat-box"><label>DES</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box"><label>INT</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box"><label>VIG</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box"><label>VOL</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
     </div>
 
-    <h2>Risorse</h2>
     <div class="resources">
-        <div class="res-box">
-            <label>PV</label>
-            <input type="number" value="40">
-        </div>
-        <div class="res-box">
-            <label>PM</label>
-            <input type="number" value="40">
-        </div>
-        <div class="res-box">
-            <label>PI</label>
-            <input type="number" value="6">
-        </div>
+        <div class="res-box"><label>PV</label><input type="number" value="40"></div>
+        <div class="res-box"><label>PM</label><input type="number" value="40"></div>
+        <div class="res-box"><label>PI</label><input type="number" value="6"></div>
     </div>
 
-    <h2>Equipaggiamento e Note</h2>
-    <textarea rows="5" placeholder="Armi, armature, abilità..."></textarea>
+    <h2>Legami</h2>
+    <div class="section-box">
+        <textarea rows="3" placeholder="Es: Arcanamum (Ammirazione), Kael (Inferiorità)..."></textarea>
+    </div>
 
-    <div class="footer">Fabula Ultima - Owlbear Rodeo Extension</div>
+    <h2>Abilità e Magie</h2>
+    <div class="section-box">
+        <textarea rows="6" placeholder="Descrivi qui i tuoi poteri e incantesimi..."></textarea>
+    </div>
+
+    <h2>Zaino</h2>
+    <div class="section-box">
+        <textarea rows="4" placeholder="Armi e oggetti rari..."></textarea>
+    </div>
+
+    <div style="text-align: center; font-style: italic; font-size: 0.8rem; color: var(--ghibli-green); margin-top: 30px;">
+        "Il viaggio è appena iniziato..."
+    </div>
+
 </body>
 </html>
+
