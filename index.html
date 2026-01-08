@@ -3,60 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/@owlbear-rodeo/sdk/dist/index.js"></script>
+    <title>Scheda Fabula Ultima</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #1a1a1a; 
-            color: #f0f0f0; 
-            padding: 20px;
+        html, body {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a; /* Grigio molto scuro */
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        h2 { border-bottom: 2px solid #da2128; padding-bottom: 5px; color: #da2128; }
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            margin-top: 20px;
-        }
-        .stat-box {
-            background: #2d2d2d;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #444;
+        .container {
             text-align: center;
+            border: 2px solid #da2128;
+            padding: 20px;
+            border-radius: 10px;
         }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #aaa; }
-        select, input { 
-            width: 80%; 
-            padding: 5px; 
-            background: #3d3d3d; 
-            color: white; 
-            border: 1px solid #555; 
-            border-radius: 4px;
-            font-size: 1.1rem;
-        }
+        h1 { color: #da2128; margin-top: 0; }
+        input { font-size: 1.2rem; padding: 5px; width: 50px; text-align: center; }
     </style>
 </head>
 <body>
-    <h2>Fabula Ultima</h2>
-    <div class="grid">
-        <div class="stat-box">
-            <label>DESTREZZA</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+    <div class="container">
+        <h1>FABULA ULTIMA</h1>
+        <p>Se vedi questo, la scheda è ONLINE!</p>
+        <div style="margin-top:20px;">
+            <label>DESTREZZA: </label><input type="text" value="d6">
         </div>
-        <div class="stat-box">
-            <label>INTUITO</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
-        </div>
-        <div class="stat-box">
-            <label>VIGORE</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
-        </div>
-        <div class="stat-box">
-            <label>VOLONTÀ</label>
-            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+        <div style="margin-top:10px;">
+            <label>INTUITO: </label><input type="text" value="d6">
         </div>
     </div>
 </body>
-</html
+</html>
