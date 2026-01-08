@@ -5,11 +5,12 @@
   "action": {
     "title": "Fabula Ultima",
     "icon": "https://aliceincupoland-blip.github.io/fabula-ultima-sheet/favicon.ico",
-    "popover": "/",
+    "popover": "https://aliceincupoland-blip.github.io/fabula-ultima-sheet/index.html",
     "width": 600,
     "height": 800
   }
 }
+
 
 
 
