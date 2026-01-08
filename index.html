@@ -3,41 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scheda Fabula Ultima</title>
     <style>
-        html, body {
+        :root {
+            --red-fu: #da2128;
+            --bg-dark: #1a1a1a;
+            --box-bg: #2d2d2d;
+            --text: #f0f0f0;
+        }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: var(--bg-dark); 
+            color: var(--text); 
+            padding: 15px; 
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #1a1a1a; /* Grigio molto scuro */
-            color: white;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
-        .container {
-            text-align: center;
-            border: 2px solid #da2128;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        h1 { color: #da2128; margin-top: 0; }
-        input { font-size: 1.2rem; padding: 5px; width: 50px; text-align: center; }
+        h2 { color: var(--red-fu); border-bottom: 2px solid var(--red-fu); padding-bottom: 5px; text-transform: uppercase; font-size: 1.2rem; }
+        
+        /* Griglia Statistiche */
+        .grid-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: var(--box-bg); padding: 10px; border-radius: 5px; text-align: center; border: 1px solid #444; }
+        .stat-box label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 5px; }
+        select { background: #3d3d3d; color: white; border: none; padding: 5px; border-radius: 3px; width: 100%; font-size: 1rem; }
+
+        /* Risorse (PV, PM, PI) */
+        .resources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .res-box { background: #383838; padding: 10px; border-radius: 5px; text-align: center; border-top: 3px solid var(--red-fu); }
+        input[type="number"] { width: 100%; background: transparent; border: none; color: white; text-align: center; font-size: 1.2rem; font-weight: bold; }
+        
+        /* Note e Equipaggiamento */
+        textarea { width: 100%; background: var(--box-bg); color: white; border: 1px solid #444; border-radius: 5px; padding: 10px; box-sizing: border-box; resize: vertical; }
+        
+        .footer { margin-top: 20px; font-size: 0.7rem; color: #666; text-align: center; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>FABULA ULTIMA</h1>
-        <p>Se vedi questo, la scheda è ONLINE!</p>
-        <div style="margin-top:20px;">
-            <label>DESTREZZA: </label><input type="text" value="d6">
+    <h2>Personaggio</h2>
+    <div style="margin-bottom: 15px;">
+        <input type="text" placeholder="Nome del Personaggio" style="width: 100%; background: transparent; border: none; border-bottom: 1px solid #555; color: white; font-size: 1.1rem; padding: 5px;">
+    </div>
+
+    <h2>Caratteristiche</h2>
+    <div class="grid-stats">
+        <div class="stat-box">
+            <label>DESTREZZA</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
         </div>
-        <div style="margin-top:10px;">
-            <label>INTUITO: </label><input type="text" value="d6">
+        <div class="stat-box">
+            <label>INTUITO</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+        </div>
+        <div class="stat-box">
+            <label>VIGORE</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
+        </div>
+        <div class="stat-box">
+            <label>VOLONTÀ</label>
+            <select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select>
         </div>
     </div>
+
+    <h2>Risorse</h2>
+    <div class="resources">
+        <div class="res-box">
+            <label>PV</label>
+            <input type="number" value="40">
+        </div>
+        <div class="res-box">
+            <label>PM</label>
+            <input type="number" value="40">
+        </div>
+        <div class="res-box">
+            <label>PI</label>
+            <input type="number" value="6">
+        </div>
+    </div>
+
+    <h2>Equipaggiamento e Note</h2>
+    <textarea rows="5" placeholder="Armi, armature, abilità..."></textarea>
+
+    <div class="footer">Fabula Ultima - Owlbear Rodeo Extension</div>
 </body>
 </html>
