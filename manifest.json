@@ -1,7 +1,11 @@
-echo "# fabula-ultima-sheet" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/aliceincupoland-blip/fabula-ultima-sheet.git
-git push -u origin main
+{
+  "name": "Scheda Fabula Ultima",
+  "version": "1.0.0",
+  "manifest_version": 1,
+  "action": {
+    "title": "Fabula Ultima",
+    "width": 400,
+    "height": 600,
+    "location": "background"
+  }
+}
