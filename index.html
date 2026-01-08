@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk/dist/index.js"></script>
     <style>
-        body { font-family: sans-serif; background: #2c3e50; color: white; padding: 20px; }
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        input { width: 50px; background: #34495e; color: white; border: 1px solid #7f8c8d; }
+        body { 
+            background: #1e1e1e; 
+            color: white; 
+            font-family: sans-serif; 
+            padding: 20px; 
+            min-width: 580px; 
+        }
+        .stat { margin-bottom: 10px; font-size: 20px; }
     </style>
 </head>
 <body>
-    <h3>Scheda Fabula Ultima</h3>
-    <div class="stat-grid">
-        <label>DES: <input type="text" value="d6"></label>
-        <label>INT: <input type="text" value="d6"></label>
-        <label>VIG: <input type="text" value="d6"></label>
-        <label>VOL: <input type="text" value="d6"></label>
-    </div>
+    <h1>Fabula Ultima</h1>
+    <div class="stat">DESTREZZA: <input type="text" value="d6"></div>
+    <div class="stat">INTUITO: <input type="text" value="d6"></div>
 </body>
 </html>
