@@ -1,18 +1,12 @@
 {
   "name": "Scheda Fabula Ultima",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "manifest_version": 1,
-  "permissions": [
-    {
-      "name": "chat",
-      "scope": "CHAT"
-    }
-  ],
   "action": {
     "title": "Fabula Ultima",
     "icon": "https://aliceincupoland-blip.github.io/fabula-ultima-sheet/favicon.ico",
     "popover": "index.html",
     "width": 600,
-    "height": 1000
+    "height": 800
   }
 }
