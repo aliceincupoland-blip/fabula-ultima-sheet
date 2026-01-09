@@ -3,13 +3,29 @@ const OBR = window.OBR;
 
 let currentTokenId = null;
 
-OBR.onReady(async () => {
-    document.getElementById('status-bar').innerText = "SELEZIONA UNA PEDINA";
-    document.getElementById('status-bar').style.background = "#bc6c4d";
+// abilita subito i campi (IMPORTANTISSIMO)
+function enableFields(enabled = true) {
+    document.querySelectorAll('.save-field').forEach(el => {
+        el.disabled = !enabled;
+    });
+}
+
+enableFields(true); // <-- FIX CHIAVE
+
+OBR.onReady(() => {
+    const status = document.getElementById('status-bar');
+    status.innerText = "ADD-ON PRONTO – SELEZIONA UNA PEDINA";
+    status.style.background = "#3e5437";
 
     setInterval(async () => {
         const selection = await OBR.player.getSelection();
-        if (!selection || selection.length === 0) return;
+
+        if (!selection || selection.length === 0) {
+            status.innerText = "NESSUNA PEDINA SELEZIONATA";
+            status.style.background = "#bc6c4d";
+            currentTokenId = null;
+            return;
+        }
 
         if (selection[0] !== currentTokenId) {
             currentTokenId = selection[0];
@@ -19,31 +35,17 @@ OBR.onReady(async () => {
 
             const token = items[0];
 
-            // ORA CHI SELEZIONA PUÒ MODIFICARE
-            document.getElementById('status-bar').innerText =
-                "✏️ MODIFICANDO: " + token.name;
-            document.getElementById('status-bar').style.background = "#3e5437";
+            status.innerText = "✏️ MODIFICANDO: " + (token.name || "Pedina");
+            status.style.background = "#3e5437";
 
-            // abilita tutti i campi
-            document.querySelectorAll('.save-field').forEach(el => {
-                el.disabled = false;
-            });
-
-            // carica dati salvati
+            // carica dati
             const d = token.metadata["fabula-data"] || {};
 
-            const fields = [
-                "char_name",
-                "forza","destrezza","mente","volonta",
-                "pv","mp","pi",
-                "classi","abilita"
-            ];
-
-            fields.forEach(id => {
-                document.getElementById(id).value = d[id] || "";
+            document.querySelectorAll('.save-field').forEach(el => {
+                el.value = d[el.id] || "";
             });
         }
-    }, 600);
+    }, 500);
 });
 
 async function saveData() {
@@ -61,7 +63,6 @@ async function saveData() {
     });
 }
 
-// salva automaticamente mentre scrivi
 document.querySelectorAll('.save-field').forEach(el => {
     el.addEventListener('input', saveData);
 });
