@@ -8,7 +8,6 @@
             --ghibli-green: #3e5437;
             --ghibli-blue: #4682b4;
             --sugar-paper: #b0c4de;
-            --ghibli-paper: #f0f4f7;
             --ghibli-accent: #bc6c4d;
             --text-dark: #2c3e50;
         }
@@ -16,36 +15,30 @@
             font-family: 'Segoe UI', serif; 
             background: var(--sugar-paper); 
             color: var(--text-dark); 
-            padding: 8px; 
-            margin: 0;
-            line-height: 1.1;
+            padding: 8px; margin: 0; line-height: 1.1;
         }
         h2 { 
-            color: var(--ghibli-green); 
-            border-bottom: 1px solid var(--ghibli-blue); 
-            padding-bottom: 1px; 
-            font-size: 0.85rem;
-            margin: 8px 0 4px 0;
-            text-transform: uppercase;
+            color: var(--ghibli-green); border-bottom: 1px solid var(--ghibli-blue); 
+            padding-bottom: 1px; font-size: 0.85rem; margin: 8px 0 4px 0; text-transform: uppercase;
         }
-        
         .header-section { background: rgba(255,255,255,0.2); padding: 5px; border-radius: 6px; margin-bottom: 5px; }
         .char-name { 
-            width: 100%; background: transparent; border: none; 
-            border-bottom: 1px solid var(--ghibli-blue); 
-            font-size: 1.2rem; text-align: center;
-            color: var(--ghibli-green); font-weight: bold;
-            margin-bottom: 5px;
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--ghibli-blue); 
+            font-size: 1.2rem; text-align: center; color: var(--ghibli-green); font-weight: bold; margin-bottom: 5px;
         }
-
         .class-row { display: grid; grid-template-columns: 35px 90px 1fr; gap: 4px; margin-bottom: 2px; align-items: center; }
         .class-row input { background: rgba(255,255,255,0.4); border: 1px solid #999; border-radius: 3px; padding: 2px; font-size: 0.8rem; color: var(--text-dark); }
         .label-mini { font-size: 0.55rem; color: var(--ghibli-green); font-weight: bold; text-align: center; text-transform: uppercase; }
 
+        /* Statistiche con dadi cliccabili */
         .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-        .stat-box { background: #fff; padding: 3px; border-radius: 6px; border: 1px solid var(--ghibli-blue); text-align: center; }
-        .stat-box label { display: block; font-size: 0.55rem; font-weight: bold; color: var(--ghibli-blue); }
-        select { border: none; background: transparent; width: 100%; font-size: 0.85rem; font-weight: bold; text-align-last: center; color: var(--text-dark); outline: none; }
+        .stat-box { 
+            background: #fff; padding: 3px; border-radius: 6px; border: 1px solid var(--ghibli-blue); 
+            text-align: center; cursor: pointer; transition: transform 0.1s;
+        }
+        .stat-box:active { transform: scale(0.95); background: var(--ghibli-paper); }
+        .stat-box label { display: block; font-size: 0.55rem; font-weight: bold; color: var(--ghibli-blue); pointer-events: none; }
+        select { border: none; background: transparent; width: 100%; font-size: 0.85rem; font-weight: bold; text-align-last: center; color: var(--text-dark); outline: none; cursor: pointer; }
 
         .resources { display: flex; justify-content: space-around; gap: 4px; margin: 8px 0; }
         .res-box { background: white; padding: 4px; border-radius: 6px; border-left: 3px solid var(--ghibli-accent); flex: 1; text-align: center; }
@@ -56,13 +49,26 @@
         textarea { width: 100%; background: transparent; border: none; resize: none; font-family: inherit; font-size: 0.8rem; min-height: 30px; color: var(--text-dark); outline: none; }
 
         .fabula-points { background: var(--ghibli-accent); color: white; padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; display: inline-block; }
+        
+        /* Area Risultato Dadi */
+        #dice-result { 
+            text-align: center; font-weight: bold; color: var(--ghibli-green); 
+            height: 1.2rem; margin-top: 5px; font-size: 0.9rem;
+        }
+
+        .btn-reset {
+            display: block; width: 60px; margin: 15px auto 5px; padding: 3px;
+            background: rgba(255,255,255,0.2); border: 1px solid var(--ghibli-accent);
+            color: var(--ghibli-accent); border-radius: 4px; font-size: 0.6rem;
+            cursor: pointer; text-align: center; text-transform: uppercase;
+        }
+        .btn-reset:hover { background: var(--ghibli-accent); color: white; }
     </style>
 </head>
 <body>
 
     <div class="header-section">
         <input type="text" id="char_name" class="char-name save-data" placeholder="Nome Viandante">
-        
         <div class="class-row">
             <span class="label-mini">LIV</span><span class="label-mini">CLASSE</span><span class="label-mini">ABILITÀ / NOTE</span>
         </div>
@@ -83,15 +89,16 @@
         </div>
     </div>
 
-    <div style="text-align:right; margin-bottom: 4px;">
-        <div class="fabula-points">Punti Fabula: <input type="number" id="fp" class="save-data" value="3" style="background:transparent; border:none; color:white; width:22px; font-weight:bold; outline:none;"></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+        <div id="dice-result">Clicca DES/INT/VIG/VOL per tirare</div>
+        <div class="fabula-points">FP: <input type="number" id="fp" class="save-data" value="3" style="background:transparent; border:none; color:white; width:22px; font-weight:bold; outline:none;"></div>
     </div>
 
     <div class="grid-stats">
-        <div class="stat-box"><label>DES</label><select id="des" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box"><label>INT</label><select id="int" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box"><label>VIG</label><select id="vig" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box"><label>VOL</label><select id="vol" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box" onclick="rollDice('DES')"><label>DES</label><select id="des" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box" onclick="rollDice('INT')"><label>INT</label><select id="int" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box" onclick="rollDice('VIG')"><label>VIG</label><select id="vig" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box" onclick="rollDice('VOL')"><label>VOL</label><select id="vol" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
     </div>
 
     <div class="resources">
@@ -104,18 +111,19 @@
     <div class="section-box"><textarea id="bonds" class="save-data" rows="2" placeholder="Sensi e sentimenti..."></textarea></div>
 
     <h2>Abilità e Magie</h2>
-    <div class="section-box"><textarea id="magic" class="save-data" rows="4" placeholder="Poteri magici e abilità..."></textarea></div>
+    <div class="section-box"><textarea id="magic" class="save-data" rows="4"></textarea></div>
 
     <h2>Equipaggiamento</h2>
-    <div class="section-box"><textarea id="gear" class="save-data" rows="3" placeholder="Zaino e armi..."></textarea></div>
+    <div class="section-box"><textarea id="gear" class="save-data" rows="3"></textarea></div>
+
+    <button class="btn-reset" onclick="resetSheet()">Reset</button>
 
     <script>
+        // --- LOGICA SALVATAGGIO ---
         const saveAllData = () => {
             const fields = document.querySelectorAll('.save-data');
             const data = {};
-            fields.forEach(field => {
-                data[field.id] = field.value;
-            });
+            fields.forEach(field => { data[field.id] = field.value; });
             localStorage.setItem('fabula_sheet_save', JSON.stringify(data));
         };
 
@@ -127,6 +135,22 @@
                     const el = document.getElementById(id);
                     if (el) el.value = data[id];
                 });
+            }
+        };
+
+        // --- LOGICA DADI ---
+        const rollDice = (statName) => {
+            const selectEl = document.getElementById(statName.toLowerCase());
+            const diceValue = parseInt(selectEl.value.replace('d', ''));
+            const roll = Math.floor(Math.random() * diceValue) + 1;
+            document.getElementById('dice-result').innerText = statName + " Roll: " + roll + " (su " + selectEl.value + ")";
+        };
+
+        // --- LOGICA RESET ---
+        const resetSheet = () => {
+            if (confirm("Vuoi davvero cancellare tutta la scheda?")) {
+                localStorage.removeItem('fabula_sheet_save');
+                location.reload();
             }
         };
 
