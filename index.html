@@ -7,7 +7,7 @@
         :root {
             --ghibli-green: #3e5437;
             --ghibli-blue: #4682b4;
-            --sugar-paper: #b0c4de; /* Grigio-azzurro carta da zucchero */
+            --sugar-paper: #b0c4de;
             --ghibli-paper: #f0f4f7;
             --ghibli-accent: #bc6c4d;
             --text-dark: #2c3e50;
@@ -16,137 +16,123 @@
             font-family: 'Segoe UI', serif; 
             background: var(--sugar-paper); 
             color: var(--text-dark); 
-            padding: 10px; 
+            padding: 8px; 
             margin: 0;
-            line-height: 1.2;
+            line-height: 1.1;
         }
         h2 { 
             color: var(--ghibli-green); 
             border-bottom: 1px solid var(--ghibli-blue); 
-            padding-bottom: 2px; 
-            font-size: 0.9rem;
-            margin: 12px 0 6px 0;
+            padding-bottom: 1px; 
+            font-size: 0.85rem;
+            margin: 10px 0 4px 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
-        .header-section { background: rgba(255,255,255,0.3); padding: 8px; border-radius: 8px; margin-bottom: 10px; }
+        .header-section { background: rgba(255,255,255,0.2); padding: 5px; border-radius: 6px; margin-bottom: 8px; }
         .char-name { 
-            width: 100%; 
-            background: transparent; 
-            border: none; 
+            width: 100%; background: transparent; border: none; 
             border-bottom: 1px solid var(--ghibli-blue); 
-            font-size: 1.3rem; 
-            text-align: center;
-            color: var(--ghibli-green);
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-size: 1.2rem; text-align: center;
+            color: var(--ghibli-green); font-weight: bold;
         }
 
-        /* Sezione Classe/Livello/Abilità */
-        .class-row { display: grid; grid-template-columns: 40px 100px 1fr; gap: 8px; margin-bottom: 4px; align-items: center; }
-        .class-row input { background: rgba(255,255,255,0.5); border: 1px solid #999; border-radius: 4px; padding: 3px; font-size: 0.85rem; }
-        .label-mini { font-size: 0.65rem; color: var(--ghibli-green); font-weight: bold; text-align: center; }
+        .class-row { display: grid; grid-template-columns: 35px 90px 1fr; gap: 5px; margin-bottom: 3px; align-items: center; }
+        .class-row input { background: rgba(255,255,255,0.4); border: 1px solid #999; border-radius: 3px; padding: 2px; font-size: 0.8rem; color: var(--text-dark); }
+        .label-mini { font-size: 0.6rem; color: var(--ghibli-green); font-weight: bold; text-align: center; }
 
-        /* Statistiche Compattate */
-        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .stat-box { 
-            background: #fff; 
-            padding: 5px; 
-            border-radius: 8px; 
-            border: 1px solid var(--ghibli-blue);
-            text-align: center;
-        }
-        .stat-box label { display: block; font-size: 0.6rem; font-weight: bold; color: var(--ghibli-blue); }
-        select { border: none; background: transparent; width: 100%; font-size: 0.9rem; font-weight: bold; text-align-last: center; }
+        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .stat-box { background: #fff; padding: 3px; border-radius: 6px; border: 1px solid var(--ghibli-blue); text-align: center; }
+        .stat-box label { display: block; font-size: 0.55rem; font-weight: bold; color: var(--ghibli-blue); }
+        select { border: none; background: transparent; width: 100%; font-size: 0.85rem; font-weight: bold; text-align-last: center; color: var(--text-dark); }
 
-        /* Risorse */
-        .resources { display: flex; justify-content: space-around; gap: 5px; margin: 10px 0; }
-        .res-box { 
-            background: white; 
-            padding: 5px; 
-            border-radius: 8px; 
-            border-left: 3px solid var(--ghibli-accent); 
-            flex: 1; text-align: center;
-        }
-        .res-box label { font-size: 0.7rem; display: block; color: var(--ghibli-accent); font-weight: bold; }
-        .res-box input { width: 100%; border: none; text-align: center; font-size: 1rem; font-weight: bold; background: transparent; }
+        .resources { display: flex; justify-content: space-around; gap: 4px; margin: 8px 0; }
+        .res-box { background: white; padding: 4px; border-radius: 6px; border-left: 3px solid var(--ghibli-accent); flex: 1; text-align: center; }
+        .res-box label { font-size: 0.65rem; display: block; color: var(--ghibli-accent); font-weight: bold; }
+        .res-box input { width: 100%; border: none; text-align: center; font-size: 0.9rem; font-weight: bold; background: transparent; color: var(--text-dark); }
 
-        /* Sezioni Testo Ristrette */
-        .section-box { background: rgba(255,255,255,0.4); border-radius: 6px; padding: 6px; border: 1px solid rgba(0,0,0,0.1); }
-        textarea { 
-            width: 100%; 
-            background: transparent; 
-            border: none; 
-            resize: vertical; 
-            font-family: inherit; 
-            font-size: 0.85rem;
-            min-height: 40px;
-        }
+        .section-box { background: rgba(255,255,255,0.3); border-radius: 4px; padding: 4px; border: 1px solid rgba(0,0,0,0.05); }
+        textarea { width: 100%; background: transparent; border: none; resize: none; font-family: inherit; font-size: 0.8rem; min-height: 35px; color: var(--text-dark); }
 
-        .fabula-points {
-            background: var(--ghibli-accent);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            display: inline-block;
-        }
+        .fabula-points { background: var(--ghibli-accent); color: white; padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; display: inline-block; }
     </style>
 </head>
 <body>
 
     <div class="header-section">
-        <input type="text" class="char-name" placeholder="Nome Viandante">
-        
+        <input type="text" id="name" class="char-name" placeholder="Nome Viandante" class="save-data">
         <div class="class-row">
-            <span class="label-mini">LIV</span>
-            <span class="label-mini">CLASSE</span>
-            <span class="label-mini">ABILITÀ DI CLASSE / NOTE</span>
+            <span class="label-mini">LIV</span><span class="label-mini">CLASSE</span><span class="label-mini">ABILITÀ / NOTE</span>
         </div>
         <div class="class-row">
-            <input type="number" value="5">
-            <input type="text" placeholder="Es: Oratore">
-            <input type="text" placeholder="Es: Incoraggiare, Eloquenza">
+            <input type="number" id="lvl1" class="save-data" value="5">
+            <input type="text" id="class1" class="save-data" placeholder="Classe">
+            <input type="text" id="skill1" class="save-data" placeholder="Abilità">
         </div>
         <div class="class-row">
-            <input type="number" value="0">
-            <input type="text" placeholder="Seconda Classe">
-            <input type="text" placeholder="Abilità...">
+            <input type="number" id="lvl2" class="save-data" value="0">
+            <input type="text" id="class2" class="save-data" placeholder="Classe">
+            <input type="text" id="skill2" class="save-data" placeholder="Abilità">
         </div>
     </div>
 
-    <div style="text-align:right; margin-bottom: 5px;">
-        <div class="fabula-points">Punti Fabula: <input type="number" value="3" style="background:transparent; border:none; color:white; width:25px; font-weight:bold;"></div>
+    <div style="text-align:right; margin-bottom: 4px;">
+        <div class="fabula-points">Punti Fabula: <input type="number" id="fp" class="save-data" value="3" style="background:transparent; border:none; color:white; width:22px; font-weight:bold;"></div>
     </div>
 
     <div class="grid-stats">
-        <div class="stat-box"><label>DES</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box"><label>INT</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box"><label>VIG</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box"><label>VOL</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box"><label>DES</label><select id="des" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box"><label>INT</label><select id="int" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box"><label>VIG</label><select id="vig" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="stat-box"><label>VOL</label><select id="vol" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
     </div>
 
     <div class="resources">
-        <div class="res-box"><label>PV</label><input type="number" value="40"></div>
-        <div class="res-box"><label>PM</label><input type="number" value="40"></div>
-        <div class="res-box"><label>PI</label><input type="number" value="6"></div>
+        <div class="res-box"><label>PV</label><input type="number" id="pv" class="save-data" value="40"></div>
+        <div class="res-box"><label>PM</label><input type="number" id="pm" class="save-data" value="40"></div>
+        <div class="res-box"><label>PI</label><input type="number" id="pi" class="save-data" value="6"></div>
     </div>
 
-    <h2>Legami e Sentimenti</h2>
-    <div class="section-box">
-        <textarea rows="2" placeholder="Chi porti nel cuore?"></textarea>
-    </div>
+    <h2>Legami</h2>
+    <div class="section-box"><textarea id="bonds" class="save-data" rows="2"></textarea></div>
 
-    <h2>Abilità Speciali e Magie</h2>
-    <div class="section-box">
-        <textarea rows="4" placeholder="Incantesimi, Tecniche, Tratti..."></textarea>
-    </div>
+    <h2>Abilità e Magie</h2>
+    <div class="section-box"><textarea id="magic" class="save-data" rows="4"></textarea></div>
 
     <h2>Equipaggiamento</h2>
-    <div class="section-box">
-        <textarea rows="3" placeholder="Zaino, Armi, Armature..."></textarea>
-    </div>
+    <div class="section-box"><textarea id="gear" class="save-data" rows="3"></textarea></div>
 
+    <script>
+        // Funzione per salvare i dati
+        const saveAllData = () => {
+            const fields = document.querySelectorAll('.save-data');
+            const data = {};
+            fields.forEach(field => {
+                data[field.id] = field.value;
+            });
+            localStorage.setItem('fabula_sheet_data', JSON.stringify(data));
+        };
+
+        // Funzione per caricare i dati
+        const loadAllData = () => {
+            const savedData = localStorage.getItem('fabula_sheet_data');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                Object.keys(data).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = data[id];
+                });
+            }
+        };
+
+        // Ascolta ogni cambiamento e salva
+        document.querySelectorAll('.save-data').forEach(field => {
+            field.addEventListener('input', saveAllData);
+            field.addEventListener('change', saveAllData);
+        });
+
+        // Carica all'avvio
+        window.onload = loadAllData;
+    </script>
 </body>
 </html>
