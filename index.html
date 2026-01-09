@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
         :root {
             --ghibli-green: #3e5437;
@@ -11,88 +12,36 @@
             --ghibli-accent: #bc6c4d;
             --text-dark: #2c3e50;
         }
-        body { 
-            font-family: 'Segoe UI', serif; 
-            background: var(--sugar-paper); 
-            color: var(--text-dark); 
-            padding: 8px; margin: 0; line-height: 1.1;
-        }
-        h2 { 
-            color: var(--ghibli-green); border-bottom: 1px solid var(--ghibli-blue); 
-            padding-bottom: 1px; font-size: 0.85rem; margin: 8px 0 4px 0; text-transform: uppercase;
-        }
+        body { font-family: 'Segoe UI', serif; background: var(--sugar-paper); color: var(--text-dark); padding: 8px; margin: 0; line-height: 1.1; overflow-x: hidden; }
+        h2 { color: var(--ghibli-green); border-bottom: 1px solid var(--ghibli-blue); padding-bottom: 1px; font-size: 0.8rem; margin: 8px 0 4px 0; text-transform: uppercase; }
         .header-section { background: rgba(255,255,255,0.2); padding: 5px; border-radius: 6px; margin-bottom: 5px; }
-        .char-name { 
-            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--ghibli-blue); 
-            font-size: 1.2rem; text-align: center; color: var(--ghibli-green); font-weight: bold; margin-bottom: 5px;
-        }
-        .class-row { display: grid; grid-template-columns: 35px 90px 1fr; gap: 4px; margin-bottom: 2px; align-items: center; }
-        .class-row input { background: rgba(255,255,255,0.4); border: 1px solid #999; border-radius: 3px; padding: 2px; font-size: 0.8rem; color: var(--text-dark); }
-        .label-mini { font-size: 0.55rem; color: var(--ghibli-green); font-weight: bold; text-align: center; text-transform: uppercase; }
-
-        /* Statistiche con dadi cliccabili */
+        .char-name { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--ghibli-blue); font-size: 1.1rem; text-align: center; color: var(--ghibli-green); font-weight: bold; outline: none; }
+        .class-row { display: grid; grid-template-columns: 30px 80px 1fr; gap: 4px; margin-bottom: 2px; }
+        .class-row input { background: rgba(255,255,255,0.4); border: 1px solid #999; border-radius: 3px; padding: 2px; font-size: 0.75rem; outline: none; }
         .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-        .stat-box { 
-            background: #fff; padding: 3px; border-radius: 6px; border: 1px solid var(--ghibli-blue); 
-            text-align: center; cursor: pointer; transition: transform 0.1s;
-        }
-        .stat-box:active { transform: scale(0.95); background: var(--ghibli-paper); }
-        .stat-box label { display: block; font-size: 0.55rem; font-weight: bold; color: var(--ghibli-blue); pointer-events: none; }
-        select { border: none; background: transparent; width: 100%; font-size: 0.85rem; font-weight: bold; text-align-last: center; color: var(--text-dark); outline: none; cursor: pointer; }
-
+        .stat-box { background: #fff; padding: 3px; border-radius: 6px; border: 1px solid var(--ghibli-blue); text-align: center; cursor: pointer; }
+        .stat-box label { display: block; font-size: 0.5rem; font-weight: bold; color: var(--ghibli-blue); pointer-events: none; }
+        select { border: none; background: transparent; width: 100%; font-size: 0.8rem; font-weight: bold; text-align-last: center; outline: none; cursor: pointer; }
         .resources { display: flex; justify-content: space-around; gap: 4px; margin: 8px 0; }
         .res-box { background: white; padding: 4px; border-radius: 6px; border-left: 3px solid var(--ghibli-accent); flex: 1; text-align: center; }
-        .res-box label { font-size: 0.65rem; display: block; color: var(--ghibli-accent); font-weight: bold; }
-        .res-box input { width: 100%; border: none; text-align: center; font-size: 0.9rem; font-weight: bold; background: transparent; color: var(--text-dark); }
-
-        .section-box { background: rgba(255,255,255,0.3); border-radius: 4px; padding: 4px; border: 1px solid rgba(0,0,0,0.05); }
-        textarea { width: 100%; background: transparent; border: none; resize: none; font-family: inherit; font-size: 0.8rem; min-height: 30px; color: var(--text-dark); outline: none; }
-
-        .fabula-points { background: var(--ghibli-accent); color: white; padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; display: inline-block; }
-        
-        /* Area Risultato Dadi */
-        #dice-result { 
-            text-align: center; font-weight: bold; color: var(--ghibli-green); 
-            height: 1.2rem; margin-top: 5px; font-size: 0.9rem;
-        }
-
-        .btn-reset {
-            display: block; width: 60px; margin: 15px auto 5px; padding: 3px;
-            background: rgba(255,255,255,0.2); border: 1px solid var(--ghibli-accent);
-            color: var(--ghibli-accent); border-radius: 4px; font-size: 0.6rem;
-            cursor: pointer; text-align: center; text-transform: uppercase;
-        }
-        .btn-reset:hover { background: var(--ghibli-accent); color: white; }
+        .res-box input { width: 100%; border: none; text-align: center; font-size: 0.9rem; font-weight: bold; background: transparent; outline: none; }
+        textarea { width: 100%; background: rgba(255,255,255,0.3); border: none; resize: none; font-family: inherit; font-size: 0.8rem; min-height: 30px; outline: none; border-radius: 4px; }
+        .btn-chat { background: var(--ghibli-green); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer; margin-top: 5px; width: 100%; }
+        #dice-result { font-size: 0.75rem; font-weight: bold; color: var(--ghibli-green); text-align: center; margin-bottom: 4px; min-height: 14px; }
     </style>
 </head>
 <body>
 
     <div class="header-section">
-        <input type="text" id="char_name" class="char-name save-data" placeholder="Nome Viandante">
-        <div class="class-row">
-            <span class="label-mini">LIV</span><span class="label-mini">CLASSE</span><span class="label-mini">ABILITÀ / NOTE</span>
-        </div>
+        <input type="text" id="char_name" class="save-data char-name" placeholder="Nome Viandante">
         <div class="class-row">
             <input type="number" id="lvl1" class="save-data" value="5">
-            <input type="text" id="class1" class="save-data" placeholder="Classe 1">
+            <input type="text" id="class1" class="save-data" placeholder="Classe">
             <input type="text" id="skill1" class="save-data" placeholder="Abilità">
-        </div>
-        <div class="class-row">
-            <input type="number" id="lvl2" class="save-data" value="0">
-            <input type="text" id="class2" class="save-data" placeholder="Classe 2">
-            <input type="text" id="skill2" class="save-data" placeholder="Abilità">
-        </div>
-        <div class="class-row">
-            <input type="number" id="lvl3" class="save-data" value="0">
-            <input type="text" id="class3" class="save-data" placeholder="Classe 3">
-            <input type="text" id="skill3" class="save-data" placeholder="Abilità">
         </div>
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-        <div id="dice-result">Clicca DES/INT/VIG/VOL per tirare</div>
-        <div class="fabula-points">FP: <input type="number" id="fp" class="save-data" value="3" style="background:transparent; border:none; color:white; width:22px; font-weight:bold; outline:none;"></div>
-    </div>
+    <div id="dice-result">Seleziona dadi e clicca per tirare</div>
 
     <div class="grid-stats">
         <div class="stat-box" onclick="rollDice('DES')"><label>DES</label><select id="des" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
@@ -107,59 +56,64 @@
         <div class="res-box"><label>PI</label><input type="number" id="pi" class="save-data" value="6"></div>
     </div>
 
-    <h2>Legami</h2>
-    <div class="section-box"><textarea id="bonds" class="save-data" rows="2" placeholder="Sensi e sentimenti..."></textarea></div>
-
     <h2>Abilità e Magie</h2>
-    <div class="section-box"><textarea id="magic" class="save-data" rows="4"></textarea></div>
+    <textarea id="magic" class="save-data" rows="3"></textarea>
 
-    <h2>Equipaggiamento</h2>
-    <div class="section-box"><textarea id="gear" class="save-data" rows="3"></textarea></div>
-
-    <button class="btn-reset" onclick="resetSheet()">Reset</button>
+    <button class="btn-chat" onclick="sendToChat()">Invia stato attuale in Chat</button>
 
     <script>
-        // --- LOGICA SALVATAGGIO ---
-        const saveAllData = () => {
+        const OBR = window.OBR;
+
+        // Inizializza SDK
+        OBR.onReady(() => {
+            console.log("Owlbear SDK Ready");
+            loadFromMetadata();
+        });
+
+        // Salva i dati nei metadati del giocatore (Visibili al Master)
+        async function saveToMetadata() {
             const fields = document.querySelectorAll('.save-data');
             const data = {};
-            fields.forEach(field => { data[field.id] = field.value; });
-            localStorage.setItem('fabula_sheet_save', JSON.stringify(data));
-        };
+            fields.forEach(f => data[f.id] = f.value);
+            
+            // Salva sia localmente che su OBR
+            localStorage.setItem('fu_data', JSON.stringify(data));
+            await OBR.player.setMetadata({ "alice-sheet-data": data });
+        }
 
-        const loadAllData = () => {
-            const saved = localStorage.getItem('fabula_sheet_save');
-            if (saved) {
-                const data = JSON.parse(saved);
+        async function loadFromMetadata() {
+            const metadata = await OBR.player.getMetadata();
+            const data = metadata["alice-sheet-data"] || JSON.parse(localStorage.getItem('fu_data'));
+            if (data) {
                 Object.keys(data).forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.value = data[id];
                 });
             }
-        };
+        }
 
-        // --- LOGICA DADI ---
-        const rollDice = (statName) => {
-            const selectEl = document.getElementById(statName.toLowerCase());
-            const diceValue = parseInt(selectEl.value.replace('d', ''));
-            const roll = Math.floor(Math.random() * diceValue) + 1;
-            document.getElementById('dice-result').innerText = statName + " Roll: " + roll + " (su " + selectEl.value + ")";
-        };
+        async function rollDice(stat) {
+            const val = document.getElementById(stat.toLowerCase()).value;
+            const size = parseInt(val.replace('d', ''));
+            const roll = Math.floor(Math.random() * size) + 1;
+            const name = document.getElementById('char_name').value || "Viandante";
+            const msg = `🎲 ${name} tira ${stat} (${val}): **${roll}**`;
+            
+            document.getElementById('dice-result').innerText = msg;
+            OBR.chat.sendMessage(msg);
+        }
 
-        // --- LOGICA RESET ---
-        const resetSheet = () => {
-            if (confirm("Vuoi davvero cancellare tutta la scheda?")) {
-                localStorage.removeItem('fabula_sheet_save');
-                location.reload();
-            }
-        };
+        async function sendToChat() {
+            const name = document.getElementById('char_name').value || "Viandante";
+            const pv = document.getElementById('pv').value;
+            const pm = document.getElementById('pm').value;
+            const msg = `📜 **${name}** | PV: ${pv} | PM: ${pm} | Sta bene!`;
+            OBR.chat.sendMessage(msg);
+        }
 
         document.querySelectorAll('.save-data').forEach(field => {
-            field.addEventListener('input', saveAllData);
-            field.addEventListener('change', saveAllData);
+            field.addEventListener('change', saveToMetadata);
         });
-
-        window.onload = loadAllData;
     </script>
 </body>
 </html>
