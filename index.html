@@ -25,26 +25,27 @@
             border-bottom: 1px solid var(--ghibli-blue); 
             padding-bottom: 1px; 
             font-size: 0.85rem;
-            margin: 10px 0 4px 0;
+            margin: 8px 0 4px 0;
             text-transform: uppercase;
         }
         
-        .header-section { background: rgba(255,255,255,0.2); padding: 5px; border-radius: 6px; margin-bottom: 8px; }
+        .header-section { background: rgba(255,255,255,0.2); padding: 5px; border-radius: 6px; margin-bottom: 5px; }
         .char-name { 
             width: 100%; background: transparent; border: none; 
             border-bottom: 1px solid var(--ghibli-blue); 
             font-size: 1.2rem; text-align: center;
             color: var(--ghibli-green); font-weight: bold;
+            margin-bottom: 5px;
         }
 
-        .class-row { display: grid; grid-template-columns: 35px 90px 1fr; gap: 5px; margin-bottom: 3px; align-items: center; }
+        .class-row { display: grid; grid-template-columns: 35px 90px 1fr; gap: 4px; margin-bottom: 2px; align-items: center; }
         .class-row input { background: rgba(255,255,255,0.4); border: 1px solid #999; border-radius: 3px; padding: 2px; font-size: 0.8rem; color: var(--text-dark); }
-        .label-mini { font-size: 0.6rem; color: var(--ghibli-green); font-weight: bold; text-align: center; }
+        .label-mini { font-size: 0.55rem; color: var(--ghibli-green); font-weight: bold; text-align: center; text-transform: uppercase; }
 
         .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .stat-box { background: #fff; padding: 3px; border-radius: 6px; border: 1px solid var(--ghibli-blue); text-align: center; }
         .stat-box label { display: block; font-size: 0.55rem; font-weight: bold; color: var(--ghibli-blue); }
-        select { border: none; background: transparent; width: 100%; font-size: 0.85rem; font-weight: bold; text-align-last: center; color: var(--text-dark); }
+        select { border: none; background: transparent; width: 100%; font-size: 0.85rem; font-weight: bold; text-align-last: center; color: var(--text-dark); outline: none; }
 
         .resources { display: flex; justify-content: space-around; gap: 4px; margin: 8px 0; }
         .res-box { background: white; padding: 4px; border-radius: 6px; border-left: 3px solid var(--ghibli-accent); flex: 1; text-align: center; }
@@ -52,7 +53,7 @@
         .res-box input { width: 100%; border: none; text-align: center; font-size: 0.9rem; font-weight: bold; background: transparent; color: var(--text-dark); }
 
         .section-box { background: rgba(255,255,255,0.3); border-radius: 4px; padding: 4px; border: 1px solid rgba(0,0,0,0.05); }
-        textarea { width: 100%; background: transparent; border: none; resize: none; font-family: inherit; font-size: 0.8rem; min-height: 35px; color: var(--text-dark); }
+        textarea { width: 100%; background: transparent; border: none; resize: none; font-family: inherit; font-size: 0.8rem; min-height: 30px; color: var(--text-dark); outline: none; }
 
         .fabula-points { background: var(--ghibli-accent); color: white; padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; display: inline-block; }
     </style>
@@ -60,24 +61,30 @@
 <body>
 
     <div class="header-section">
-        <input type="text" id="name" class="char-name" placeholder="Nome Viandante" class="save-data">
+        <input type="text" id="char_name" class="char-name save-data" placeholder="Nome Viandante">
+        
         <div class="class-row">
             <span class="label-mini">LIV</span><span class="label-mini">CLASSE</span><span class="label-mini">ABILITÀ / NOTE</span>
         </div>
         <div class="class-row">
             <input type="number" id="lvl1" class="save-data" value="5">
-            <input type="text" id="class1" class="save-data" placeholder="Classe">
+            <input type="text" id="class1" class="save-data" placeholder="Classe 1">
             <input type="text" id="skill1" class="save-data" placeholder="Abilità">
         </div>
         <div class="class-row">
             <input type="number" id="lvl2" class="save-data" value="0">
-            <input type="text" id="class2" class="save-data" placeholder="Classe">
+            <input type="text" id="class2" class="save-data" placeholder="Classe 2">
             <input type="text" id="skill2" class="save-data" placeholder="Abilità">
+        </div>
+        <div class="class-row">
+            <input type="number" id="lvl3" class="save-data" value="0">
+            <input type="text" id="class3" class="save-data" placeholder="Classe 3">
+            <input type="text" id="skill3" class="save-data" placeholder="Abilità">
         </div>
     </div>
 
     <div style="text-align:right; margin-bottom: 4px;">
-        <div class="fabula-points">Punti Fabula: <input type="number" id="fp" class="save-data" value="3" style="background:transparent; border:none; color:white; width:22px; font-weight:bold;"></div>
+        <div class="fabula-points">Punti Fabula: <input type="number" id="fp" class="save-data" value="3" style="background:transparent; border:none; color:white; width:22px; font-weight:bold; outline:none;"></div>
     </div>
 
     <div class="grid-stats">
@@ -94,30 +101,28 @@
     </div>
 
     <h2>Legami</h2>
-    <div class="section-box"><textarea id="bonds" class="save-data" rows="2"></textarea></div>
+    <div class="section-box"><textarea id="bonds" class="save-data" rows="2" placeholder="Sensi e sentimenti..."></textarea></div>
 
     <h2>Abilità e Magie</h2>
-    <div class="section-box"><textarea id="magic" class="save-data" rows="4"></textarea></div>
+    <div class="section-box"><textarea id="magic" class="save-data" rows="4" placeholder="Poteri magici e abilità..."></textarea></div>
 
     <h2>Equipaggiamento</h2>
-    <div class="section-box"><textarea id="gear" class="save-data" rows="3"></textarea></div>
+    <div class="section-box"><textarea id="gear" class="save-data" rows="3" placeholder="Zaino e armi..."></textarea></div>
 
     <script>
-        // Funzione per salvare i dati
         const saveAllData = () => {
             const fields = document.querySelectorAll('.save-data');
             const data = {};
             fields.forEach(field => {
                 data[field.id] = field.value;
             });
-            localStorage.setItem('fabula_sheet_data', JSON.stringify(data));
+            localStorage.setItem('fabula_sheet_save', JSON.stringify(data));
         };
 
-        // Funzione per caricare i dati
         const loadAllData = () => {
-            const savedData = localStorage.getItem('fabula_sheet_data');
-            if (savedData) {
-                const data = JSON.parse(savedData);
+            const saved = localStorage.getItem('fabula_sheet_save');
+            if (saved) {
+                const data = JSON.parse(saved);
                 Object.keys(data).forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.value = data[id];
@@ -125,13 +130,11 @@
             }
         };
 
-        // Ascolta ogni cambiamento e salva
         document.querySelectorAll('.save-data').forEach(field => {
             field.addEventListener('input', saveAllData);
             field.addEventListener('change', saveAllData);
         });
 
-        // Carica all'avvio
         window.onload = loadAllData;
     </script>
 </body>
