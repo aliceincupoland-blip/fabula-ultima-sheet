@@ -4,122 +4,81 @@
     <meta charset="UTF-8">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
-        :root {
-            --ghibli-green: #3e5437; --ghibli-blue: #4682b4;
-            --sugar-paper: #b0c4de; --ghibli-accent: #bc6c4d;
-        }
-        body { 
-            font-family: 'Segoe UI', serif; background: var(--sugar-paper); 
-            padding: 10px; margin: 0; color: #2c3e50; line-height: 1.1;
-        }
+        body { font-family: sans-serif; background: #b0c4de; padding: 15px; margin: 0; }
         #status-bar { 
-            background: var(--ghibli-accent); color: white; padding: 5px; 
-            text-align: center; font-size: 0.7rem; border-radius: 5px; margin-bottom: 10px;
-            font-weight: bold; text-transform: uppercase;
+            background: #bc6c4d; color: white; padding: 10px; 
+            text-align: center; font-size: 0.8rem; border-radius: 5px; 
+            margin-bottom: 15px; font-weight: bold;
         }
-        .section { background: rgba(255,255,255,0.3); padding: 8px; border-radius: 6px; margin-bottom: 8px; }
-        input, textarea, select { 
-            width: 100%; background: rgba(255,255,255,0.5); border: 1px solid var(--ghibli-blue); 
-            border-radius: 4px; padding: 4px; box-sizing: border-box; font-family: inherit;
-        }
-        .grid-3 { display: grid; grid-template-columns: 40px 100px 1fr; gap: 5px; margin-top: 5px; }
-        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 10px 0; }
-        .stat-box { background: white; border: 1px solid var(--ghibli-blue); border-radius: 6px; text-align: center; padding: 3px; cursor: pointer; }
-        .stat-label { font-size: 0.6rem; font-weight: bold; color: var(--ghibli-blue); display: block; }
-        .res-row { display: flex; gap: 5px; margin-bottom: 10px; }
-        .res-box { flex: 1; background: white; border-left: 4px solid var(--ghibli-accent); padding: 5px; text-align: center; border-radius: 4px; }
-        #dice-result { text-align: center; font-weight: bold; color: var(--ghibli-green); margin-bottom: 5px; height: 1rem; }
+        .sheet-box { background: rgba(255,255,255,0.5); padding: 15px; border-radius: 10px; }
+        input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #4682b4; border-radius: 5px; box-sizing: border-box; }
+        label { font-size: 0.7rem; font-weight: bold; color: #3e5437; }
     </style>
 </head>
 <body>
 
-<div id="status-bar">⚠️ SELEZIONA UNA PEDINA SULLA MAPPA</div>
+    <div id="status-bar">CARICAMENTO SDK...</div>
 
-<div class="section">
-    <input type="text" id="name" class="save-data" placeholder="Nome Viandante" style="font-size: 1.1rem; font-weight: bold;">
-    <div class="grid-3">
-        <input type="number" id="lvl" class="save-data" placeholder="LIV">
-        <input type="text" id="class" class="save-data" placeholder="Classe">
-        <input type="text" id="skill" class="save-data" placeholder="Abilità">
-    </div>
-</div>
-
-<div id="dice-result"></div>
-
-<div class="grid-stats">
-    <div class="stat-box" onclick="roll('DES')"><span class="stat-label">DES</span><select id="des" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-    <div class="stat-box" onclick="roll('INT')"><span class="stat-label">INT</span><select id="int" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-    <div class="stat-box" onclick="roll('VIG')"><span class="stat-label">VIG</span><select id="vig" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-    <div class="stat-box" onclick="roll('VOL')"><span class="stat-label">VOL</span><select id="vol" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-</div>
-
-<div class="res-row">
-    <div class="res-box"><label style="font-size:0.6rem;">PV</label><input type="number" id="pv" class="save-data"></div>
-    <div class="res-box"><label style="font-size:0.6rem;">PM</label><input type="number" id="pm" class="save-data"></div>
-    <div class="res-box"><label style="font-size:0.6rem;">PI</label><input type="number" id="pi" class="save-data"></div>
-</div>
-
-<div class="section">
-    <label style="font-size:0.7rem; font-weight:bold; color:var(--ghibli-green)">ABILITÀ E MAGIE</label>
-    <textarea id="magic" class="save-data" rows="4"></textarea>
-</div>
-
-<script>
-    const OBR = window.OBR;
-    let targetTokenId = null;
-
-    OBR.onReady(() => {
-        // Al caricamento, controlla se c'è già una pedina selezionata
-        OBR.player.getSelection().then(s => { if(s?.length) loadToken(s[0]); });
-
-        // Ascolta il cambio di selezione sulla mappa
-        OBR.player.onSelectionChange(s => {
-            if(s?.length) loadToken(s[0]);
-            else { 
-                targetTokenId = null; 
-                document.getElementById('status-bar').innerText = "⚠️ SELEZIONA UNA PEDINA SULLA MAPPA";
-            }
-        });
-    });
-
-    async function loadToken(id) {
-        targetTokenId = id;
-        const items = await OBR.scene.items.getItems([id]);
-        if (items.length) {
-            document.getElementById('status-bar').innerText = "✅ MODIFICANDO: " + (items[0].name || "Token");
-            const data = items[0].metadata["fabula-data"];
-            if (data) {
-                Object.keys(data).forEach(k => {
-                    const el = document.getElementById(k);
-                    if (el) el.value = data[k];
-                });
-            } else {
-                // Svuota se il token è "pulito"
-                document.querySelectorAll('.save-data').forEach(f => f.value = f.type === 'number' ? 0 : '');
-            }
-        }
-    }
-
-    async function sync() {
-        if (!targetTokenId) return;
-        const data = {};
-        document.querySelectorAll('.save-data').forEach(f => data[f.id] = f.value);
+    <div class="sheet-box">
+        <label>NOME PERSONAGGIO</label>
+        <input type="text" id="char_name" class="save-field" placeholder="Nome...">
         
-        // Salva i dati direttamente nel metadato della pedina
-        await OBR.scene.items.updateItems([targetTokenId], (items) => {
-            for (let i of items) { i.metadata["fabula-data"] = data; }
+        <label>PUNTI VITA</label>
+        <input type="number" id="hp" class="save-field" placeholder="HP">
+    </div>
+
+    <script>
+        const OBR = window.OBR;
+        let currentTokenId = null;
+
+        // Aspetta che Owlbear sia pronto
+        OBR.onReady(() => {
+            document.getElementById('status-bar').innerText = "PRONTO: SELEZIONA UNA PEDINA";
+            
+            // Ogni secondo controlla se hai cliccato su una pedina diversa
+            setInterval(async () => {
+                const selection = await OBR.player.getSelection();
+                
+                if (selection && selection.length > 0 && selection[0] !== currentTokenId) {
+                    currentTokenId = selection[0];
+                    const items = await OBR.scene.items.getItems([currentTokenId]);
+                    
+                    if (items.length > 0) {
+                        const token = items[0];
+                        document.getElementById('status-bar').innerText = "✅ MODIFICANDO: " + token.name;
+                        document.getElementById('status-bar').style.background = "#3e5437";
+                        
+                        // Carica i dati salvati nel token
+                        const data = token.metadata["fabula-data"];
+                        if (data) {
+                            document.getElementById('char_name').value = data.name || "";
+                            document.getElementById('hp').value = data.hp || 0;
+                        }
+                    }
+                }
+            }, 1000);
         });
-    }
 
-    function roll(stat) {
-        const d = document.getElementById(stat.toLowerCase()).value;
-        const res = Math.floor(Math.random() * parseInt(d.replace('d',''))) + 1;
-        document.getElementById('dice-result').innerText = `🎲 ${stat}: ${res}`;
-    }
+        // Funzione per salvare i dati nel token
+        async function saveData() {
+            if (!currentTokenId) return;
+            
+            const dataToSave = {
+                name: document.getElementById('char_name').value,
+                hp: document.getElementById('hp').value
+            };
 
-    document.querySelectorAll('.save-data').forEach(el => {
-        el.addEventListener('input', sync);
-    });
-</script>
+            await OBR.scene.items.updateItems([currentTokenId], (items) => {
+                for (let item of items) {
+                    item.metadata["fabula-data"] = dataToSave;
+                }
+            });
+        }
+
+        // Ascolta quando scrivi nei campi
+        document.querySelectorAll('.save-field').forEach(input => {
+            input.addEventListener('input', saveData);
+        });
+    </script>
 </body>
 </html>
