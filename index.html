@@ -2,149 +2,124 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
         :root {
-            --ghibli-green: #3e5437;
-            --ghibli-blue: #4682b4;
-            --sugar-paper: #b0c4de;
-            --ghibli-accent: #bc6c4d;
-            --text-dark: #2c3e50;
+            --ghibli-green: #3e5437; --ghibli-blue: #4682b4;
+            --sugar-paper: #b0c4de; --ghibli-accent: #bc6c4d;
         }
-        body { font-family: 'Segoe UI', serif; background: var(--sugar-paper); color: var(--text-dark); padding: 8px; margin: 0; line-height: 1.1; }
-        
-        #token-header { 
-            background: var(--ghibli-accent); color: white; padding: 4px; 
-            font-size: 0.7rem; text-align: center; border-radius: 4px; 
-            margin-bottom: 8px; font-weight: bold; text-transform: uppercase;
+        body { 
+            font-family: 'Segoe UI', serif; background: var(--sugar-paper); 
+            padding: 10px; margin: 0; color: #2c3e50; line-height: 1.1;
         }
-
-        h2 { color: var(--ghibli-green); border-bottom: 1px solid var(--ghibli-blue); padding-bottom: 1px; font-size: 0.8rem; margin: 8px 0 4px 0; text-transform: uppercase; }
-        .header-section { background: rgba(255,255,255,0.2); padding: 5px; border-radius: 6px; margin-bottom: 5px; }
-        .char-name { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--ghibli-blue); font-size: 1.1rem; text-align: center; color: var(--ghibli-green); font-weight: bold; outline: none; margin-bottom: 5px;}
-        
-        .class-row { display: grid; grid-template-columns: 35px 90px 1fr; gap: 4px; margin-bottom: 3px; align-items: center; }
-        .class-row input { background: rgba(255,255,255,0.4); border: 1px solid #999; border-radius: 3px; padding: 2px; font-size: 0.8rem; }
-        .label-mini { font-size: 0.55rem; color: var(--ghibli-green); font-weight: bold; text-align: center; }
-
-        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-        .stat-box { background: #fff; padding: 3px; border-radius: 6px; border: 1px solid var(--ghibli-blue); text-align: center; cursor: pointer; }
-        .stat-box label { display: block; font-size: 0.55rem; font-weight: bold; color: var(--ghibli-blue); pointer-events: none; }
-        select { border: none; background: transparent; width: 100%; font-size: 0.85rem; font-weight: bold; text-align-last: center; outline: none; }
-
-        .resources { display: flex; justify-content: space-around; gap: 4px; margin: 8px 0; }
-        .res-box { background: white; padding: 4px; border-radius: 6px; border-left: 3px solid var(--ghibli-accent); flex: 1; text-align: center; }
-        .res-box label { font-size: 0.65rem; display: block; color: var(--ghibli-accent); font-weight: bold; }
-        .res-box input { width: 100%; border: none; text-align: center; font-size: 0.9rem; font-weight: bold; background: transparent; outline: none; }
-
-        .section-box { background: rgba(255,255,255,0.3); border-radius: 4px; padding: 4px; }
-        textarea { width: 100%; background: transparent; border: none; resize: none; font-family: inherit; font-size: 0.8rem; min-height: 35px; outline: none; }
-
-        #dice-result { text-align: center; font-weight: bold; color: var(--ghibli-green); font-size: 0.8rem; margin: 5px 0; min-height: 1rem; }
+        #status-bar { 
+            background: var(--ghibli-accent); color: white; padding: 5px; 
+            text-align: center; font-size: 0.7rem; border-radius: 5px; margin-bottom: 10px;
+            font-weight: bold; text-transform: uppercase;
+        }
+        .section { background: rgba(255,255,255,0.3); padding: 8px; border-radius: 6px; margin-bottom: 8px; }
+        input, textarea, select { 
+            width: 100%; background: rgba(255,255,255,0.5); border: 1px solid var(--ghibli-blue); 
+            border-radius: 4px; padding: 4px; box-sizing: border-box; font-family: inherit;
+        }
+        .grid-3 { display: grid; grid-template-columns: 40px 100px 1fr; gap: 5px; margin-top: 5px; }
+        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 10px 0; }
+        .stat-box { background: white; border: 1px solid var(--ghibli-blue); border-radius: 6px; text-align: center; padding: 3px; cursor: pointer; }
+        .stat-label { font-size: 0.6rem; font-weight: bold; color: var(--ghibli-blue); display: block; }
+        .res-row { display: flex; gap: 5px; margin-bottom: 10px; }
+        .res-box { flex: 1; background: white; border-left: 4px solid var(--ghibli-accent); padding: 5px; text-align: center; border-radius: 4px; }
+        #dice-result { text-align: center; font-weight: bold; color: var(--ghibli-green); margin-bottom: 5px; height: 1rem; }
     </style>
 </head>
 <body>
 
-    <div id="token-header">SELEZIONA UNA PEDINA SULLA MAPPA</div>
+<div id="status-bar">⚠️ SELEZIONA UNA PEDINA SULLA MAPPA</div>
 
-    <div class="header-section">
-        <input type="text" id="char_name" class="save-data char-name" placeholder="Nome Viandante">
-        <div class="class-row">
-            <input type="number" id="lvl1" class="save-data" value="5">
-            <input type="text" id="class1" class="save-data" placeholder="Classe 1">
-            <input type="text" id="skill1" class="save-data" placeholder="Abilità">
-        </div>
-        <div class="class-row">
-            <input type="number" id="lvl2" class="save-data" value="0">
-            <input type="text" id="class2" class="save-data" placeholder="Classe 2">
-            <input type="text" id="skill2" class="save-data" placeholder="Abilità">
-        </div>
+<div class="section">
+    <input type="text" id="name" class="save-data" placeholder="Nome Viandante" style="font-size: 1.1rem; font-weight: bold;">
+    <div class="grid-3">
+        <input type="number" id="lvl" class="save-data" placeholder="LIV">
+        <input type="text" id="class" class="save-data" placeholder="Classe">
+        <input type="text" id="skill" class="save-data" placeholder="Abilità">
     </div>
+</div>
 
-    <div id="dice-result"></div>
+<div id="dice-result"></div>
 
-    <div class="grid-stats">
-        <div class="stat-box" onclick="rollDice('DES')"><label>DES</label><select id="des" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box" onclick="rollDice('INT')"><label>INT</label><select id="int" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box" onclick="rollDice('VIG')"><label>VIG</label><select id="vig" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-        <div class="stat-box" onclick="rollDice('VOL')"><label>VOL</label><select id="vol" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-    </div>
+<div class="grid-stats">
+    <div class="stat-box" onclick="roll('DES')"><span class="stat-label">DES</span><select id="des" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+    <div class="stat-box" onclick="roll('INT')"><span class="stat-label">INT</span><select id="int" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+    <div class="stat-box" onclick="roll('VIG')"><span class="stat-label">VIG</span><select id="vig" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+    <div class="stat-box" onclick="roll('VOL')"><span class="stat-label">VOL</span><select id="vol" class="save-data"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+</div>
 
-    <div class="resources">
-        <div class="res-box"><label>PV</label><input type="number" id="pv" class="save-data" value="40"></div>
-        <div class="res-box"><label>PM</label><input type="number" id="pm" class="save-data" value="40"></div>
-        <div class="res-box"><label>PI</label><input type="number" id="pi" class="save-data" value="6"></div>
-    </div>
+<div class="res-row">
+    <div class="res-box"><label style="font-size:0.6rem;">PV</label><input type="number" id="pv" class="save-data"></div>
+    <div class="res-box"><label style="font-size:0.6rem;">PM</label><input type="number" id="pm" class="save-data"></div>
+    <div class="res-box"><label style="font-size:0.6rem;">PI</label><input type="number" id="pi" class="save-data"></div>
+</div>
 
-    <h2>Abilità e Magie</h2>
-    <div class="section-box"><textarea id="magic" class="save-data" rows="4"></textarea></div>
+<div class="section">
+    <label style="font-size:0.7rem; font-weight:bold; color:var(--ghibli-green)">ABILITÀ E MAGIE</label>
+    <textarea id="magic" class="save-data" rows="4"></textarea>
+</div>
 
-    <script>
-        const OBR = window.OBR;
-        let currentTokenId = null;
+<script>
+    const OBR = window.OBR;
+    let targetTokenId = null;
 
-        // Inizializzazione SDK
-        OBR.onReady(() => {
-            // Controllo selezione iniziale
-            OBR.player.getSelection().then((sel) => {
-                if (sel && sel.length > 0) loadTokenData(sel[0]);
-            });
+    OBR.onReady(() => {
+        // Al caricamento, controlla se c'è già una pedina selezionata
+        OBR.player.getSelection().then(s => { if(s?.length) loadToken(s[0]); });
 
-            // Rileva cambio selezione pedina
-            OBR.player.onSelectionChange((sel) => {
-                if (sel && sel.length > 0) loadTokenData(sel[0]);
-                else {
-                    currentTokenId = null;
-                    document.getElementById('token-header').innerText = "SELEZIONA UNA PEDINA SULLA MAPPA";
-                }
-            });
+        // Ascolta il cambio di selezione sulla mappa
+        OBR.player.onSelectionChange(s => {
+            if(s?.length) loadToken(s[0]);
+            else { 
+                targetTokenId = null; 
+                document.getElementById('status-bar').innerText = "⚠️ SELEZIONA UNA PEDINA SULLA MAPPA";
+            }
         });
+    });
 
-        async function loadTokenData(tokenId) {
-            currentTokenId = tokenId;
-            const items = await OBR.scene.items.getItems([tokenId]);
-            if (items.length > 0) {
-                const item = items[0];
-                document.getElementById('token-header').innerText = "MODIFICANDO: " + (item.name || "Token");
-                
-                const data = item.metadata["fabula-sync"];
-                if (data) {
-                    Object.keys(data).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.value = data[id];
-                    });
-                } else {
-                    // Svuota se il token non ha dati
-                    document.querySelectorAll('.save-data').forEach(f => f.value = f.type === 'number' ? 0 : '');
-                }
+    async function loadToken(id) {
+        targetTokenId = id;
+        const items = await OBR.scene.items.getItems([id]);
+        if (items.length) {
+            document.getElementById('status-bar').innerText = "✅ MODIFICANDO: " + (items[0].name || "Token");
+            const data = items[0].metadata["fabula-data"];
+            if (data) {
+                Object.keys(data).forEach(k => {
+                    const el = document.getElementById(k);
+                    if (el) el.value = data[k];
+                });
+            } else {
+                // Svuota se il token è "pulito"
+                document.querySelectorAll('.save-data').forEach(f => f.value = f.type === 'number' ? 0 : '');
             }
         }
+    }
 
-        async function saveToToken() {
-            if (!currentTokenId) return;
-            const fields = document.querySelectorAll('.save-data');
-            const data = {};
-            fields.forEach(f => data[f.id] = f.value);
-
-            await OBR.scene.items.updateItems([currentTokenId], (items) => {
-                for (let item of items) {
-                    item.metadata["fabula-sync"] = data;
-                }
-            });
-        }
-
-        function rollDice(stat) {
-            const val = document.getElementById(stat.toLowerCase()).value;
-            const size = parseInt(val.replace('d', ''));
-            const roll = Math.floor(Math.random() * size) + 1;
-            document.getElementById('dice-result').innerText = `🎲 ${stat}: ${roll} (su ${val})`;
-        }
-
-        document.querySelectorAll('.save-data').forEach(field => {
-            field.addEventListener('input', saveToToken);
-            field.addEventListener('change', saveToToken);
+    async function sync() {
+        if (!targetTokenId) return;
+        const data = {};
+        document.querySelectorAll('.save-data').forEach(f => data[f.id] = f.value);
+        
+        // Salva i dati direttamente nel metadato della pedina
+        await OBR.scene.items.updateItems([targetTokenId], (items) => {
+            for (let i of items) { i.metadata["fabula-data"] = data; }
         });
-    </script>
+    }
+
+    function roll(stat) {
+        const d = document.getElementById(stat.toLowerCase()).value;
+        const res = Math.floor(Math.random() * parseInt(d.replace('d',''))) + 1;
+        document.getElementById('dice-result').innerText = `🎲 ${stat}: ${res}`;
+    }
+
+    document.querySelectorAll('.save-data').forEach(el => {
+        el.addEventListener('input', sync);
+    });
+</script>
 </body>
 </html>
