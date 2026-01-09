@@ -1,4 +1,7 @@
 <script>
+
+    alert("SCRIPT CARICATO");
+
 const OBR = window.OBR;
 
 let currentTokenId = null;
