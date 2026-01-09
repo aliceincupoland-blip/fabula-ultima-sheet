@@ -1,49 +1,68 @@
-import { room, storage } from "@owlbear-rodeo/sdk";
+<script>
+const OBR = window.OBR;
 
-let playerId = null;
+let currentTokenId = null;
 
-// aspettiamo che Owlbear sia pronto
-room.onReady(async () => {
-  playerId = room.playerId;
-  loadSheet();
+OBR.onReady(async () => {
+    document.getElementById('status-bar').innerText = "SELEZIONA UNA PEDINA";
+    document.getElementById('status-bar').style.background = "#bc6c4d";
+
+    setInterval(async () => {
+        const selection = await OBR.player.getSelection();
+        if (!selection || selection.length === 0) return;
+
+        if (selection[0] !== currentTokenId) {
+            currentTokenId = selection[0];
+
+            const items = await OBR.scene.items.getItems([currentTokenId]);
+            if (!items.length) return;
+
+            const token = items[0];
+
+            // ORA CHI SELEZIONA PUÒ MODIFICARE
+            document.getElementById('status-bar').innerText =
+                "✏️ MODIFICANDO: " + token.name;
+            document.getElementById('status-bar').style.background = "#3e5437";
+
+            // abilita tutti i campi
+            document.querySelectorAll('.save-field').forEach(el => {
+                el.disabled = false;
+            });
+
+            // carica dati salvati
+            const d = token.metadata["fabula-data"] || {};
+
+            const fields = [
+                "char_name",
+                "forza","destrezza","mente","volonta",
+                "pv","mp","pi",
+                "classi","abilita"
+            ];
+
+            fields.forEach(id => {
+                document.getElementById(id).value = d[id] || "";
+            });
+        }
+    }, 600);
 });
 
-// raccoglie i dati dalla scheda
-function collectData() {
-  return {
-    name: document.getElementById("name").value,
-    job: document.getElementById("job").value,
-    level: document.getElementById("level").value,
-    might: document.getElementById("might").value,
-    dex: document.getElementById("dex").value,
-    insight: document.getElementById("insight").value,
-    will: document.getElementById("will").value
-  };
+async function saveData() {
+    if (!currentTokenId) return;
+
+    const data = {};
+    document.querySelectorAll('.save-field').forEach(el => {
+        data[el.id] = el.value;
+    });
+
+    await OBR.scene.items.updateItems([currentTokenId], items => {
+        for (let item of items) {
+            item.metadata["fabula-data"] = data;
+        }
+    });
 }
 
-// riempie la scheda
-function applyData(data) {
-  if (!data) return;
-  document.getElementById("name").value = data.name || "";
-  document.getElementById("job").value = data.job || "";
-  document.getElementById("level").value = data.level || "";
-  document.getElementById("might").value = data.might || "";
-  document.getElementById("dex").value = data.dex || "";
-  document.getElementById("insight").value = data.insight || "";
-  document.getElementById("will").value = data.will || "";
-}
-
-// salva
-async function saveSheet() {
-  const data = collectData();
-  await storage.setItem(`fabula_${playerId}`, data);
-}
-
-// carica
-async function loadSheet() {
-  const data = await storage.getItem(`fabula_${playerId}`);
-  applyData(data);
-}
-
-// autosave
-document.addEventListener("input", saveSheet);
+// salva automaticamente mentre scrivi
+document.querySelectorAll('.save-field').forEach(el => {
+    el.addEventListener('input', saveData);
+});
+</script>
