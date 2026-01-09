@@ -114,6 +114,39 @@
         document.querySelectorAll('.save-data').forEach(field => {
             field.addEventListener('change', saveToMetadata);
         });
+        <script>
+    // Aspetta che Owlbear sia pronto
+    const OBR = window.OBR;
+
+    async function rollDice(stat) {
+        const val = document.getElementById(stat.toLowerCase()).value;
+        const size = parseInt(val.replace('d', ''));
+        const roll = Math.floor(Math.random() * size) + 1;
+        const name = document.getElementById('char_name').value || "Viandante";
+        
+        const msg = `🎲 ${name} tira ${stat} (${val}): ${roll}`;
+        document.getElementById('dice-result').innerText = msg;
+
+        // Invia alla chat di Owlbear
+        if (OBR.isReady) {
+            await OBR.chat.sendMessage(msg);
+        }
+    }
+
+    async function sendToChat() {
+        const name = document.getElementById('char_name').value || "Viandante";
+        const pv = document.getElementById('pv').value;
+        const pm = document.getElementById('pm').value;
+        const msg = `📜 ${name} | PV: ${pv} | PM: ${pm}`;
+
+        if (OBR.isReady) {
+            await OBR.chat.sendMessage(msg);
+        }
+    }
+    
+    // Altri script di salvataggio...
+</script>
     </script>
 </body>
 </html>
+
