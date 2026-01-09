@@ -1,10 +1,3 @@
-Ottimo, allora diamo alla scheda quel tocco magico alla Studio Ghibli: colori pastello, carta invecchiata, un verde bosco rilassante e un blu cielo profondo.
-
-Ho aggiornato il codice per includere tutto: Abilità, Magie, Legami e anche i Punti Fabula.
-
-1. Sovrascrivi il tuo index.html con questo codice "Ghibli Style"
-HTML
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,97 +5,121 @@ HTML
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
-            --ghibli-green: #4a6741;
-            --ghibli-blue: #5d8aa8;
-            --ghibli-paper: #fdf6e3;
-            --ghibli-accent: #d97757;
-            --text-dark: #333;
+            --ghibli-green: #3e5437;
+            --ghibli-blue: #4682b4;
+            --sugar-paper: #b0c4de; /* Grigio-azzurro carta da zucchero */
+            --ghibli-paper: #f0f4f7;
+            --ghibli-accent: #bc6c4d;
+            --text-dark: #2c3e50;
         }
         body { 
-            font-family: 'Segoe UI', 'Palatino Linotype', serif; 
-            background: var(--ghibli-paper); 
+            font-family: 'Segoe UI', serif; 
+            background: var(--sugar-paper); 
             color: var(--text-dark); 
-            padding: 15px; 
+            padding: 10px; 
             margin: 0;
-            background-image: radial-gradient(#eee 1px, transparent 1px);
-            background-size: 20px 20px;
+            line-height: 1.2;
         }
         h2 { 
             color: var(--ghibli-green); 
-            border-bottom: 2px dashed var(--ghibli-blue); 
-            padding-bottom: 5px; 
-            font-size: 1.1rem;
-            margin-top: 20px;
+            border-bottom: 1px solid var(--ghibli-blue); 
+            padding-bottom: 2px; 
+            font-size: 0.9rem;
+            margin: 12px 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        .header-section { text-align: center; margin-bottom: 20px; }
+        .header-section { background: rgba(255,255,255,0.3); padding: 8px; border-radius: 8px; margin-bottom: 10px; }
         .char-name { 
             width: 100%; 
             background: transparent; 
             border: none; 
-            border-bottom: 2px solid var(--ghibli-blue); 
-            font-size: 1.5rem; 
+            border-bottom: 1px solid var(--ghibli-blue); 
+            font-size: 1.3rem; 
             text-align: center;
             color: var(--ghibli-green);
             font-weight: bold;
+            margin-bottom: 8px;
         }
 
-        /* Statistiche Ghibli */
-        .grid-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        /* Sezione Classe/Livello/Abilità */
+        .class-row { display: grid; grid-template-columns: 40px 100px 1fr; gap: 8px; margin-bottom: 4px; align-items: center; }
+        .class-row input { background: rgba(255,255,255,0.5); border: 1px solid #999; border-radius: 4px; padding: 3px; font-size: 0.85rem; }
+        .label-mini { font-size: 0.65rem; color: var(--ghibli-green); font-weight: bold; text-align: center; }
+
+        /* Statistiche Compattate */
+        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
         .stat-box { 
             background: #fff; 
-            padding: 8px; 
-            border-radius: 12px; 
-            border: 2px solid var(--ghibli-blue);
-            box-shadow: 2px 2px 0px var(--ghibli-blue);
+            padding: 5px; 
+            border-radius: 8px; 
+            border: 1px solid var(--ghibli-blue);
+            text-align: center;
         }
-        .stat-box label { display: block; font-size: 0.7rem; font-weight: bold; color: var(--ghibli-blue); }
-        select { border: none; background: transparent; width: 100%; font-size: 1rem; cursor: pointer; }
+        .stat-box label { display: block; font-size: 0.6rem; font-weight: bold; color: var(--ghibli-blue); }
+        select { border: none; background: transparent; width: 100%; font-size: 0.9rem; font-weight: bold; text-align-last: center; }
 
         /* Risorse */
-        .resources { display: flex; justify-content: space-around; gap: 10px; margin: 20px 0; }
+        .resources { display: flex; justify-content: space-around; gap: 5px; margin: 10px 0; }
         .res-box { 
             background: white; 
-            padding: 10px; 
-            border-radius: 50% 50% 10px 10px; 
-            border: 2px solid var(--ghibli-accent); 
-            width: 60px; text-align: center;
+            padding: 5px; 
+            border-radius: 8px; 
+            border-left: 3px solid var(--ghibli-accent); 
+            flex: 1; text-align: center;
         }
-        .res-box label { font-size: 0.8rem; display: block; color: var(--ghibli-accent); }
-        .res-box input { width: 100%; border: none; text-align: center; font-size: 1.1rem; font-weight: bold; background: transparent; }
+        .res-box label { font-size: 0.7rem; display: block; color: var(--ghibli-accent); font-weight: bold; }
+        .res-box input { width: 100%; border: none; text-align: center; font-size: 1rem; font-weight: bold; background: transparent; }
 
-        /* Sezioni Testo */
-        .section-box { background: rgba(255,255,255,0.6); border-radius: 8px; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; }
+        /* Sezioni Testo Ristrette */
+        .section-box { background: rgba(255,255,255,0.4); border-radius: 6px; padding: 6px; border: 1px solid rgba(0,0,0,0.1); }
         textarea { 
             width: 100%; 
             background: transparent; 
             border: none; 
             resize: vertical; 
             font-family: inherit; 
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 0.85rem;
+            min-height: 40px;
         }
 
         .fabula-points {
             background: var(--ghibli-accent);
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
             display: inline-block;
-            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
     <div class="header-section">
-        <input type="text" class="char-name" placeholder="Nome del Viandante">
-        <div style="margin-top: 10px;">
-            <div class="fabula-points">Punti Fabula: <input type="number" value="3" style="background:transparent; border:none; color:white; width:30px; font-weight:bold;"></div>
+        <input type="text" class="char-name" placeholder="Nome Viandante">
+        
+        <div class="class-row">
+            <span class="label-mini">LIV</span>
+            <span class="label-mini">CLASSE</span>
+            <span class="label-mini">ABILITÀ DI CLASSE / NOTE</span>
+        </div>
+        <div class="class-row">
+            <input type="number" value="5">
+            <input type="text" placeholder="Es: Oratore">
+            <input type="text" placeholder="Es: Incoraggiare, Eloquenza">
+        </div>
+        <div class="class-row">
+            <input type="number" value="0">
+            <input type="text" placeholder="Seconda Classe">
+            <input type="text" placeholder="Abilità...">
         </div>
     </div>
 
-    <h2>Caratteristiche</h2>
+    <div style="text-align:right; margin-bottom: 5px;">
+        <div class="fabula-points">Punti Fabula: <input type="number" value="3" style="background:transparent; border:none; color:white; width:25px; font-weight:bold;"></div>
+    </div>
+
     <div class="grid-stats">
         <div class="stat-box"><label>DES</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
         <div class="stat-box"><label>INT</label><select><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
@@ -116,25 +133,20 @@ HTML
         <div class="res-box"><label>PI</label><input type="number" value="6"></div>
     </div>
 
-    <h2>Legami</h2>
+    <h2>Legami e Sentimenti</h2>
     <div class="section-box">
-        <textarea rows="3" placeholder="Es: Arcanamum (Ammirazione), Kael (Inferiorità)..."></textarea>
+        <textarea rows="2" placeholder="Chi porti nel cuore?"></textarea>
     </div>
 
-    <h2>Abilità e Magie</h2>
+    <h2>Abilità Speciali e Magie</h2>
     <div class="section-box">
-        <textarea rows="6" placeholder="Descrivi qui i tuoi poteri e incantesimi..."></textarea>
+        <textarea rows="4" placeholder="Incantesimi, Tecniche, Tratti..."></textarea>
     </div>
 
-    <h2>Zaino</h2>
+    <h2>Equipaggiamento</h2>
     <div class="section-box">
-        <textarea rows="4" placeholder="Armi e oggetti rari..."></textarea>
-    </div>
-
-    <div style="text-align: center; font-style: italic; font-size: 0.8rem; color: var(--ghibli-green); margin-top: 30px;">
-        "Il viaggio è appena iniziato..."
+        <textarea rows="3" placeholder="Zaino, Armi, Armature..."></textarea>
     </div>
 
 </body>
 </html>
-
