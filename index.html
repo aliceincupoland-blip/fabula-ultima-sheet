@@ -4,81 +4,129 @@
     <meta charset="UTF-8">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
-        body { font-family: sans-serif; background: #b0c4de; padding: 15px; margin: 0; }
-        #status-bar { 
-            background: #bc6c4d; color: white; padding: 10px; 
-            text-align: center; font-size: 0.8rem; border-radius: 5px; 
-            margin-bottom: 15px; font-weight: bold;
+        body {
+            font-family: sans-serif;
+            background: #b0c4de;
+            padding: 15px;
+            margin: 0;
         }
-        .sheet-box { background: rgba(255,255,255,0.5); padding: 15px; border-radius: 10px; }
-        input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #4682b4; border-radius: 5px; box-sizing: border-box; }
-        label { font-size: 0.7rem; font-weight: bold; color: #3e5437; }
+
+        #status-bar {
+            background: #bc6c4d;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .sheet-box {
+            background: rgba(255,255,255,0.6);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            border: 1px solid #4682b4;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input:disabled {
+            background: #ddd;
+        }
+
+        label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #3e5437;
+        }
     </style>
 </head>
 <body>
 
-    <div id="status-bar">CARICAMENTO SDK...</div>
+<div id="status-bar">CARICAMENTO SDK...</div>
 
-    <div class="sheet-box">
-        <label>NOME PERSONAGGIO</label>
-        <input type="text" id="char_name" class="save-field" placeholder="Nome...">
-        
-        <label>PUNTI VITA</label>
-        <input type="number" id="hp" class="save-field" placeholder="HP">
-    </div>
+<div class="sheet-box">
+    <label>NOME PERSONAGGIO</label>
+    <input type="text" id="char_name" class="save-field" placeholder="Nome..." disabled>
 
-    <script>
-        const OBR = window.OBR;
-        let currentTokenId = null;
+    <label>PUNTI VITA</label>
+    <input type="number" id="hp" class="save-field" placeholder="HP" disabled>
+</div>
 
-        // Aspetta che Owlbear sia pronto
-        OBR.onReady(() => {
-            document.getElementById('status-bar').innerText = "PRONTO: SELEZIONA UNA PEDINA";
-            
-            // Ogni secondo controlla se hai cliccato su una pedina diversa
-            setInterval(async () => {
-                const selection = await OBR.player.getSelection();
-                
-                if (selection && selection.length > 0 && selection[0] !== currentTokenId) {
-                    currentTokenId = selection[0];
-                    const items = await OBR.scene.items.getItems([currentTokenId]);
-                    
-                    if (items.length > 0) {
-                        const token = items[0];
-                        document.getElementById('status-bar').innerText = "✅ MODIFICANDO: " + token.name;
-                        document.getElementById('status-bar').style.background = "#3e5437";
-                        
-                        // Carica i dati salvati nel token
-                        const data = token.metadata["fabula-data"];
-                        if (data) {
-                            document.getElementById('char_name').value = data.name || "";
-                            document.getElementById('hp').value = data.hp || 0;
-                        }
-                    }
-                }
-            }, 1000);
+<script>
+    const OBR = window.OBR;
+
+    let currentTokenId = null;
+    let myPlayerId = null;
+    let canEdit = false;
+
+    OBR.onReady(async () => {
+        myPlayerId = await OBR.player.getId();
+        document.getElementById('status-bar').innerText = "SELEZIONA LA TUA PEDINA";
+
+        setInterval(async () => {
+            const selection = await OBR.player.getSelection();
+
+            if (!selection || selection.length === 0) return;
+
+            if (selection[0] !== currentTokenId) {
+                currentTokenId = selection[0];
+
+                const items = await OBR.scene.items.getItems([currentTokenId]);
+                if (items.length === 0) return;
+
+                const token = items[0];
+
+                // controllo proprietario
+                canEdit = token.createdUserId === myPlayerId;
+
+                document.getElementById('status-bar').innerText =
+                    canEdit
+                        ? "✏️ MODIFICANDO: " + token.name
+                        : "👀 VISUALIZZANDO: " + token.name;
+
+                document.getElementById('status-bar').style.background =
+                    canEdit ? "#3e5437" : "#555";
+
+                // abilita/disabilita campi
+                document.querySelectorAll('.save-field').forEach(input => {
+                    input.disabled = !canEdit;
+                });
+
+                // carica dati
+                const data = token.metadata["fabula-data"] || {};
+                document.getElementById('char_name').value = data.name || "";
+                document.getElementById('hp').value = data.hp || "";
+            }
+        }, 800);
+    });
+
+    async function saveData() {
+        if (!currentTokenId || !canEdit) return;
+
+        const dataToSave = {
+            name: document.getElementById('char_name').value,
+            hp: document.getElementById('hp').value
+        };
+
+        await OBR.scene.items.updateItems([currentTokenId], items => {
+            for (let item of items) {
+                item.metadata["fabula-data"] = dataToSave;
+            }
         });
+    }
 
-        // Funzione per salvare i dati nel token
-        async function saveData() {
-            if (!currentTokenId) return;
-            
-            const dataToSave = {
-                name: document.getElementById('char_name').value,
-                hp: document.getElementById('hp').value
-            };
+    document.querySelectorAll('.save-field').forEach(input => {
+        input.addEventListener('input', saveData);
+    });
+</script>
 
-            await OBR.scene.items.updateItems([currentTokenId], (items) => {
-                for (let item of items) {
-                    item.metadata["fabula-data"] = dataToSave;
-                }
-            });
-        }
-
-        // Ascolta quando scrivi nei campi
-        document.querySelectorAll('.save-field').forEach(input => {
-            input.addEventListener('input', saveData);
-        });
-    </script>
 </body>
 </html>
