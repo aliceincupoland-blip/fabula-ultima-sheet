@@ -1,13 +1,12 @@
 {
-  "name": "Scheda Fabula Ultima",
-  "version": "1.4.0",
+  "name": "Scheda Fabula Token",
+  "version": "1.5.1",
   "manifest_version": 1,
   "action": {
     "title": "Fabula Ultima",
     "icon": "https://aliceincupoland-blip.github.io/fabula-ultima-sheet/favicon.ico",
     "popover": "https://aliceincupoland-blip.github.io/fabula-ultima-sheet/index.html",
-    "width": 600,
-    "height": 800
+    "width": 550,
+    "height": 750
   }
 }
-
