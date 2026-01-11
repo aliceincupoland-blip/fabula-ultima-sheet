@@ -4,109 +4,78 @@
     <meta charset="UTF-8">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
-        body {
-            font-family: sans-serif;
-            background: #b0c4de;
-            padding: 15px;
-            margin: 0;
-        }
-
-        #status-bar {
-            background: #bc6c4d;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 0.8rem;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .sheet-box {
-            background: rgba(255,255,255,0.6);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        h3 {
-            margin: 15px 0 5px 0;
-            font-size: 0.8rem;
-            color: #3e5437;
-            border-bottom: 1px solid #3e5437;
-        }
-
-        label {
-            font-size: 0.65rem;
-            font-weight: bold;
-            color: #3e5437;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            margin: 4px 0 10px 0;
-            border: 1px solid #4682b4;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 0.75rem;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        input:disabled, textarea:disabled {
-            background: #ddd;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
+        :root { --ghibli-green: #3e5437; --ghibli-blue: #4682b4; --paper: #fdf5e6; --accent: #bc6c4d; }
+        body { font-family: 'Segoe UI', serif; background: #b0c4de; padding: 10px; margin: 0; color: #2c3e50; }
+        #player-tag { background: var(--accent); color: white; padding: 5px; text-align: center; font-size: 0.7rem; border-radius: 4px; margin-bottom: 10px; font-weight: bold; }
+        .sheet-container { background: var(--paper); padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 15px 0; }
+        .stat-box { background: white; border: 1px solid var(--ghibli-blue); border-radius: 6px; text-align: center; padding: 5px; }
+        .res-row { display: flex; gap: 8px; margin-bottom: 10px; }
+        .res-box { flex: 1; background: white; border-left: 4px solid var(--accent); padding: 8px; border-radius: 4px; }
+        input, select, textarea { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 6px; box-sizing: border-box; font-family: inherit; }
+        label { font-size: 0.6rem; font-weight: bold; color: var(--ghibli-green); text-transform: uppercase; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
-<div id="status-bar">CARICAMENTO SDK...</div>
+    <div id="player-tag">IDENTIFICAZIONE...</div>
 
-<div class="sheet-box">
+    <div class="sheet-container">
+        <label>Nome Viandante</label>
+        <input type="text" id="char_name" class="save" placeholder="Nome...">
 
-    <label>NOME PERSONAGGIO</label>
-    <input type="text" id="char_name" class="save-field" disabled>
+        <div class="stat-grid">
+            <div class="stat-box"><label>DES</label><select id="des" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+            <div class="stat-box"><label>INT</label><select id="int" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+            <div class="stat-box"><label>VIG</label><select id="vig" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+            <div class="stat-box"><label>VOL</label><select id="vol" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        </div>
 
-    <h3>CARATTERISTICHE</h3>
-    <div class="grid-4">
-        <input type="number" id="forza" class="save-field" placeholder="FOR" disabled>
-        <input type="number" id="destrezza" class="save-field" placeholder="DES" disabled>
-        <input type="number" id="mente" class="save-field" placeholder="MEN" disabled>
-        <input type="number" id="volonta" class="save-field" placeholder="VOL" disabled>
+        <div class="res-row">
+            <div class="res-box"><label>PV</label><input type="number" id="hp" class="save" value="40"></div>
+            <div class="res-box"><label>PM</label><input type="number" id="mp" class="save" value="40"></div>
+            <div class="res-box"><label>PI</label><input type="number" id="ip" class="save" value="6"></div>
+        </div>
+
+        <label>Abilità e Note</label>
+        <textarea id="notes" class="save" rows="6" placeholder="Scrivi qui le tue abilità..."></textarea>
     </div>
 
-    <h3>RISORSE</h3>
-    <div class="grid-3">
-        <input type="number" id="pv" class="save-field" placeholder="PV" disabled>
-        <input type="number" id="mp" class="save-field" placeholder="MP" disabled>
-        <input type="number" id="pi" class="save-field" placeholder="PI" disabled>
-    </div>
+    <script>
+        const OBR = window.OBR;
+        let storageKey = "fabula_local_data";
 
-    <h3>CLASSI E LIVELLI</h3>
-    <textarea id="classi" class="save-field" placeholder="Es: Guerriero 3, Invocatore 2" disabled></textarea>
+        OBR.onReady(async () => {
+            // Ottieni il nome del giocatore per personalizzare il salvataggio
+            const playerName = await OBR.player.getName();
+            const playerId = await OBR.player.getId();
+            storageKey = `fabula_${playerId}`; // Chiave unica per questo giocatore
+            
+            document.getElementById('player-tag').innerText = `SCHEDA DI: ${playerName}`;
+            
+            loadLocalData();
+        });
 
-    <h3>ABILITÀ</h3>
-    <textarea id="abilita" class="save-field" placeholder="Scrivi qui le abilità, talenti, limiti..." disabled></textarea>
+        function saveLocalData() {
+            const data = {};
+            document.querySelectorAll('.save').forEach(el => data[el.id] = el.value);
+            localStorage.setItem(storageKey, JSON.stringify(data));
+        }
 
-</div>
+        function loadLocalData() {
+            const saved = localStorage.getItem(storageKey);
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.keys(data).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = data[id];
+                });
+            }
+        }
 
-<script src="script.js"></script>
-
+        document.querySelectorAll('.save').forEach(el => {
+            el.addEventListener('input', saveLocalData);
+        });
+    </script>
 </body>
 </html>
-
