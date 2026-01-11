@@ -4,77 +4,114 @@
     <meta charset="UTF-8">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
-        :root { --ghibli-green: #3e5437; --ghibli-blue: #4682b4; --paper: #fdf5e6; --accent: #bc6c4d; }
-        body { font-family: 'Segoe UI', serif; background: #b0c4de; padding: 10px; margin: 0; color: #2c3e50; }
-        #player-tag { background: var(--accent); color: white; padding: 5px; text-align: center; font-size: 0.7rem; border-radius: 4px; margin-bottom: 10px; font-weight: bold; }
-        .sheet-container { background: var(--paper); padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 15px 0; }
-        .stat-box { background: white; border: 1px solid var(--ghibli-blue); border-radius: 6px; text-align: center; padding: 5px; }
-        .res-row { display: flex; gap: 8px; margin-bottom: 10px; }
-        .res-box { flex: 1; background: white; border-left: 4px solid var(--accent); padding: 8px; border-radius: 4px; }
-        input, select, textarea { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 6px; box-sizing: border-box; font-family: inherit; }
-        label { font-size: 0.6rem; font-weight: bold; color: var(--ghibli-green); text-transform: uppercase; display: block; margin-bottom: 2px; }
+        :root {
+            --soft-green: #e8f3e8; --ghibli-green: #5a7d51;
+            --soft-blue: #e3f2fd; --ghibli-blue: #4682b4;
+            --soft-red: #ffebee; --ghibli-accent: #bc6c4d;
+            --paper: #fffcf5;
+        }
+        body { 
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive; 
+            background: #cbd9e6; padding: 12px; margin: 0; color: #444; 
+        }
+        .header-tag { 
+            background: var(--ghibli-green); color: white; padding: 8px; 
+            text-align: center; border-radius: 20px; font-size: 0.8rem; 
+            margin-bottom: 12px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .container { 
+            background: var(--paper); padding: 15px; border-radius: 15px; 
+            border: 3px solid var(--ghibli-green);
+        }
+        .section-title { 
+            color: var(--ghibli-green); font-size: 0.8rem; font-weight: bold; 
+            margin: 10px 0 5px 0; display: flex; align-items: center; gap: 5px;
+        }
+        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
+        .stat-card { 
+            background: white; border: 2px solid var(--soft-blue); 
+            border-radius: 10px; padding: 5px; text-align: center; 
+        }
+        .res-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .res-pill { 
+            flex: 1; padding: 8px; border-radius: 12px; text-align: center;
+            border-bottom: 4px solid rgba(0,0,0,0.1);
+        }
+        .pv { background: var(--soft-red); border: 2px solid #ef9a9a; }
+        .pm { background: var(--soft-blue); border: 2px solid #90caf9; }
+        
+        input, select, textarea { 
+            width: 100%; border: 1px solid #ccc; border-radius: 8px; 
+            padding: 8px; box-sizing: border-box; font-family: inherit;
+            background: rgba(255,255,255,0.8);
+        }
+        textarea { resize: none; margin-bottom: 10px; }
+        .divider { height: 2px; background: var(--soft-green); margin: 15px 0; }
     </style>
 </head>
 <body>
 
-    <div id="player-tag">IDENTIFICAZIONE...</div>
+    <div id="status" class="header-tag">✨ CARICAMENTO...</div>
 
-    <div class="sheet-container">
-        <label>Nome Viandante</label>
-        <input type="text" id="char_name" class="save" placeholder="Nome...">
+    <div class="container">
+        <input type="text" id="name" class="save" placeholder="Nome del tuo Eroe..." style="font-size: 1.2rem; text-align: center; color: var(--ghibli-green); font-weight: bold; border: none; border-bottom: 2px dashed var(--ghibli-green);">
 
-        <div class="stat-grid">
-            <div class="stat-box"><label>DES</label><select id="des" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-            <div class="stat-box"><label>INT</label><select id="int" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-            <div class="stat-box"><label>VIG</label><select id="vig" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-            <div class="stat-box"><label>VOL</label><select id="vol" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <div class="grid-stats">
+            <div class="stat-card"><label style="font-size:0.6rem">DES</label><select id="des" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+            <div class="stat-card"><label style="font-size:0.6rem">INT</label><select id="int" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+            <div class="stat-card"><label style="font-size:0.6rem">VIG</label><select id="vig" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+            <div class="stat-card"><label style="font-size:0.6rem">VOL</label><select id="vol" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
         </div>
 
         <div class="res-row">
-            <div class="res-box"><label>PV</label><input type="number" id="hp" class="save" value="40"></div>
-            <div class="res-box"><label>PM</label><input type="number" id="mp" class="save" value="40"></div>
-            <div class="res-box"><label>PI</label><input type="number" id="ip" class="save" value="6"></div>
+            <div class="res-pill pv"><label style="font-size:0.7rem; font-weight:bold">❤ PV</label><input type="number" id="pv" class="save"></div>
+            <div class="res-pill pm"><label style="font-size:0.7rem; font-weight:bold">✨ PM</label><input type="number" id="pm" class="save"></div>
         </div>
 
-        <label>Abilità e Note</label>
-        <textarea id="notes" class="save" rows="6" placeholder="Scrivi qui le tue abilità..."></textarea>
+        <div class="divider"></div>
+
+        <div class="section-title">🌿 ABILITÀ DI CLASSE</div>
+        <textarea id="skills" class="save" rows="4" placeholder="Inserisci le tue abilità..."></textarea>
+
+        <div class="section-title">🔮 INCANTESIMI E MAGIE</div>
+        <textarea id="magic" class="save" rows="4" placeholder="Inserisci le tue magie..."></textarea>
+
+        <div class="section-title">🎒 EQUIPAGGIAMENTO</div>
+        <textarea id="items" class="save" rows="3" placeholder="Zaino e oggetti..."></textarea>
     </div>
 
     <script>
         const OBR = window.OBR;
-        let storageKey = "fabula_local_data";
+        let storageId = "fabula_cute_local";
 
         OBR.onReady(async () => {
-            // Ottieni il nome del giocatore per personalizzare il salvataggio
-            const playerName = await OBR.player.getName();
-            const playerId = await OBR.player.getId();
-            storageKey = `fabula_${playerId}`; // Chiave unica per questo giocatore
+            const name = await OBR.player.getName();
+            const id = await OBR.player.getId();
+            storageId = `fabula_data_${id}`;
             
-            document.getElementById('player-tag').innerText = `SCHEDA DI: ${playerName}`;
-            
-            loadLocalData();
+            document.getElementById('status').innerText = `🌸 VIANDANTE: ${name}`;
+            loadData();
         });
 
-        function saveLocalData() {
+        function saveData() {
             const data = {};
             document.querySelectorAll('.save').forEach(el => data[el.id] = el.value);
-            localStorage.setItem(storageKey, JSON.stringify(data));
+            localStorage.setItem(storageId, JSON.stringify(data));
         }
 
-        function loadLocalData() {
-            const saved = localStorage.getItem(storageKey);
+        function loadData() {
+            const saved = localStorage.getItem(storageId);
             if (saved) {
                 const data = JSON.parse(saved);
-                Object.keys(data).forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.value = data[id];
+                Object.keys(data).forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el) el.value = data[key];
                 });
             }
         }
 
         document.querySelectorAll('.save').forEach(el => {
-            el.addEventListener('input', saveLocalData);
+            el.addEventListener('input', saveData);
         });
     </script>
 </body>
