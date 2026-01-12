@@ -1,111 +1,106 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
     <meta charset="UTF-8">
-    <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
         :root {
-            --soft-green: #e8f3e8; --ghibli-green: #5a7d51;
-            --soft-blue: #e3f2fd; --ghibli-blue: #4682b4;
-            --soft-red: #ffebee; --ghibli-accent: #bc6c4d;
-            --paper: #fffcf5;
+            --ghibli-green: #5a7d51; --paper: #fffcf5;
+            --soft-blue: #e3f2fd; --soft-red: #ffebee;
         }
         body { 
-            font-family: 'Comic Sans MS', 'Segoe UI', cursive; 
-            background: #cbd9e6; padding: 12px; margin: 0; color: #444; 
-        }
-        .header-tag { 
-            background: var(--ghibli-green); color: white; padding: 8px; 
-            text-align: center; border-radius: 20px; font-size: 0.8rem; 
-            margin-bottom: 12px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-family: 'Segoe UI', cursive; background: #cbd9e6; 
+            padding: 15px; margin: 0; color: #444; 
         }
         .container { 
-            background: var(--paper); padding: 15px; border-radius: 15px; 
-            border: 3px solid var(--ghibli-green);
+            background: var(--paper); padding: 20px; border-radius: 20px; 
+            border: 4px solid var(--ghibli-green); box-shadow: 0 8px 0 rgba(0,0,0,0.1);
         }
-        .section-title { 
-            color: var(--ghibli-green); font-size: 0.8rem; font-weight: bold; 
-            margin: 10px 0 5px 0; display: flex; align-items: center; gap: 5px;
+        h1 { font-size: 1.4rem; text-align: center; color: var(--ghibli-green); margin: 0 0 15px 0; }
+        
+        /* Layout a scomparti */
+        .box { 
+            background: white; border: 2px solid #ddd; border-radius: 12px; 
+            padding: 10px; margin-bottom: 15px; 
         }
-        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
-        .stat-card { 
-            background: white; border: 2px solid var(--soft-blue); 
-            border-radius: 10px; padding: 5px; text-align: center; 
-        }
-        .res-row { display: flex; gap: 10px; margin-bottom: 15px; }
-        .res-pill { 
-            flex: 1; padding: 8px; border-radius: 12px; text-align: center;
-            border-bottom: 4px solid rgba(0,0,0,0.1);
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .stat-item { text-align: center; font-weight: bold; font-size: 0.8rem; }
+        
+        .resources { display: flex; gap: 15px; }
+        .res-item { flex: 1; text-align: center; border-radius: 10px; padding: 5px; }
         .pv { background: var(--soft-red); border: 2px solid #ef9a9a; }
         .pm { background: var(--soft-blue); border: 2px solid #90caf9; }
-        
-        input, select, textarea { 
+
+        label { display: block; font-weight: bold; color: var(--ghibli-green); font-size: 0.8rem; margin-bottom: 5px; }
+        input, textarea, select { 
             width: 100%; border: 1px solid #ccc; border-radius: 8px; 
-            padding: 8px; box-sizing: border-box; font-family: inherit;
-            background: rgba(255,255,255,0.8);
+            padding: 10px; box-sizing: border-box; font-family: inherit;
         }
-        textarea { resize: none; margin-bottom: 10px; }
-        .divider { height: 2px; background: var(--soft-green); margin: 15px 0; }
+        textarea { resize: vertical; min-height: 80px; }
+        #save-notify { 
+            text-align: center; font-size: 0.7rem; color: var(--ghibli-green); 
+            font-weight: bold; margin-top: 5px; height: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="status" class="header-tag">✨ CARICAMENTO...</div>
-
     <div class="container">
-        <input type="text" id="name" class="save" placeholder="Nome del tuo Eroe..." style="font-size: 1.2rem; text-align: center; color: var(--ghibli-green); font-weight: bold; border: none; border-bottom: 2px dashed var(--ghibli-green);">
-
-        <div class="grid-stats">
-            <div class="stat-card"><label style="font-size:0.6rem">DES</label><select id="des" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-            <div class="stat-card"><label style="font-size:0.6rem">INT</label><select id="int" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-            <div class="stat-card"><label style="font-size:0.6rem">VIG</label><select id="vig" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
-            <div class="stat-card"><label style="font-size:0.6rem">VOL</label><select id="vol" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+        <h1>✨ Diario del Viandante</h1>
+        
+        <div class="box">
+            <label>NOME DELL'EROE</label>
+            <input type="text" id="char_name" class="save" placeholder="...">
         </div>
 
-        <div class="res-row">
-            <div class="res-pill pv"><label style="font-size:0.7rem; font-weight:bold">❤ PV</label><input type="number" id="pv" class="save"></div>
-            <div class="res-pill pm"><label style="font-size:0.7rem; font-weight:bold">✨ PM</label><input type="number" id="pm" class="save"></div>
+        <div class="box">
+            <div class="stats-grid">
+                <div class="stat-item"><label>DES</label><select id="des" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+                <div class="stat-item"><label>INT</label><select id="int" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+                <div class="stat-item"><label>VIG</label><select id="vig" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+                <div class="stat-item"><label>VOL</label><select id="vol" class="save"><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+            </div>
         </div>
 
-        <div class="divider"></div>
+        <div class="resources">
+            <div class="res-item pv"><label>❤ PV</label><input type="number" id="hp" class="save"></div>
+            <div class="res-item pm"><label>✨ PM</label><input type="number" id="mp" class="save"></div>
+        </div>
 
-        <div class="section-title">🌿 ABILITÀ DI CLASSE</div>
-        <textarea id="skills" class="save" rows="4" placeholder="Inserisci le tue abilità..."></textarea>
+        <div class="box" style="margin-top:15px;">
+            <label>🌿 ABILITÀ E TRATTI</label>
+            <textarea id="skills" class="save" placeholder="Inserimento libero..."></textarea>
+        </div>
 
-        <div class="section-title">🔮 INCANTESIMI E MAGIE</div>
-        <textarea id="magic" class="save" rows="4" placeholder="Inserisci le tue magie..."></textarea>
+        <div class="box">
+            <label>🎒 EQUIPAGGIAMENTO</label>
+            <textarea id="items" class="save" placeholder="Cosa porti con te?"></textarea>
+        </div>
 
-        <div class="section-title">🎒 EQUIPAGGIAMENTO</div>
-        <textarea id="items" class="save" rows="3" placeholder="Zaino e oggetti..."></textarea>
+        <div id="save-notify"></div>
     </div>
 
     <script>
-        const OBR = window.OBR;
-        let storageId = "fabula_cute_local";
+        const KEY = "fabula_ultima_personal_data";
 
-        OBR.onReady(async () => {
-            const name = await OBR.player.getName();
-            const id = await OBR.player.getId();
-            storageId = `fabula_data_${id}`;
-            
-            document.getElementById('status').innerText = `🌸 VIANDANTE: ${name}`;
-            loadData();
-        });
-
+        // Salva tutto nel browser ogni volta che scrivi
         function saveData() {
             const data = {};
             document.querySelectorAll('.save').forEach(el => data[el.id] = el.value);
-            localStorage.setItem(storageId, JSON.stringify(data));
+            localStorage.setItem(KEY, JSON.stringify(data));
+            
+            const notify = document.getElementById('save-notify');
+            notify.innerText = "Dati salvati nel diario! 🖋️";
+            setTimeout(() => notify.innerText = "", 2000);
         }
 
+        // Carica i dati all'apertura
         function loadData() {
-            const saved = localStorage.getItem(storageId);
+            const saved = localStorage.getItem(KEY);
             if (saved) {
                 const data = JSON.parse(saved);
-                Object.keys(data).forEach(key => {
-                    const el = document.getElementById(key);
-                    if (el) el.value = data[key];
+                Object.keys(data).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = data[id];
                 });
             }
         }
@@ -113,6 +108,8 @@
         document.querySelectorAll('.save').forEach(el => {
             el.addEventListener('input', saveData);
         });
+
+        window.onload = loadData;
     </script>
 </body>
 </html>
