@@ -2,50 +2,24 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
-        :root {
-            --ghibli-green: #5a7d51; --paper: #fffcf5;
-            --soft-blue: #e3f2fd; --soft-red: #ffebee;
-        }
-        body { 
-            font-family: 'Segoe UI', cursive; background: #cbd9e6; 
-            padding: 15px; margin: 0; color: #444; 
-        }
-        .container { 
-            background: var(--paper); padding: 20px; border-radius: 20px; 
-            border: 4px solid var(--ghibli-green); box-shadow: 0 8px 0 rgba(0,0,0,0.1);
-        }
-        h1 { font-size: 1.4rem; text-align: center; color: var(--ghibli-green); margin: 0 0 15px 0; }
-        
-        /* Layout a scomparti */
-        .box { 
-            background: white; border: 2px solid #ddd; border-radius: 12px; 
-            padding: 10px; margin-bottom: 15px; 
-        }
+        :root { --ghibli-green: #5a7d51; --paper: #fffcf5; --soft-blue: #e3f2fd; --soft-red: #ffebee; }
+        body { font-family: 'Segoe UI', cursive; background: #cbd9e6; padding: 15px; margin: 0; color: #444; }
+        .container { background: var(--paper); padding: 20px; border-radius: 20px; border: 4px solid var(--ghibli-green); box-shadow: 0 8px 0 rgba(0,0,0,0.1); }
+        .box { background: white; border: 2px solid #ddd; border-radius: 12px; padding: 10px; margin-bottom: 15px; }
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .stat-item { text-align: center; font-weight: bold; font-size: 0.8rem; }
-        
-        .resources { display: flex; gap: 15px; }
-        .res-item { flex: 1; text-align: center; border-radius: 10px; padding: 5px; }
-        .pv { background: var(--soft-red); border: 2px solid #ef9a9a; }
-        .pm { background: var(--soft-blue); border: 2px solid #90caf9; }
-
-        label { display: block; font-weight: bold; color: var(--ghibli-green); font-size: 0.8rem; margin-bottom: 5px; }
-        input, textarea, select { 
-            width: 100%; border: 1px solid #ccc; border-radius: 8px; 
-            padding: 10px; box-sizing: border-box; font-family: inherit;
-        }
-        textarea { resize: vertical; min-height: 80px; }
-        #save-notify { 
-            text-align: center; font-size: 0.7rem; color: var(--ghibli-green); 
-            font-weight: bold; margin-top: 5px; height: 15px;
-        }
+        .res-row { display: flex; gap: 15px; margin-bottom: 15px; }
+        .res-item { flex: 1; text-align: center; border-radius: 10px; padding: 5px; border: 2px solid #ccc; }
+        label { display: block; font-weight: bold; color: var(--ghibli-green); font-size: 0.7rem; margin-bottom: 5px; }
+        input, textarea, select { width: 100%; border: 1px solid #ccc; border-radius: 8px; padding: 10px; box-sizing: border-box; font-family: inherit; }
+        #sync-status { text-align: center; font-size: 0.7rem; color: var(--ghibli-green); margin-bottom: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>✨ Diario del Viandante</h1>
+        <div id="sync-status">☁️ SINCRONIZZAZIONE...</div>
         
         <div class="box">
             <label>NOME DELL'EROE</label>
@@ -61,55 +35,52 @@
             </div>
         </div>
 
-        <div class="resources">
-            <div class="res-item pv"><label>❤ PV</label><input type="number" id="hp" class="save"></div>
-            <div class="res-item pm"><label>✨ PM</label><input type="number" id="mp" class="save"></div>
-        </div>
-
-        <div class="box" style="margin-top:15px;">
-            <label>🌿 ABILITÀ E TRATTI</label>
-            <textarea id="skills" class="save" placeholder="Inserimento libero..."></textarea>
+        <div class="res-row">
+            <div class="res-item" style="background:var(--soft-red)"><label>❤ PV</label><input type="number" id="hp" class="save"></div>
+            <div class="res-item" style="background:var(--soft-blue)"><label>✨ PM</label><input type="number" id="mp" class="save"></div>
         </div>
 
         <div class="box">
-            <label>🎒 EQUIPAGGIAMENTO</label>
-            <textarea id="items" class="save" placeholder="Cosa porti con te?"></textarea>
+            <label>🌿 ABILITÀ E NOTE LIBERE</label>
+            <textarea id="notes" class="save" rows="8"></textarea>
         </div>
-
-        <div id="save-notify"></div>
     </div>
 
     <script>
-        const KEY = "fabula_ultima_personal_data";
+        const OBR = window.OBR;
 
-        // Salva tutto nel browser ogni volta che scrivi
-        function saveData() {
-            const data = {};
-            document.querySelectorAll('.save').forEach(el => data[el.id] = el.value);
-            localStorage.setItem(KEY, JSON.stringify(data));
+        OBR.onReady(async () => {
+            document.getElementById('sync-status').innerText = "☁️ CLOUD CONNESSO";
             
-            const notify = document.getElementById('save-notify');
-            notify.innerText = "Dati salvati nel diario! 🖋️";
-            setTimeout(() => notify.innerText = "", 2000);
-        }
-
-        // Carica i dati all'apertura
-        function loadData() {
-            const saved = localStorage.getItem(KEY);
-            if (saved) {
-                const data = JSON.parse(saved);
-                Object.keys(data).forEach(id => {
+            // 1. Carica i dati dal profilo giocatore all'apertura
+            const metadata = await OBR.player.getMetadata();
+            const savedData = metadata["fabula-cloud-data"];
+            
+            if (savedData) {
+                Object.keys(savedData).forEach(id => {
                     const el = document.getElementById(id);
-                    if (el) el.value = data[id];
+                    if (el) el.value = savedData[id];
                 });
             }
+        });
+
+        // 2. Salva i dati nel profilo giocatore ogni volta che cambi qualcosa
+        async function cloudSave() {
+            const data = {};
+            document.querySelectorAll('.save').forEach(el => data[el.id] = el.value);
+            
+            await OBR.player.setMetadata({
+                "fabula-cloud-data": data
+            });
+            
+            const status = document.getElementById('sync-status');
+            status.innerText = "✨ SALVATO NEL CLOUD";
+            setTimeout(() => status.innerText = "☁️ CLOUD CONNESSO", 2000);
         }
 
         document.querySelectorAll('.save').forEach(el => {
-            el.addEventListener('input', saveData);
+            el.addEventListener('change', cloudSave);
         });
-
-        window.onload = loadData;
     </script>
 </body>
 </html>
