@@ -1,225 +1,83 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
-        :root {
-            --ghibli-green: #5a7d51;
-            --paper: #fffcf5;
-            --soft-blue: #e3f2fd;
-            --soft-red: #ffebee;
-            --accent: #bc6c4d;
-        }
-
-        body { 
-            font-family: 'Segoe UI', 'Comic Sans MS', cursive; 
-            background: #cbd9e6; 
-            padding: 15px; 
-            margin: 0; 
-            color: #444; 
-        }
-
-        .container { 
-            background: var(--paper); 
-            padding: 20px; 
-            border-radius: 20px; 
-            border: 4px solid var(--ghibli-green); 
-            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
-            max-width: 450px;
-            margin: auto;
-        }
-
-        #sync-status { 
-            text-align: center; 
-            font-size: 0.75rem; 
-            background: var(--ghibli-green); 
-            color: white; 
-            padding: 5px; 
-            border-radius: 10px; 
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .box { 
-            background: white; 
-            border: 2px solid #ddd; 
-            border-radius: 12px; 
-            padding: 12px; 
-            margin-bottom: 15px; 
-        }
-
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 10px; 
-        }
-
-        .stat-item { text-align: center; }
-
-        .res-row { 
-            display: flex; 
-            gap: 15px; 
-            margin-bottom: 15px; 
-        }
-
-        .res-item { 
-            flex: 1; 
-            text-align: center; 
-            border-radius: 12px; 
-            padding: 8px; 
-            border: 2px solid rgba(0,0,0,0.05); 
-        }
-
-        label { 
-            display: block; 
-            font-weight: bold; 
-            color: var(--ghibli-green); 
-            font-size: 0.7rem; 
-            margin-bottom: 5px; 
-            text-transform: uppercase;
-        }
-
-        input, textarea, select { 
-            width: 100%; 
-            border: 1px solid #ccc; 
-            border-radius: 8px; 
-            padding: 10px; 
-            box-sizing: border-box; 
-            font-family: inherit;
-            background: rgba(255,255,255,0.9);
-        }
-
-        textarea { 
-            resize: vertical; 
-            min-height: 100px; 
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--ghibli-green);
-            background: #fff;
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 0.6rem;
-            color: #888;
-            margin-top: 10px;
-        }
+        body { font-family: sans-serif; background: #cbd9e6; padding: 15px; }
+        .container { background: #fffcf5; padding: 20px; border-radius: 15px; border: 4px solid #5a7d51; }
+        .status { font-size: 0.7rem; text-align: center; margin-bottom: 10px; color: #5a7d51; font-weight: bold; }
+        .field-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: #5a7d51; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        textarea { min-height: 150px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="sync-status">☁️ CONNESSIONE AL CLOUD...</div>
-        
-        <div class="box">
-            <label>✨ Nome del Viandante</label>
-            <input type="text" id="char_name" class="save" placeholder="Inserisci nome...">
-        </div>
+<div class="container">
+    <div id="status" class="status">CONNESSIONE...</div>
 
-        <div class="box">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <label>DES</label>
-                    <select id="des" class="save">
-                        <option>d6</option><option>d8</option><option>d10</option><option>d12</option>
-                    </select>
-                </div>
-                <div class="stat-item">
-                    <label>INT</label>
-                    <select id="int" class="save">
-                        <option>d6</option><option>d8</option><option>d10</option><option>d12</option>
-                    </select>
-                </div>
-                <div class="stat-item">
-                    <label>VIG</label>
-                    <select id="vig" class="save">
-                        <option>d6</option><option>d8</option><option>d10</option><option>d12</option>
-                    </select>
-                </div>
-                <div class="stat-item">
-                    <label>VOL</label>
-                    <select id="vol" class="save">
-                        <option>d6</option><option>d8</option><option>d10</option><option>d12</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="res-row">
-            <div class="res-item" style="background:var(--soft-red)">
-                <label>❤ Punti Vita</label>
-                <input type="number" id="hp" class="save" placeholder="0">
-            </div>
-            <div class="res-item" style="background:var(--soft-blue)">
-                <label>✨ Punti Mente</label>
-                <input type="number" id="mp" class="save" placeholder="0">
-            </div>
-        </div>
-
-        <div class="box">
-            <label>🌿 Abilità, Magie e Note</label>
-            <textarea id="notes" class="save" placeholder="Scrivi qui tutto ciò che vuoi..."></textarea>
-        </div>
-
-        <div class="footer-note">I dati si salvano automaticamente nel tuo profilo Owlbear</div>
+    <div class="field-group">
+        <label>NOME EROE</label>
+        <input type="text" class="fabula-data" id="char_name">
     </div>
 
-    <script>
-        const OBR = window.OBR;
+    <div class="field-group">
+        <label>PV / PM</label>
+        <div style="display:flex; gap:10px;">
+            <input type="number" class="fabula-data" id="hp" placeholder="PV">
+            <input type="number" class="fabula-data" id="mp" placeholder="PM">
+        </div>
+    </div>
 
-        // Carica i dati dal Cloud di Owlbear
-        async function loadCloudData() {
-            try {
-                const metadata = await OBR.player.getMetadata();
-                const savedData = metadata["fabula-cloud-v7"]; // Chiave versione 7
-                
-                if (savedData) {
-                    Object.keys(savedData).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.value = savedData[id];
-                    });
-                    document.getElementById('sync-status').innerText = "✅ DATI RECUPERATI DAL CLOUD";
-                } else {
-                    document.getElementById('sync-status').innerText = "☁️ NUOVA SCHEDA CLOUD";
-                }
-            } catch (e) {
-                console.error("Errore Cloud:", e);
-                document.getElementById('sync-status').innerText = "⚠️ ERRORE CARICAMENTO";
-            }
-        }
+    <div class="field-group">
+        <label>NOTE E ABILITÀ</label>
+        <textarea class="fabula-data" id="notes"></textarea>
+    </div>
+</div>
 
-        // Salva i dati nel Cloud di Owlbear
-        async function cloudSave() {
-            const data = {};
-            document.querySelectorAll('.save').forEach(el => data[el.id] = el.value);
-            
-            try {
-                await OBR.player.setMetadata({
-                    "fabula-cloud-v7": data
-                });
-                
-                const status = document.getElementById('sync-status');
-                status.innerText = "✨ SINCRONIZZATO";
-                status.style.background = "#5a7d51";
-            } catch (e) {
-                document.getElementById('sync-status').innerText = "⚠️ ERRORE SALVATAGGIO";
-                document.getElementById('sync-status').style.background = "#bc6c4d";
-            }
-        }
+<script>
+    const OBR = window.OBR;
 
-        // Inizializza l'estensione
-        OBR.onReady(() => {
-            loadCloudData();
-
-            // Salva ad ogni modifica (input cattura ogni lettera scritta)
-            document.querySelectorAll('.save').forEach(el => {
-                el.addEventListener('input', cloudSave);
-            });
+    // Funzione UNICA per salvare tutto
+    async function saveEverything() {
+        const allFields = document.querySelectorAll('.fabula-data');
+        const dataToSave = {};
+        
+        allFields.forEach(field => {
+            dataToSave[field.id] = field.value;
         });
-    </script>
+
+        try {
+            await OBR.player.setMetadata({ "fabula-cloud-final": dataToSave });
+            document.getElementById('status').innerText = "✨ SALVATO ORE: " + new Date().toLocaleTimeString();
+        } catch (e) {
+            document.getElementById('status').innerText = "⚠️ ERRORE SALVATAGGIO";
+        }
+    }
+
+    OBR.onReady(async () => {
+        // Carica i dati all'avvio
+        const metadata = await OBR.player.getMetadata();
+        const saved = metadata["fabula-cloud-final"];
+        
+        if (saved) {
+            Object.keys(saved).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = saved[id];
+            });
+            document.getElementById('status').innerText = "✅ DATI CARICATI";
+        } else {
+            document.getElementById('status').innerText = "☁️ NUOVA SCHEDA";
+        }
+
+        // Applica il salvataggio a TUTTI i campi indistintamente
+        document.querySelectorAll('.fabula-data').forEach(field => {
+            // 'input' cattura ogni singolo tasto premuto, sia in textarea che in input
+            field.addEventListener('input', saveEverything);
+        });
+    });
+</script>
 </body>
 </html>
