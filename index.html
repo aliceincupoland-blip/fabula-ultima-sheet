@@ -9,121 +9,119 @@
             --box: #ffffff; --border: #cfd8d3; --text: #1f3d36;
         }
 
-        /* 🎨 TEMI DINAMICI - Cambiano bordo, titoli e icone */
+        /* 🎨 5 TEMI DINAMICI */
         body.theme-verde { --bg:#f4f8f6; --main:#2f7f6f; --accent:#45a08d; --text:#1f3d36; --border:#cfd8d3; }
         body.theme-rosa { --bg:#fff2f7; --main:#c94b7c; --accent:#e57399; --text:#4a1f2f; --border:#f2cfda; }
         body.theme-notte { --bg:#1a1a24; --main:#6e8efb; --accent:#a2b9ff; --text:#e0e0e0; --box:#252535; --border:#3d3d52; }
         body.theme-pergamena { --bg:#f2e8cf; --main:#8b5e34; --accent:#bc8a5f; --text:#3d2b1f; --box:#faf4e6; --border:#d4b483; }
+        body.theme-cielo { --bg:#f0f7ff; --main:#0077b6; --accent:#48cae4; --text:#023e8a; --box:#ffffff; --border:#ade8f4; }
 
         body { 
-            margin:0; font-family: "Segoe UI", Tahoma, sans-serif; 
+            margin:0; font-family: "Segoe UI", sans-serif; 
             background: var(--bg); color: var(--text); padding: 10px;
-            transition: background 0.3s, color 0.3s;
+            transition: all 0.3s ease;
         }
 
         .header-bar {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--main); color: white; padding: 10px 15px; 
-            border-radius: 12px; margin-bottom: 10px; border-bottom: 4px solid rgba(0,0,0,0.1);
+            background: var(--main); color: white; padding: 8px 15px; 
+            border-radius: 10px; margin-bottom: 10px; box-shadow: 0 4px 0 rgba(0,0,0,0.1);
         }
 
-        .sheet-grid { 
-            display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; 
-        }
+        .sheet-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; }
 
         .box { 
             background: var(--box); border: 2px solid var(--border); 
-            border-radius: 12px; padding: 12px; margin-bottom: 10px;
+            border-radius: 10px; padding: 10px; margin-bottom: 10px;
         }
 
         h2 { 
-            margin: 0 0 10px 0; font-size: 0.85rem; text-transform: uppercase; 
+            margin: 0 0 8px 0; font-size: 0.8rem; text-transform: uppercase; 
             color: var(--main); border-bottom: 2px solid var(--accent);
-            letter-spacing: 1px;
         }
 
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .grid-attrs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 
-        label { font-size: 0.65rem; font-weight: bold; color: var(--main); display: block; margin-bottom: 4px; }
+        label { font-size: 0.65rem; font-weight: bold; color: var(--main); display: block; margin-bottom: 2px; }
 
         input, textarea, select { 
             width:100%; border: 1px solid var(--border); border-radius: 6px; 
-            padding: 6px; background: var(--box); color: var(--text); font-size: 0.9rem;
+            padding: 6px; background: var(--box); color: var(--text); font-family: inherit;
             box-sizing: border-box;
         }
 
-        .point-display {
-            background: var(--bg); border: 2px solid var(--accent);
-            border-radius: 8px; padding: 5px; text-align: center; font-weight: bold;
+        .resource-card {
+            background: var(--bg); border: 1px solid var(--accent);
+            border-radius: 8px; padding: 4px; text-align: center;
         }
 
-        textarea { min-height: 120px; font-family: inherit; line-height: 1.4; }
+        .resource-card input { border: none; font-weight: bold; text-align: center; background: transparent; }
+
+        textarea { min-height: 180px; line-height: 1.4; }
         
-        #sync-icon { font-size: 1rem; }
+        #status-dot { font-size: 0.9rem; }
     </style>
 </head>
 <body class="theme-verde">
 
 <div class="header-bar">
-    <div style="font-weight: bold; letter-spacing: 1px;">FABULA ULTIMA CLOUD</div>
+    <div style="font-weight: bold; font-size: 0.9rem;">FABULA ULTIMA CLOUD</div>
     <div style="display: flex; align-items: center; gap: 10px;">
-        <select id="current_theme" class="save" onchange="document.body.className=this.value" style="width: auto; background: rgba(255,255,255,0.2); color: white; border: none; padding: 2px 8px; cursor: pointer;">
+        <select id="current_theme" class="save" onchange="document.body.className=this.value" style="width: auto; background: rgba(255,255,255,0.2); color: white; border: none; padding: 2px 5px;">
             <option value="theme-verde">🌿 Verde</option>
             <option value="theme-rosa">🌸 Rosa</option>
             <option value="theme-notte">🌙 Notte</option>
             <option value="theme-pergamena">📜 Pergamena</option>
+            <option value="theme-cielo">☁️ Cielo</option>
         </select>
-        <span id="sync-icon">☁️</span>
+        <span id="status-dot">☁️</span>
     </div>
 </div>
 
 <div class="sheet-grid">
     <div>
         <div class="box">
-            <h2>👤 Biografia</h2>
-            <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 8px;">
-                <label>NOME<input id="name" class="save" placeholder="Eroe..."></label>
-                <label>LIV<input id="liv" type="number" class="save" value="5"></label>
+            <h2>👤 Identità</h2>
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                <label>NOME PERSONAGGIO <input id="name" class="save" placeholder="..."></label>
+                <label>LIVELLO <input id="liv" class="save" placeholder="1"></label>
             </div>
         </div>
 
         <div class="box">
-            <h2>✨ Caratteristiche</h2>
-            <div class="grid-4">
-                <label>DES<input id="des" type="number" class="save" value="8" step="2"></label>
-                <label>INT<input id="int" type="number" class="save" value="8" step="2"></label>
-                <label>VIG<input id="vig" type="number" class="save" value="8" step="2"></label>
-                <label>VOL<input id="vol" type="number" class="save" value="8" step="2"></label>
+            <h2>✨ Caratteristiche (Taglia Dado)</h2>
+            <div class="grid-attrs">
+                <label>DES <input id="des" class="save" placeholder="d8"></label>
+                <label>INT <input id="int" class="save" placeholder="d8"></label>
+                <label>VIG <input id="vig" class="save" placeholder="d8"></label>
+                <label>VOL <input id="vol" class="save" placeholder="d8"></label>
             </div>
         </div>
 
         <div class="box">
-            <h2>❤️ Risorse Correnti</h2>
+            <h2>📊 Risorse & Difese</h2>
             <div class="grid-3">
-                <div class="point-display"><label>PV MAX</label><input id="pv" readonly style="border:none; background:transparent;"></div>
-                <div class="point-display"><label>PM MAX</label><input id="pm" readonly style="border:none; background:transparent;"></div>
-                <div class="point-display"><label>PI</label><input id="pi" readonly style="border:none; background:transparent;"></div>
+                <div class="resource-card"><label>PV</label><input id="pv" class="save" placeholder="0/0"></div>
+                <div class="resource-card"><label>PM</label><input id="pm" class="save" placeholder="0/0"></div>
+                <div class="resource-card"><label>PI</label><input id="pi" class="save" placeholder="6"></div>
+            </div>
+            <div class="grid-3" style="margin-top: 10px;">
+                <label>DIFESA <input id="dif" class="save" placeholder="0"></label>
+                <label>D. MAGICA <input id="difm" class="save" placeholder="0"></label>
+                <label>INIZIATIVA <input id="init" class="save" placeholder="0"></label>
             </div>
         </div>
 
         <div class="box">
-            <h2>🛡️ Difese & Iniziativa</h2>
-            <div class="grid-3">
-                <label>DIFESA<input id="dif" readonly></label>
-                <label>D. MAGICA<input id="difm" readonly></label>
-                <label>INIZ.<input id="init" readonly></label>
-            </div>
+            <label>💎 PUNTI FABULA <input id="fab" class="save" placeholder="3"></label>
         </div>
     </div>
 
     <div style="display: flex; flex-direction: column;">
         <div class="box" style="flex-grow: 1;">
-            <h2>🎒 Note & Abilità</h2>
-            <textarea id="notes" class="save" placeholder="Tratti, Legami, Equipaggiamento..."></textarea>
-        </div>
-        <div class="box">
-            <label>✨ PUNTI FABULA<input id="fab" type="number" class="save" value="3"></label>
+            <h2>🎒 Abilità, Equip & Note</h2>
+            <textarea id="notes" class="save" placeholder="Scrivi qui i tuoi tratti, legami o oggetti..."></textarea>
         </div>
     </div>
 </div>
@@ -131,71 +129,41 @@
 <script>
     const OBR = window.OBR;
 
-    // Funzione di calcolo corretta
-    function updateCalculations() {
-        const getVal = (id) => parseInt(document.getElementById(id).value) || 0;
-        
-        const des = getVal("des");
-        const int = getVal("int");
-        const vig = getVal("vig");
-        const vol = getVal("vol");
-        const liv = getVal("liv");
-
-        document.getElementById("pv").value = (vig * 5) + liv;
-        document.getElementById("pm").value = (vol * 5) + liv;
-        document.getElementById("pi").value = 6 + Math.floor(liv / 10);
-        document.getElementById("dif").value = des;
-        document.getElementById("difm").value = int;
-        document.getElementById("init").value = des + int;
-    }
-
-    // Salvataggio Cloud
-    async function saveToCloud() {
+    // Funzione Salvataggio Cloud
+    async function cloudSave() {
         const data = {};
-        document.querySelectorAll(".save").forEach(el => {
-            data[el.id] = el.value;
-        });
-
+        document.querySelectorAll(".save").forEach(el => data[el.id] = el.value);
+        
         try {
-            await OBR.player.setMetadata({ "fabula-v8-fixed": data });
-            document.getElementById("sync-icon").innerText = "✨";
-            setTimeout(() => { document.getElementById("sync-icon").innerText = "☁️"; }, 1000);
+            await OBR.player.setMetadata({ "fabula-v9-free": data });
+            document.getElementById("status-dot").innerText = "✨";
+            setTimeout(() => { document.getElementById("status-dot").innerText = "☁️"; }, 800);
         } catch (e) {
-            document.getElementById("sync-icon").innerText = "❌";
+            document.getElementById("status-dot").innerText = "❌";
         }
     }
 
-    // Caricamento Cloud
-    async function loadFromCloud() {
+    // Funzione Caricamento Cloud
+    async function loadCloudData() {
         try {
             const metadata = await OBR.player.getMetadata();
-            const saved = metadata["fabula-v8-fixed"];
+            const saved = metadata["fabula-v9-free"];
             if (saved) {
                 Object.keys(saved).forEach(id => {
                     const el = document.getElementById(id);
                     if (el) {
                         el.value = saved[id];
-                        // Applica il tema se caricato
-                        if (id === "current_theme") document.body.className = saved[id];
+                        if(id === "current_theme") document.body.className = saved[id];
                     }
                 });
             }
-            updateCalculations();
-        } catch (e) {
-            console.error("Cloud non disponibile");
-        }
+        } catch (e) { console.log("Nuova sessione"); }
     }
 
-    // Avvio
     OBR.onReady(() => {
-        loadFromCloud();
-
-        // Ascolta ogni input per salvare e calcolare
+        loadCloudData();
         document.querySelectorAll(".save").forEach(input => {
-            input.addEventListener("input", () => {
-                updateCalculations();
-                saveToCloud();
-            });
+            input.addEventListener("input", cloudSave);
         });
     });
 </script>
