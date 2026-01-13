@@ -2,15 +2,14 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
+    <title>Fabula Ultima - Snapshot Sheet</title>
     <style>
         :root {
             --bg: #f4f8f6; --main: #2f7f6f; --accent: #45a08d;
             --box: #ffffff; --border: #cfd8d3; --text: #1f3d36;
         }
 
-        /* 🎨 5 TEMI */
+        /* 🎨 I 5 TEMI */
         body.theme-verde { --bg:#f4f8f6; --main:#2f7f6f; --accent:#45a08d; --text:#1f3d36; --border:#cfd8d3; }
         body.theme-rosa { --bg:#fff2f7; --main:#c94b7c; --accent:#e57399; --text:#4a1f2f; --border:#f2cfda; }
         body.theme-notte { --bg:#1a1a24; --main:#6e8efb; --accent:#a2b9ff; --text:#e0e0e0; --box:#252535; --border:#3d3d52; }
@@ -18,166 +17,158 @@
         body.theme-cielo { --bg:#f0f7ff; --main:#0077b6; --accent:#48cae4; --text:#023e8a; --box:#ffffff; --border:#ade8f4; }
 
         body { 
-            margin:0; font-family: "Segoe UI", system-ui, sans-serif; 
-            background: var(--bg); color: var(--text); padding: 10px;
-            transition: background 0.3s ease; overflow-x: hidden;
+            margin:0; font-family: "Segoe UI", sans-serif; 
+            background: var(--bg); color: var(--text); padding: 20px;
+            transition: all 0.3s ease;
         }
 
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--main); color: white; padding: 8px 12px; 
-            border-radius: 10px; margin-bottom: 12px; box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+        .no-print {
+            background: var(--main); color: white; padding: 10px;
+            border-radius: 8px; margin-bottom: 20px; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .sheet-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; }
-
-        .box { 
-            background: var(--box); border: 2px solid var(--border); 
-            border-radius: 12px; padding: 12px; margin-bottom: 10px;
+        .sheet { 
+            max-width: 900px; margin: auto; display: grid; 
+            grid-template-columns: 1fr 1fr; gap: 20px;
+            background: var(--box); padding: 30px; border-radius: 15px;
+            border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
+        .box { border: 2px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        
         h2 { 
-            margin: 0 0 10px 0; font-size: 0.75rem; text-transform: uppercase; 
-            color: var(--main); border-bottom: 2px solid var(--accent); letter-spacing: 1px;
+            margin: 0 0 15px 0; font-size: 0.9rem; text-transform: uppercase; 
+            color: var(--main); border-bottom: 2px solid var(--accent);
+            display: inline-block; letter-spacing: 1px;
         }
 
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
-        label { font-size: 0.65rem; font-weight: bold; color: var(--main); display: block; margin-bottom: 3px; }
+        label { font-size: 0.7rem; font-weight: bold; color: var(--main); display: block; margin-bottom: 5px; }
 
         input, textarea, select { 
-            width:100%; border: 1px solid var(--border); border-radius: 6px; 
-            padding: 8px; background: var(--box); color: var(--text); font-size: 0.9rem;
-            box-sizing: border-box; font-family: inherit;
+            width:100%; border: 1px solid var(--border); border-radius: 8px; 
+            padding: 10px; background: var(--box); color: var(--text); font-family: inherit;
+            box-sizing: border-box; font-size: 1rem;
         }
 
-        input:focus, textarea:focus { outline: none; border-color: var(--main); box-shadow: 0 0 5px var(--accent); }
-
-        textarea { min-height: 220px; resize: vertical; }
+        textarea { min-height: 300px; line-height: 1.5; resize: none; }
         
-        #sync-label { font-size: 0.9rem; cursor: help; }
+        /* Nasconde i controlli quando fai lo screenshot/stampa se necessario */
+        @media print { .no-print { display: none; } body { padding: 0; } .sheet { box-shadow: none; border: none; } }
     </style>
 </head>
 <body class="theme-verde">
 
-<div class="header">
-    <div style="font-weight: bold; font-size: 0.85rem;">FABULA ULTIMA CLOUD</div>
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <select id="current_theme" class="save" onchange="document.body.className=this.value" style="width: auto; background: rgba(255,255,255,0.2); color: white; border: none; padding: 2px 8px; border-radius: 5px;">
+<div class="no-print">
+    <div style="font-weight: bold;">🖋️ FABULA ULTIMA: SCHEDA COMPILABILE</div>
+    <div>
+        <label style="color: white; display: inline; margin-right: 10px;">Scegli Tema:</label>
+        <select id="theme-selector" onchange="changeTheme(this.value)" style="width: auto; padding: 5px;">
             <option value="theme-verde">🌿 Verde</option>
             <option value="theme-rosa">🌸 Rosa</option>
             <option value="theme-notte">🌙 Notte</option>
             <option value="theme-pergamena">📜 Pergamena</option>
             <option value="theme-cielo">☁️ Cielo</option>
         </select>
-        <span id="sync-label" title="Stato Sincronizzazione">☁️</span>
+        <button onclick="localStorage.clear(); location.reload();" style="margin-left:10px; cursor:pointer;">Reset</button>
     </div>
 </div>
 
-<div class="sheet-layout">
+<div class="sheet">
     <div>
         <div class="box">
-            <h2>👤 Biografia</h2>
+            <h2>👤 Identità</h2>
             <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 10px;">
                 <label>NOME PERSONAGGIO <input id="name" class="save" placeholder="Nome..."></label>
-                <label>LIV <input id="liv" class="save" placeholder="5"></label>
+                <label>LIV <input id="liv" class="save" value="5"></label>
+            </div>
+            <div style="margin-top:10px;">
+                <label>IDENTITÀ / ORIGINE <input id="id-orig" class="save" placeholder="es: Cavaliere di Oritia"></label>
             </div>
         </div>
 
         <div class="box">
-            <h2>✨ Caratteristiche (Taglia Dado)</h2>
+            <h2>✨ Caratteristiche</h2>
             <div class="grid-4">
-                <label>DES <input id="des" class="save" placeholder="d8"></label>
-                <label>INT <input id="int" class="save" placeholder="d8"></label>
-                <label>VIG <input id="vig" class="save" placeholder="d8"></label>
-                <label>VOL <input id="vol" class="save" placeholder="d8"></label>
+                <label>DES <input id="des" class="save" value="d8"></label>
+                <label>INT <input id="int" class="save" value="d8"></label>
+                <label>VIG <input id="vig" class="save" value="d8"></label>
+                <label>VOL <input id="vol" class="save" value="d8"></label>
             </div>
         </div>
 
         <div class="box">
-            <h2>📊 Status & Difese</h2>
+            <h2>📊 Risorse & Difese</h2>
             <div class="grid-3">
-                <label>PV <input id="pv" class="save" placeholder="0/0"></label>
-                <label>PM <input id="pm" class="save" placeholder="0/0"></label>
-                <label>PI <input id="pi" class="save" placeholder="6"></label>
+                <label>PV <input id="pv" class="save" placeholder="50/50"></label>
+                <label>PM <input id="pm" class="save" placeholder="40/40"></label>
+                <label>PI <input id="pi" class="save" value="6"></label>
             </div>
-            <div class="grid-3" style="margin-top: 10px;">
-                <label>DIFESA <input id="dif" class="save" placeholder="10"></label>
-                <label>D. MAGICA <input id="difm" class="save" placeholder="10"></label>
-                <label>INIZIATIVA <input id="init" class="save" placeholder="+0"></label>
+            <div class="grid-3" style="margin-top: 15px;">
+                <label>DIFESA <input id="dif" class="save" value="10"></label>
+                <label>D. MAGICA <input id="difm" class="save" value="10"></label>
+                <label>INIZIATIVA <input id="init" class="save" value="0"></label>
             </div>
         </div>
 
         <div class="box">
-            <label>💎 PUNTI FABULA <input id="fab" class="save" placeholder="3"></label>
+            <label>💎 PUNTI FABULA <input id="fab" class="save" value="3" style="font-size: 1.5rem; text-align: center; color: var(--main); font-weight: bold;"></label>
         </div>
     </div>
 
     <div style="display: flex; flex-direction: column;">
         <div class="box" style="flex-grow: 1;">
-            <h2>🎒 Abilità & Zaino</h2>
-            <textarea id="notes" class="save" placeholder="Scrivi qui abilità, oggetti, legami..."></textarea>
+            <h2>🎒 Abilità, Equip & Note</h2>
+            <textarea id="notes" class="save" placeholder="Tratti, Legami, Abilità Speciali, Inventario..."></textarea>
         </div>
     </div>
 </div>
 
 <script>
-    const OBR = window.OBR;
+    // Cambia tema e salva la scelta
+    function changeTheme(theme) {
+        document.body.className = theme;
+        localStorage.setItem('fabula-theme', theme);
+    }
 
-    // Funzione per salvare i dati nel Cloud
-    async function saveToCloud() {
+    // Salva i dati localmente nel browser (non Cloud, solo su questo PC)
+    function autoSave() {
         const data = {};
-        // Raccoglie tutti i valori dei campi con classe "save"
-        document.querySelectorAll(".save").forEach(el => {
+        document.querySelectorAll('.save').forEach(el => {
             data[el.id] = el.value;
         });
-
-        try {
-            await OBR.player.setMetadata({ "fabula-v10-final": data });
-            // Feedback visivo: stellina per salvataggio ok
-            const status = document.getElementById("sync-label");
-            status.innerText = "✨";
-            setTimeout(() => { status.innerText = "☁️"; }, 800);
-        } catch (e) {
-            console.error("Errore salvataggio:", e);
-            document.getElementById("sync-label").innerText = "❌";
-        }
+        localStorage.setItem('fabula-snapshot-data', JSON.stringify(data));
     }
 
-    // Funzione per caricare i dati dal Cloud
-    async function loadFromCloud() {
-        try {
-            const metadata = await OBR.player.getMetadata();
-            const saved = metadata["fabula-v10-final"];
-            if (saved) {
-                Object.keys(saved).forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.value = saved[id];
-                        // Se è il tema, applicalo al body
-                        if(id === "current_theme") document.body.className = saved[id];
-                    }
-                });
-            }
-        } catch (e) {
-            console.warn("Nessun dato trovato o SDK non pronto.");
+    // Carica i dati all'apertura
+    window.onload = () => {
+        // Carica Tema
+        const savedTheme = localStorage.getItem('fabula-theme');
+        if (savedTheme) {
+            document.body.className = savedTheme;
+            document.getElementById('theme-selector').value = savedTheme;
         }
-    }
 
-    // Inizializzazione quando Owlbear è pronto
-    OBR.onReady(() => {
-        loadFromCloud();
+        // Carica Dati
+        const savedData = localStorage.getItem('fabula-snapshot-data');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            Object.keys(data).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = data[id];
+            });
+        }
 
-        // Aggiunge l'ascolto a ogni campo
-        document.querySelectorAll(".save").forEach(input => {
-            // "input" è l'evento più veloce per salvare mentre scrivi
-            input.addEventListener("input", saveToCloud);
+        // Attiva salvataggio automatico su ogni tasto
+        document.querySelectorAll('.save').forEach(el => {
+            el.addEventListener('input', autoSave);
         });
-    });
+    };
 </script>
 
 </body>
 </html>
-
-
