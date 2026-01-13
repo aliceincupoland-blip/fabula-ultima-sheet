@@ -9,126 +9,121 @@
             --box: #ffffff; --border: #cfd8d3; --text: #1f3d36;
         }
 
-        /* 🎨 TEMI DINAMICI */
+        /* 🎨 TEMI DINAMICI - Cambiano bordo, titoli e icone */
         body.theme-verde { --bg:#f4f8f6; --main:#2f7f6f; --accent:#45a08d; --text:#1f3d36; --border:#cfd8d3; }
         body.theme-rosa { --bg:#fff2f7; --main:#c94b7c; --accent:#e57399; --text:#4a1f2f; --border:#f2cfda; }
         body.theme-notte { --bg:#1a1a24; --main:#6e8efb; --accent:#a2b9ff; --text:#e0e0e0; --box:#252535; --border:#3d3d52; }
         body.theme-pergamena { --bg:#f2e8cf; --main:#8b5e34; --accent:#bc8a5f; --text:#3d2b1f; --box:#faf4e6; --border:#d4b483; }
 
         body { 
-            margin:0; font-family: "Segoe UI", system-ui; 
+            margin:0; font-family: "Segoe UI", Tahoma, sans-serif; 
             background: var(--bg); color: var(--text); padding: 10px;
-            transition: all 0.3s ease; /* Transizione morbida tra i colori */
-        }
-
-        .sheet { 
-            max-width: 95%; margin: auto; 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            transition: background 0.3s, color 0.3s;
         }
 
         .header-bar {
-            grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center;
-            background: var(--main); color: white; padding: 8px 15px; border-radius: 10px;
-            margin-bottom: 5px; box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--main); color: white; padding: 10px 15px; 
+            border-radius: 12px; margin-bottom: 10px; border-bottom: 4px solid rgba(0,0,0,0.1);
+        }
+
+        .sheet-grid { 
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; 
         }
 
         .box { 
             background: var(--box); border: 2px solid var(--border); 
-            border-radius: 10px; padding: 10px; position: relative;
+            border-radius: 12px; padding: 12px; margin-bottom: 10px;
         }
 
         h2 { 
-            margin: 0 0 10px 0; font-size: 0.9em; text-transform: uppercase; 
+            margin: 0 0 10px 0; font-size: 0.85rem; text-transform: uppercase; 
             color: var(--main); border-bottom: 2px solid var(--accent);
-            display: inline-block;
+            letter-spacing: 1px;
         }
 
-        .grid-attr { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .grid-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 
-        label { font-size: 0.7em; font-weight: bold; display: block; margin-bottom: 3px; color: var(--main); }
+        label { font-size: 0.65rem; font-weight: bold; color: var(--main); display: block; margin-bottom: 4px; }
 
         input, textarea, select { 
             width:100%; border: 1px solid var(--border); border-radius: 6px; 
-            padding: 5px; background: var(--box); color: var(--text); font-family: inherit;
+            padding: 6px; background: var(--box); color: var(--text); font-size: 0.9rem;
+            box-sizing: border-box;
         }
 
-        input:focus { border-color: var(--main); outline: none; }
-
-        /* Stile speciale per i punti vita e mente */
-        .point-box { 
-            background: var(--bg); border-radius: 8px; padding: 5px; 
-            border: 1px solid var(--accent); text-align: center;
+        .point-display {
+            background: var(--bg); border: 2px solid var(--accent);
+            border-radius: 8px; padding: 5px; text-align: center; font-weight: bold;
         }
 
-        .point-box input { border: none; font-weight: bold; text-align: center; font-size: 1.1em; }
-
-        textarea { min-height: 100px; }
-
-        .sync-icon { font-size: 0.8em; opacity: 0.8; }
+        textarea { min-height: 120px; font-family: inherit; line-height: 1.4; }
+        
+        #sync-icon { font-size: 1rem; }
     </style>
 </head>
 <body class="theme-verde">
 
 <div class="header-bar">
-    <div style="font-weight: bold;">📜 FABULA ULTIMA CLOUD</div>
-    <div>
-        <select id="current_theme" class="save" onchange="document.body.className=this.value" style="width: auto; background: rgba(255,255,255,0.2); color: white; border: none;">
+    <div style="font-weight: bold; letter-spacing: 1px;">FABULA ULTIMA CLOUD</div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <select id="current_theme" class="save" onchange="document.body.className=this.value" style="width: auto; background: rgba(255,255,255,0.2); color: white; border: none; padding: 2px 8px; cursor: pointer;">
             <option value="theme-verde">🌿 Verde</option>
             <option value="theme-rosa">🌸 Rosa</option>
             <option value="theme-notte">🌙 Notte</option>
             <option value="theme-pergamena">📜 Pergamena</option>
         </select>
-        <span id="status" class="sync-icon">☁️</span>
+        <span id="sync-icon">☁️</span>
     </div>
 </div>
 
-<div class="sheet">
-    <div style="display: flex; flex-direction: column; gap: 10px;">
+<div class="sheet-grid">
+    <div>
         <div class="box">
-            <h2>👤 Identità</h2>
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 5px;">
-                <label>Nome <input id="name" class="save"></label>
-                <label>Livello <input id="liv" type="number" class="save" value="5"></label>
+            <h2>👤 Biografia</h2>
+            <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 8px;">
+                <label>NOME<input id="name" class="save" placeholder="Eroe..."></label>
+                <label>LIV<input id="liv" type="number" class="save" value="5"></label>
             </div>
         </div>
 
         <div class="box">
             <h2>✨ Caratteristiche</h2>
-            <div class="grid-attr">
-                <label>DES <input id="des" type="number" class="save" value="8"></label>
-                <label>INT <input id="int" type="number" class="save" value="8"></label>
-                <label>VIG <input id="vig" type="number" class="save" value="8"></label>
-                <label>VOL <input id="vol" type="number" class="save" value="8"></label>
+            <div class="grid-4">
+                <label>DES<input id="des" type="number" class="save" value="8" step="2"></label>
+                <label>INT<input id="int" type="number" class="save" value="8" step="2"></label>
+                <label>VIG<input id="vig" type="number" class="save" value="8" step="2"></label>
+                <label>VOL<input id="vol" type="number" class="save" value="8" step="2"></label>
             </div>
         </div>
 
         <div class="box">
-            <h2>❤️ Risorse</h2>
-            <div class="grid-points">
-                <div class="point-box"><label>PV</label><input id="pv" readonly></div>
-                <div class="point-box"><label>PM</label><input id="pm" readonly></div>
-                <div class="point-box"><label>PI</label><input id="pi" readonly></div>
+            <h2>❤️ Risorse Correnti</h2>
+            <div class="grid-3">
+                <div class="point-display"><label>PV MAX</label><input id="pv" readonly style="border:none; background:transparent;"></div>
+                <div class="point-display"><label>PM MAX</label><input id="pm" readonly style="border:none; background:transparent;"></div>
+                <div class="point-display"><label>PI</label><input id="pi" readonly style="border:none; background:transparent;"></div>
             </div>
         </div>
-        
+
         <div class="box">
-            <h2>🛡️ Difese</h2>
-            <div class="grid-attr">
-                <label style="grid-column: span 2;">FISICA <input id="dif" readonly></label>
-                <label style="grid-column: span 2;">MAGICA <input id="difm" readonly></label>
+            <h2>🛡️ Difese & Iniziativa</h2>
+            <div class="grid-3">
+                <label>DIFESA<input id="dif" readonly></label>
+                <label>D. MAGICA<input id="difm" readonly></label>
+                <label>INIZ.<input id="init" readonly></label>
             </div>
         </div>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; flex-direction: column;">
         <div class="box" style="flex-grow: 1;">
-            <h2>🎒 Inventario & Note</h2>
-            <textarea id="notes" class="save" placeholder="Abilità, Equipaggiamento, Appunti..."></textarea>
+            <h2>🎒 Note & Abilità</h2>
+            <textarea id="notes" class="save" placeholder="Tratti, Legami, Equipaggiamento..."></textarea>
         </div>
-        
         <div class="box">
-            <label>✨ Punti Fabula <input id="fab" class="save" type="number" value="3"></label>
+            <label>✨ PUNTI FABULA<input id="fab" type="number" class="save" value="3"></label>
         </div>
     </div>
 </div>
@@ -136,49 +131,70 @@
 <script>
     const OBR = window.OBR;
 
-    function calcola() {
-        const d = (id) => +document.getElementById(id).value || 0;
-        const des = d("des"), int = d("int"), vig = d("vig"), vol = d("vol"), liv = d("liv");
+    // Funzione di calcolo corretta
+    function updateCalculations() {
+        const getVal = (id) => parseInt(document.getElementById(id).value) || 0;
+        
+        const des = getVal("des");
+        const int = getVal("int");
+        const vig = getVal("vig");
+        const vol = getVal("vol");
+        const liv = getVal("liv");
 
-        document.getElementById("pv").value = vig * 5 + liv;
-        document.getElementById("pm").value = vol * 5 + liv;
-        document.getElementById("pi").value = 6 + Math.floor(liv/10); // Regola semplificata
+        document.getElementById("pv").value = (vig * 5) + liv;
+        document.getElementById("pm").value = (vol * 5) + liv;
+        document.getElementById("pi").value = 6 + Math.floor(liv / 10);
         document.getElementById("dif").value = des;
         document.getElementById("difm").value = int;
+        document.getElementById("init").value = des + int;
     }
 
-    async function cloudSave() {
+    // Salvataggio Cloud
+    async function saveToCloud() {
         const data = {};
-        document.querySelectorAll(".save").forEach(el => data[el.id] = el.value);
+        document.querySelectorAll(".save").forEach(el => {
+            data[el.id] = el.value;
+        });
+
         try {
-            await OBR.player.setMetadata({ "fabula-cloud-v8": data });
-            document.getElementById("status").innerText = "✨";
-        } catch (e) { document.getElementById("status").innerText = "❌"; }
+            await OBR.player.setMetadata({ "fabula-v8-fixed": data });
+            document.getElementById("sync-icon").innerText = "✨";
+            setTimeout(() => { document.getElementById("sync-icon").innerText = "☁️"; }, 1000);
+        } catch (e) {
+            document.getElementById("sync-icon").innerText = "❌";
+        }
     }
 
-    async function loadCloudData() {
+    // Caricamento Cloud
+    async function loadFromCloud() {
         try {
             const metadata = await OBR.player.getMetadata();
-            const saved = metadata["fabula-cloud-v8"];
+            const saved = metadata["fabula-v8-fixed"];
             if (saved) {
                 Object.keys(saved).forEach(id => {
                     const el = document.getElementById(id);
                     if (el) {
                         el.value = saved[id];
-                        if(id === "current_theme") document.body.className = saved[id];
+                        // Applica il tema se caricato
+                        if (id === "current_theme") document.body.className = saved[id];
                     }
                 });
             }
-            calcola();
-        } catch (e) { document.getElementById("status").innerText = "☁️"; }
+            updateCalculations();
+        } catch (e) {
+            console.error("Cloud non disponibile");
+        }
     }
 
+    // Avvio
     OBR.onReady(() => {
-        loadCloudData();
-        document.querySelectorAll(".save").forEach(i => {
-            i.addEventListener("input", () => {
-                calcola();
-                cloudSave();
+        loadFromCloud();
+
+        // Ascolta ogni input per salvare e calcolare
+        document.querySelectorAll(".save").forEach(input => {
+            input.addEventListener("input", () => {
+                updateCalculations();
+                saveToCloud();
             });
         });
     });
