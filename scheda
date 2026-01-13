@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Scheda Fabula Ultima</title>
+
+<style>
+:root {
+  --bg: #f4f8f6;
+  --main: #2f7f6f;
+  --box: #ffffff;
+  --border: #cfd8d3;
+}
+
+/* 🎨 TEMI */
+body.theme-verde {
+  --bg:#f4f8f6; --main:#2f7f6f;
+}
+body.theme-rosa {
+  --bg:#fff2f7; --main:#c94b7c;
+}
+body.theme-notte {
+  --bg:#1e1e2a; --main:#8aa8ff; --box:#2a2a3a; --border:#444;
+  color:#eee;
+}
+body.theme-rosso {
+  --bg:#fff1f1; --main:#9b2c2c;
+}
+body.theme-pergamena {
+  --bg:#f7f0dc; --main:#8b6f3d;
+}
+
+body {
+  margin:0;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--bg);
+}
+
+.sheet {
+  max-width: 210mm;
+  margin: auto;
+  padding: 10mm;
+  background: var(--box);
+}
+
+h2 {
+  margin: 4px 0;
+  color
