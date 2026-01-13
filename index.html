@@ -1,83 +1,212 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
-    <style>
-        body { font-family: sans-serif; background: #cbd9e6; padding: 15px; }
-        .container { background: #fffcf5; padding: 20px; border-radius: 15px; border: 4px solid #5a7d51; }
-        .status { font-size: 0.7rem; text-align: center; margin-bottom: 10px; color: #5a7d51; font-weight: bold; }
-        .field-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: #5a7d51; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        textarea { min-height: 150px; }
-    </style>
+<meta charset="UTF-8">
+<title>Scheda Personaggio – Fabula Style</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: #f3f7f5;
+  margin: 0;
+  padding: 20px;
+  color: #1f3d36;
+}
+
+.sheet {
+  max-width: 1100px;
+  margin: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+h2 {
+  margin-top: 30px;
+  color: #2e6f64;
+  border-bottom: 2px solid #cde6df;
+  padding-bottom: 4px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.85em;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+input, textarea {
+  border-radius: 10px;
+  border: 1px solid #cde6df;
+  padding: 8px;
+  font-size: 1em;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat input {
+  width: 60px;
+  text-align: center;
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.points div {
+  text-align: center;
+}
+
+.points input {
+  width: 70px;
+  text-align: center;
+}
+
+.class-box {
+  border: 1px dashed #b8dcd3;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.8em;
+  color: #7aa9a0;
+}
+</style>
 </head>
+
 <body>
+<div class="sheet">
 
-<div class="container">
-    <div id="status" class="status">CONNESSIONE...</div>
-
-    <div class="field-group">
-        <label>NOME EROE</label>
-        <input type="text" class="fabula-data" id="char_name">
-    </div>
-
-    <div class="field-group">
-        <label>PV / PM</label>
-        <div style="display:flex; gap:10px;">
-            <input type="number" class="fabula-data" id="hp" placeholder="PV">
-            <input type="number" class="fabula-data" id="mp" placeholder="PM">
-        </div>
-    </div>
-
-    <div class="field-group">
-        <label>NOTE E ABILITÀ</label>
-        <textarea class="fabula-data" id="notes"></textarea>
-    </div>
+<h2>Dati Personaggio</h2>
+<div class="grid">
+  <div class="field">
+    <label>Nome</label>
+    <input>
+  </div>
+  <div class="field">
+    <label>Genere</label>
+    <input>
+  </div>
 </div>
 
-<script>
-    const OBR = window.OBR;
+<div class="grid">
+  <div class="field">
+    <label>Identità</label>
+    <input>
+  </div>
+  <div class="field">
+    <label>Tema</label>
+    <input>
+  </div>
+  <div class="field">
+    <label>Origine</label>
+    <input>
+  </div>
+</div>
 
-    // Funzione UNICA per salvare tutto
-    async function saveEverything() {
-        const allFields = document.querySelectorAll('.fabula-data');
-        const dataToSave = {};
-        
-        allFields.forEach(field => {
-            dataToSave[field.id] = field.value;
-        });
+<h2>Caratteristiche</h2>
+<div class="stats">
+  <div class="stat"><label>Destrezza</label><input></div>
+  <div class="stat"><label>Intuito</label><input></div>
+  <div class="stat"><label>Vigore</label><input></div>
+  <div class="stat"><label>Volontà</label><input></div>
+</div>
 
-        try {
-            await OBR.player.setMetadata({ "fabula-cloud-final": dataToSave });
-            document.getElementById('status').innerText = "✨ SALVATO ORE: " + new Date().toLocaleTimeString();
-        } catch (e) {
-            document.getElementById('status').innerText = "⚠️ ERRORE SALVATAGGIO";
-        }
-    }
+<h2>Punti</h2>
+<div class="points">
+  <div>
+    <label>PV Max</label><input><br>
+    <label>PV Attuali</label><input>
+  </div>
+  <div>
+    <label>PM Max</label><input><br>
+    <label>PM Attuali</label><input>
+  </div>
+  <div>
+    <label>PI Max</label><input><br>
+    <label>PI Attuali</label><input>
+  </div>
+</div>
 
-    OBR.onReady(async () => {
-        // Carica i dati all'avvio
-        const metadata = await OBR.player.getMetadata();
-        const saved = metadata["fabula-cloud-final"];
-        
-        if (saved) {
-            Object.keys(saved).forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = saved[id];
-            });
-            document.getElementById('status').innerText = "✅ DATI CARICATI";
-        } else {
-            document.getElementById('status').innerText = "☁️ NUOVA SCHEDA";
-        }
+<h2>Difese</h2>
+<div class="grid">
+  <div class="field">
+    <label>Difesa</label>
+    <input>
+  </div>
+  <div class="field">
+    <label>Difesa Magica</label>
+    <input>
+  </div>
+</div>
 
-        // Applica il salvataggio a TUTTI i campi indistintamente
-        document.querySelectorAll('.fabula-data').forEach(field => {
-            // 'input' cattura ogni singolo tasto premuto, sia in textarea che in input
-            field.addEventListener('input', saveEverything);
-        });
-    });
-</script>
+<h2>Classi e Livelli</h2>
+<div class="class-box">
+  <div class="grid">
+    <div class="field">
+      <label>Classe / Livello</label>
+      <input>
+    </div>
+    <div class="field">
+      <label>Benefici Gratuiti</label>
+      <textarea></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="class-box">
+  <div class="grid">
+    <div class="field">
+      <label>Classe / Livello</label>
+      <input>
+    </div>
+    <div class="field">
+      <label>Benefici Gratuiti</label>
+      <textarea></textarea>
+    </div>
+  </div>
+</div>
+
+<h2>Equipaggiamento</h2>
+<textarea></textarea>
+
+<h2>Zaino e Appunti</h2>
+<textarea></textarea>
+
+<footer>
+Scheda ispirata a Fabula Ultima ✨
+</footer>
+
+</div>
 </body>
 </html>
