@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@owlbear-rodeo/sdk"></script>
     <style>
         :root {
@@ -9,7 +10,7 @@
             --box: #ffffff; --border: #cfd8d3; --text: #1f3d36;
         }
 
-        /* 🎨 5 TEMI DINAMICI */
+        /* 🎨 5 TEMI */
         body.theme-verde { --bg:#f4f8f6; --main:#2f7f6f; --accent:#45a08d; --text:#1f3d36; --border:#cfd8d3; }
         body.theme-rosa { --bg:#fff2f7; --main:#c94b7c; --accent:#e57399; --text:#4a1f2f; --border:#f2cfda; }
         body.theme-notte { --bg:#1a1a24; --main:#6e8efb; --accent:#a2b9ff; --text:#e0e0e0; --box:#252535; --border:#3d3d52; }
@@ -17,81 +18,76 @@
         body.theme-cielo { --bg:#f0f7ff; --main:#0077b6; --accent:#48cae4; --text:#023e8a; --box:#ffffff; --border:#ade8f4; }
 
         body { 
-            margin:0; font-family: "Segoe UI", sans-serif; 
+            margin:0; font-family: "Segoe UI", system-ui, sans-serif; 
             background: var(--bg); color: var(--text); padding: 10px;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease; overflow-x: hidden;
         }
 
-        .header-bar {
+        .header {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--main); color: white; padding: 8px 15px; 
-            border-radius: 10px; margin-bottom: 10px; box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            background: var(--main); color: white; padding: 8px 12px; 
+            border-radius: 10px; margin-bottom: 12px; box-shadow: 0 4px 0 rgba(0,0,0,0.1);
         }
 
-        .sheet-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; }
+        .sheet-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; }
 
         .box { 
             background: var(--box); border: 2px solid var(--border); 
-            border-radius: 10px; padding: 10px; margin-bottom: 10px;
+            border-radius: 12px; padding: 12px; margin-bottom: 10px;
         }
 
         h2 { 
-            margin: 0 0 8px 0; font-size: 0.8rem; text-transform: uppercase; 
-            color: var(--main); border-bottom: 2px solid var(--accent);
+            margin: 0 0 10px 0; font-size: 0.75rem; text-transform: uppercase; 
+            color: var(--main); border-bottom: 2px solid var(--accent); letter-spacing: 1px;
         }
 
-        .grid-attrs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 
-        label { font-size: 0.65rem; font-weight: bold; color: var(--main); display: block; margin-bottom: 2px; }
+        label { font-size: 0.65rem; font-weight: bold; color: var(--main); display: block; margin-bottom: 3px; }
 
         input, textarea, select { 
             width:100%; border: 1px solid var(--border); border-radius: 6px; 
-            padding: 6px; background: var(--box); color: var(--text); font-family: inherit;
-            box-sizing: border-box;
+            padding: 8px; background: var(--box); color: var(--text); font-size: 0.9rem;
+            box-sizing: border-box; font-family: inherit;
         }
 
-        .resource-card {
-            background: var(--bg); border: 1px solid var(--accent);
-            border-radius: 8px; padding: 4px; text-align: center;
-        }
+        input:focus, textarea:focus { outline: none; border-color: var(--main); box-shadow: 0 0 5px var(--accent); }
 
-        .resource-card input { border: none; font-weight: bold; text-align: center; background: transparent; }
-
-        textarea { min-height: 180px; line-height: 1.4; }
+        textarea { min-height: 220px; resize: vertical; }
         
-        #status-dot { font-size: 0.9rem; }
+        #sync-label { font-size: 0.9rem; cursor: help; }
     </style>
 </head>
 <body class="theme-verde">
 
-<div class="header-bar">
-    <div style="font-weight: bold; font-size: 0.9rem;">FABULA ULTIMA CLOUD</div>
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <select id="current_theme" class="save" onchange="document.body.className=this.value" style="width: auto; background: rgba(255,255,255,0.2); color: white; border: none; padding: 2px 5px;">
+<div class="header">
+    <div style="font-weight: bold; font-size: 0.85rem;">FABULA ULTIMA CLOUD</div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <select id="current_theme" class="save" onchange="document.body.className=this.value" style="width: auto; background: rgba(255,255,255,0.2); color: white; border: none; padding: 2px 8px; border-radius: 5px;">
             <option value="theme-verde">🌿 Verde</option>
             <option value="theme-rosa">🌸 Rosa</option>
             <option value="theme-notte">🌙 Notte</option>
             <option value="theme-pergamena">📜 Pergamena</option>
             <option value="theme-cielo">☁️ Cielo</option>
         </select>
-        <span id="status-dot">☁️</span>
+        <span id="sync-label" title="Stato Sincronizzazione">☁️</span>
     </div>
 </div>
 
-<div class="sheet-grid">
+<div class="sheet-layout">
     <div>
         <div class="box">
-            <h2>👤 Identità</h2>
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
-                <label>NOME PERSONAGGIO <input id="name" class="save" placeholder="..."></label>
-                <label>LIVELLO <input id="liv" class="save" placeholder="1"></label>
+            <h2>👤 Biografia</h2>
+            <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 10px;">
+                <label>NOME PERSONAGGIO <input id="name" class="save" placeholder="Nome..."></label>
+                <label>LIV <input id="liv" class="save" placeholder="5"></label>
             </div>
         </div>
 
         <div class="box">
             <h2>✨ Caratteristiche (Taglia Dado)</h2>
-            <div class="grid-attrs">
+            <div class="grid-4">
                 <label>DES <input id="des" class="save" placeholder="d8"></label>
                 <label>INT <input id="int" class="save" placeholder="d8"></label>
                 <label>VIG <input id="vig" class="save" placeholder="d8"></label>
@@ -100,16 +96,16 @@
         </div>
 
         <div class="box">
-            <h2>📊 Risorse & Difese</h2>
+            <h2>📊 Status & Difese</h2>
             <div class="grid-3">
-                <div class="resource-card"><label>PV</label><input id="pv" class="save" placeholder="0/0"></div>
-                <div class="resource-card"><label>PM</label><input id="pm" class="save" placeholder="0/0"></div>
-                <div class="resource-card"><label>PI</label><input id="pi" class="save" placeholder="6"></div>
+                <label>PV <input id="pv" class="save" placeholder="0/0"></label>
+                <label>PM <input id="pm" class="save" placeholder="0/0"></label>
+                <label>PI <input id="pi" class="save" placeholder="6"></label>
             </div>
             <div class="grid-3" style="margin-top: 10px;">
-                <label>DIFESA <input id="dif" class="save" placeholder="0"></label>
-                <label>D. MAGICA <input id="difm" class="save" placeholder="0"></label>
-                <label>INIZIATIVA <input id="init" class="save" placeholder="0"></label>
+                <label>DIFESA <input id="dif" class="save" placeholder="10"></label>
+                <label>D. MAGICA <input id="difm" class="save" placeholder="10"></label>
+                <label>INIZIATIVA <input id="init" class="save" placeholder="+0"></label>
             </div>
         </div>
 
@@ -120,8 +116,8 @@
 
     <div style="display: flex; flex-direction: column;">
         <div class="box" style="flex-grow: 1;">
-            <h2>🎒 Abilità, Equip & Note</h2>
-            <textarea id="notes" class="save" placeholder="Scrivi qui i tuoi tratti, legami o oggetti..."></textarea>
+            <h2>🎒 Abilità & Zaino</h2>
+            <textarea id="notes" class="save" placeholder="Scrivi qui abilità, oggetti, legami..."></textarea>
         </div>
     </div>
 </div>
@@ -129,44 +125,59 @@
 <script>
     const OBR = window.OBR;
 
-    // Funzione Salvataggio Cloud
-    async function cloudSave() {
+    // Funzione per salvare i dati nel Cloud
+    async function saveToCloud() {
         const data = {};
-        document.querySelectorAll(".save").forEach(el => data[el.id] = el.value);
-        
+        // Raccoglie tutti i valori dei campi con classe "save"
+        document.querySelectorAll(".save").forEach(el => {
+            data[el.id] = el.value;
+        });
+
         try {
-            await OBR.player.setMetadata({ "fabula-v9-free": data });
-            document.getElementById("status-dot").innerText = "✨";
-            setTimeout(() => { document.getElementById("status-dot").innerText = "☁️"; }, 800);
+            await OBR.player.setMetadata({ "fabula-v10-final": data });
+            // Feedback visivo: stellina per salvataggio ok
+            const status = document.getElementById("sync-label");
+            status.innerText = "✨";
+            setTimeout(() => { status.innerText = "☁️"; }, 800);
         } catch (e) {
-            document.getElementById("status-dot").innerText = "❌";
+            console.error("Errore salvataggio:", e);
+            document.getElementById("sync-label").innerText = "❌";
         }
     }
 
-    // Funzione Caricamento Cloud
-    async function loadCloudData() {
+    // Funzione per caricare i dati dal Cloud
+    async function loadFromCloud() {
         try {
             const metadata = await OBR.player.getMetadata();
-            const saved = metadata["fabula-v9-free"];
+            const saved = metadata["fabula-v10-final"];
             if (saved) {
                 Object.keys(saved).forEach(id => {
                     const el = document.getElementById(id);
                     if (el) {
                         el.value = saved[id];
+                        // Se è il tema, applicalo al body
                         if(id === "current_theme") document.body.className = saved[id];
                     }
                 });
             }
-        } catch (e) { console.log("Nuova sessione"); }
+        } catch (e) {
+            console.warn("Nessun dato trovato o SDK non pronto.");
+        }
     }
 
+    // Inizializzazione quando Owlbear è pronto
     OBR.onReady(() => {
-        loadCloudData();
+        loadFromCloud();
+
+        // Aggiunge l'ascolto a ogni campo
         document.querySelectorAll(".save").forEach(input => {
-            input.addEventListener("input", cloudSave);
+            // "input" è l'evento più veloce per salvare mentre scrivi
+            input.addEventListener("input", saveToCloud);
         });
     });
 </script>
 
 </body>
 </html>
+
+
