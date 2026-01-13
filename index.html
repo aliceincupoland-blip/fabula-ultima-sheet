@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Scheda Personaggio – Fabula Style</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Quicksand', sans-serif;
   background: #f3f7f5;
@@ -19,14 +25,14 @@ body {
   background: #ffffff;
   border-radius: 18px;
   padding: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
 h2 {
   margin-top: 30px;
   color: #2e6f64;
   border-bottom: 2px solid #cde6df;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
 }
 
 .grid {
@@ -46,22 +52,33 @@ label {
   margin-bottom: 4px;
 }
 
-input, textarea {
+input[type="text"],
+textarea {
   border-radius: 10px;
   border: 1px solid #cde6df;
-  padding: 8px;
+  padding: 8px 10px;
   font-size: 1em;
+  background: #fdfefe;
+  color: #1f3d36;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #6fb7a7;
+  box-shadow: 0 0 0 2px rgba(111,183,167,0.2);
 }
 
 textarea {
   resize: vertical;
-  min-height: 60px;
+  min-height: 70px;
 }
 
+/* CARATTERISTICHE */
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 .stat {
@@ -71,33 +88,35 @@ textarea {
 .stat input {
   width: 60px;
   text-align: center;
+  margin: auto;
 }
 
+/* PUNTI */
 .points {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
-}
-
-.points div {
   text-align: center;
 }
 
 .points input {
   width: 70px;
   text-align: center;
+  margin: 4px auto;
 }
 
+/* CLASSI */
 .class-box {
   border: 1px dashed #b8dcd3;
-  border-radius: 12px;
-  padding: 10px;
-  margin-bottom: 10px;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 15px;
+  background: #f9fdfc;
 }
 
 footer {
   text-align: center;
-  margin-top: 25px;
+  margin-top: 30px;
   font-size: 0.8em;
   color: #7aa9a0;
 }
@@ -105,56 +124,75 @@ footer {
 </head>
 
 <body>
+
 <div class="sheet">
 
 <h2>Dati Personaggio</h2>
 <div class="grid">
   <div class="field">
     <label>Nome</label>
-    <input>
+    <input type="text">
   </div>
   <div class="field">
     <label>Genere</label>
-    <input>
+    <input type="text">
   </div>
 </div>
 
 <div class="grid">
   <div class="field">
     <label>Identità</label>
-    <input>
+    <input type="text">
   </div>
   <div class="field">
     <label>Tema</label>
-    <input>
+    <input type="text">
   </div>
   <div class="field">
     <label>Origine</label>
-    <input>
+    <input type="text">
   </div>
 </div>
 
 <h2>Caratteristiche</h2>
 <div class="stats">
-  <div class="stat"><label>Destrezza</label><input></div>
-  <div class="stat"><label>Intuito</label><input></div>
-  <div class="stat"><label>Vigore</label><input></div>
-  <div class="stat"><label>Volontà</label><input></div>
+  <div class="stat">
+    <label>Destrezza</label>
+    <input type="text">
+  </div>
+  <div class="stat">
+    <label>Intuito</label>
+    <input type="text">
+  </div>
+  <div class="stat">
+    <label>Vigore</label>
+    <input type="text">
+  </div>
+  <div class="stat">
+    <label>Volontà</label>
+    <input type="text">
+  </div>
 </div>
 
 <h2>Punti</h2>
 <div class="points">
   <div>
-    <label>PV Max</label><input><br>
-    <label>PV Attuali</label><input>
+    <label>PV Max</label><br>
+    <input type="text"><br>
+    <label>PV Attuali</label><br>
+    <input type="text">
   </div>
   <div>
-    <label>PM Max</label><input><br>
-    <label>PM Attuali</label><input>
+    <label>PM Max</label><br>
+    <input type="text"><br>
+    <label>PM Attuali</label><br>
+    <input type="text">
   </div>
   <div>
-    <label>PI Max</label><input><br>
-    <label>PI Attuali</label><input>
+    <label>PI Max</label><br>
+    <input type="text"><br>
+    <label>PI Attuali</label><br>
+    <input type="text">
   </div>
 </div>
 
@@ -162,20 +200,21 @@ footer {
 <div class="grid">
   <div class="field">
     <label>Difesa</label>
-    <input>
+    <input type="text">
   </div>
   <div class="field">
     <label>Difesa Magica</label>
-    <input>
+    <input type="text">
   </div>
 </div>
 
 <h2>Classi e Livelli</h2>
+
 <div class="class-box">
   <div class="grid">
     <div class="field">
       <label>Classe / Livello</label>
-      <input>
+      <input type="text">
     </div>
     <div class="field">
       <label>Benefici Gratuiti</label>
@@ -188,7 +227,7 @@ footer {
   <div class="grid">
     <div class="field">
       <label>Classe / Livello</label>
-      <input>
+      <input type="text">
     </div>
     <div class="field">
       <label>Benefici Gratuiti</label>
@@ -204,9 +243,10 @@ footer {
 <textarea></textarea>
 
 <footer>
-Scheda ispirata a Fabula Ultima ✨
+Scheda ispirata a Fabula Ultima – versione pulita & super carina ✨
 </footer>
 
 </div>
+
 </body>
 </html>
