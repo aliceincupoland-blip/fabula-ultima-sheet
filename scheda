@@ -6,43 +6,171 @@
 
 <style>
 :root {
-  --bg: #f4f8f6;
-  --main: #2f7f6f;
-  --box: #ffffff;
-  --border: #cfd8d3;
+  --bg:#f4f8f6;
+  --main:#2f7f6f;
+  --box:#ffffff;
+  --border:#cfd8d3;
+  --text:#1f3d36;
 }
 
 /* 🎨 TEMI */
-body.theme-verde {
-  --bg:#f4f8f6; --main:#2f7f6f;
-}
-body.theme-rosa {
-  --bg:#fff2f7; --main:#c94b7c;
-}
+body.theme-verde { --bg:#f4f8f6; --main:#2f7f6f; --text:#1f3d36; }
+body.theme-rosa { --bg:#fff2f7; --main:#c94b7c; --text:#4a1f2f; }
 body.theme-notte {
-  --bg:#1e1e2a; --main:#8aa8ff; --box:#2a2a3a; --border:#444;
-  color:#eee;
+  --bg:#1e1e2a; --main:#8aa8ff; --box:#2a2a3a;
+  --border:#444; --text:#eeeeee;
 }
-body.theme-rosso {
-  --bg:#fff1f1; --main:#9b2c2c;
-}
-body.theme-pergamena {
-  --bg:#f7f0dc; --main:#8b6f3d;
-}
+body.theme-rosso { --bg:#fff1f1; --main:#9b2c2c; --text:#3a1515; }
+body.theme-pergamena { --bg:#f7f0dc; --main:#8b6f3d; --text:#3a2e1a; }
 
 body {
   margin:0;
   font-family: "Segoe UI", sans-serif;
   background: var(--bg);
+  color: var(--text);
 }
 
 .sheet {
   max-width: 210mm;
-  margin: auto;
-  padding: 10mm;
+  margin:auto;
+  padding:10mm;
   background: var(--box);
 }
 
 h2 {
-  margin: 4px 0;
-  color
+  margin:6px 0 4px;
+  color: var(--main);
+}
+
+.box {
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:6px;
+  margin-bottom:6px;
+}
+
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+
+label { font-size:0.8em; }
+
+input, textarea, select {
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:4px;
+  background: var(--box);
+  color: var(--text);
+}
+
+textarea { resize:vertical; min-height:50px; }
+
+/* 🖨️ STAMPA */
+@media print {
+  body { background:white; }
+  .theme-picker { display:none; }
+  .sheet { padding:8mm; }
+}
+</style>
+</head>
+
+<body class="theme-verde">
+
+<div class="sheet">
+
+<!-- 🎨 TEMA -->
+<div class="box theme-picker">
+🎨 <b>Tema:</b>
+<select onchange="document.body.className=this.value">
+  <option value="theme-verde">🌿 Verde</option>
+  <option value="theme-rosa">🌸 Rosa</option>
+  <option value="theme-notte">🌙 Notte</option>
+  <option value="theme-rosso">🔥 Cremisi</option>
+  <option value="theme-pergamena">📜 Pergamena</option>
+</select>
+</div>
+
+<!-- IDENTITÀ -->
+<div class="box grid2">
+  <label>Nome 🖋️<input></label>
+  <label>Genere<input></label>
+  <label>Identità<input></label>
+  <label>Origine<input></label>
+</div>
+
+<!-- CARATTERISTICHE -->
+<div class="box">
+<h2>✨ Caratteristiche</h2>
+<div class="grid4">
+  <label>Destrezza 🏃<input id="des" type="number" min="0"></label>
+  <label>Intuito 👁️<input id="int" type="number" min="0"></label>
+  <label>Vigore 💪<input id="vig" type="number" min="0"></label>
+  <label>Volontà 🔥<input id="vol" type="number" min="0"></label>
+</div>
+</div>
+
+<!-- LIVELLO -->
+<div class="box grid2">
+  <label>Livello ⭐<input id="liv" type="number" value="1" min="0"></label>
+  <label>Iniziativa 🎯<input id="init" readonly></label>
+</div>
+
+<!-- PUNTI -->
+<div class="box">
+<h2>❤️ Punti</h2>
+<div class="grid4">
+  <label>PV ❤️<input id="pv" readonly></label>
+  <label>PM 💠<input id="pm" readonly></label>
+  <label>PI 🎒<input id="pi" readonly></label>
+  <label>Fabula ✨<input></label>
+</div>
+</div>
+
+<!-- DIFESE -->
+<div class="box grid2">
+  <label>Difesa 🛡️<input id="dif" readonly></label>
+  <label>Difesa Magica 🔮<input id="difm" readonly></label>
+</div>
+
+<!-- EQUIP -->
+<div class="box">
+<h2>🧰 Equipaggiamento</h2>
+<textarea></textarea>
+</div>
+
+<!-- APPUNTI -->
+<div class="box">
+<h2>📓 Appunti</h2>
+<textarea style="min-height:80px"></textarea>
+</div>
+
+</div>
+
+<script>
+function v(id){ return document.getElementById(id); }
+
+function calcola(){
+  const des=+v("des").value||0;
+  const int=+v("int").value||0;
+  const vig=+v("vig").value||0;
+  const vol=+v("vol").value||0;
+  const liv=+v("liv").value||0;
+
+  v("pv").value = vig*5 + liv;
+  v("pm").value = vol*5 + liv;
+  v("pi").value = 6 + liv;
+  v("dif").value = des;
+  v("difm").value = int;
+  v("init").value = des + int;
+}
+
+document.querySelectorAll("input").forEach(i=>{
+  i.addEventListener("input", calcola);
+});
+
+calcola();
+</script>
+
+</body>
+</html>
