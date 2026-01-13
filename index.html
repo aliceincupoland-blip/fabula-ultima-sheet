@@ -1,252 +1,35 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8">
-<title>Scheda Personaggio – Fabula Style</title>
+@media print {
+  body {
+    background: white;
+    padding: 0;
+  }
 
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  .sheet {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 10mm;
+    max-width: 210mm;
+    min-height: 297mm;
+  }
 
-<style>
-* {
-  box-sizing: border-box;
+  h2 {
+    page-break-after: avoid;
+  }
+
+  textarea,
+  input {
+    border: 1px solid #999;
+    background: white;
+  }
+
+  footer {
+    display: none;
+  }
+
+  /* evita spezzature brutte */
+  .class-box,
+  .stats,
+  .points {
+    page-break-inside: avoid;
+  }
 }
-
-body {
-  font-family: 'Quicksand', sans-serif;
-  background: #f3f7f5;
-  margin: 0;
-  padding: 20px;
-  color: #1f3d36;
-}
-
-.sheet {
-  max-width: 1100px;
-  margin: auto;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-}
-
-h2 {
-  margin-top: 30px;
-  color: #2e6f64;
-  border-bottom: 2px solid #cde6df;
-  padding-bottom: 6px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-size: 0.85em;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-input[type="text"],
-textarea {
-  border-radius: 10px;
-  border: 1px solid #cde6df;
-  padding: 8px 10px;
-  font-size: 1em;
-  background: #fdfefe;
-  color: #1f3d36;
-}
-
-input[type="text"]:focus,
-textarea:focus {
-  outline: none;
-  border-color: #6fb7a7;
-  box-shadow: 0 0 0 2px rgba(111,183,167,0.2);
-}
-
-textarea {
-  resize: vertical;
-  min-height: 70px;
-}
-
-/* CARATTERISTICHE */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat input {
-  width: 60px;
-  text-align: center;
-  margin: auto;
-}
-
-/* PUNTI */
-.points {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  text-align: center;
-}
-
-.points input {
-  width: 70px;
-  text-align: center;
-  margin: 4px auto;
-}
-
-/* CLASSI */
-.class-box {
-  border: 1px dashed #b8dcd3;
-  border-radius: 14px;
-  padding: 12px;
-  margin-bottom: 15px;
-  background: #f9fdfc;
-}
-
-footer {
-  text-align: center;
-  margin-top: 30px;
-  font-size: 0.8em;
-  color: #7aa9a0;
-}
-</style>
-</head>
-
-<body>
-
-<div class="sheet">
-
-<h2>Dati Personaggio</h2>
-<div class="grid">
-  <div class="field">
-    <label>Nome</label>
-    <input type="text">
-  </div>
-  <div class="field">
-    <label>Genere</label>
-    <input type="text">
-  </div>
-</div>
-
-<div class="grid">
-  <div class="field">
-    <label>Identità</label>
-    <input type="text">
-  </div>
-  <div class="field">
-    <label>Tema</label>
-    <input type="text">
-  </div>
-  <div class="field">
-    <label>Origine</label>
-    <input type="text">
-  </div>
-</div>
-
-<h2>Caratteristiche</h2>
-<div class="stats">
-  <div class="stat">
-    <label>Destrezza</label>
-    <input type="text">
-  </div>
-  <div class="stat">
-    <label>Intuito</label>
-    <input type="text">
-  </div>
-  <div class="stat">
-    <label>Vigore</label>
-    <input type="text">
-  </div>
-  <div class="stat">
-    <label>Volontà</label>
-    <input type="text">
-  </div>
-</div>
-
-<h2>Punti</h2>
-<div class="points">
-  <div>
-    <label>PV Max</label><br>
-    <input type="text"><br>
-    <label>PV Attuali</label><br>
-    <input type="text">
-  </div>
-  <div>
-    <label>PM Max</label><br>
-    <input type="text"><br>
-    <label>PM Attuali</label><br>
-    <input type="text">
-  </div>
-  <div>
-    <label>PI Max</label><br>
-    <input type="text"><br>
-    <label>PI Attuali</label><br>
-    <input type="text">
-  </div>
-</div>
-
-<h2>Difese</h2>
-<div class="grid">
-  <div class="field">
-    <label>Difesa</label>
-    <input type="text">
-  </div>
-  <div class="field">
-    <label>Difesa Magica</label>
-    <input type="text">
-  </div>
-</div>
-
-<h2>Classi e Livelli</h2>
-
-<div class="class-box">
-  <div class="grid">
-    <div class="field">
-      <label>Classe / Livello</label>
-      <input type="text">
-    </div>
-    <div class="field">
-      <label>Benefici Gratuiti</label>
-      <textarea></textarea>
-    </div>
-  </div>
-</div>
-
-<div class="class-box">
-  <div class="grid">
-    <div class="field">
-      <label>Classe / Livello</label>
-      <input type="text">
-    </div>
-    <div class="field">
-      <label>Benefici Gratuiti</label>
-      <textarea></textarea>
-    </div>
-  </div>
-</div>
-
-<h2>Equipaggiamento</h2>
-<textarea></textarea>
-
-<h2>Zaino e Appunti</h2>
-<textarea></textarea>
-
-<footer>
-Scheda ispirata a Fabula Ultima – versione pulita & super carina ✨
-</footer>
-
-</div>
-
-</body>
-</html>
