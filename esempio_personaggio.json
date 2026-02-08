@@ -1,0 +1,17 @@
+{
+  "name": "Ghost",
+  "class": "netrunner",
+  "concept": "Hacker ombra della rete oscura",
+  "skills": ["Deep Dive", "Firewall Breach"],
+  "pool": "specialist",
+  "muscoli": "1",
+  "punk": "4",
+  "social": "2",
+  "velocita": "3",
+  "mente": "0",
+  "cyberware": ["Interface Jack (400₡)", "Occhi Cyber (300₡)"],
+  "equipment": "Cyberdeck Base, Pistola Leggera, Giacca Rinforzata, 3x Stimpack",
+  "credits": "1500",
+  "background": "Ex-dipendente corporate, ora freelance nelle zone oscure della città. Specializzato in infiltrazioni digitali.",
+  "contacts": "Dr. Mako (Ripperdoc), Vex (Fixer della zona nord), Maya (Informatore)"
+}
