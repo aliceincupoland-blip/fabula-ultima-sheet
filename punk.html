@@ -3,285 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALICEPUNK - Scheda Personaggio</title>
-
+    <title>ALICEPUNK - Scheda Finale</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #e0e0e0;
             padding: 20px;
+            line-height: 1.6;
         }
-
         .container {
             max-width: 1400px;
-            margin: auto;
+            margin: 0 auto;
             background: white;
             color: #333;
             padding: 30px;
             border-radius: 10px;
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.3);
         }
-
         .header {
             text-align: center;
-            border-bottom: 4px solid #ff006e;
             margin-bottom: 25px;
+            border-bottom: 4px solid #ff006e;
             padding-bottom: 15px;
         }
-
         .title {
-            font-size: 3em;
+            font-size: 3.5em;
             font-weight: 900;
             background: linear-gradient(45deg, #ff006e, #00d9ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 6px;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin-bottom: 5px;
         }
-
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            font-style: italic;
+        }
         .two-column-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 30px;
+            margin-top: 20px;
         }
-
-        .section { margin-bottom: 20px; }
-
+        .column { display: flex; flex-direction: column; gap: 20px; }
         .section-header {
-            background: linear-gradient(135deg, #ff006e, #8b00ff);
+            background: linear-gradient(135deg, #ff006e 0%, #8b00ff 100%);
             color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 1.1em;
             font-weight: bold;
+            border-radius: 5px;
             margin-bottom: 10px;
         }
-
         .instruction {
             background: #f5f5f5;
-            padding: 8px;
-            border-left: 3px solid #ff006e;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border-radius: 5px;
             font-size: 0.85em;
-            margin-bottom: 10px;
+            color: #555;
+            border-left: 3px solid #ff006e;
         }
-
-        label {
-            font-weight: bold;
-            color: #ff006e;
-            margin-bottom: 4px;
-            display: block;
+        .form-group { margin: 12px 0; }
+        label { display: block; font-weight: bold; color: #ff006e; margin-bottom: 5px; font-size: 0.95em; }
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 0.95em;
         }
-
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 8px;
+        .class-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .class-option {
+            background: white; border: 2px solid #ddd; padding: 10px; border-radius: 5px;
+            cursor: pointer; text-align: center; font-weight: bold; font-size: 0.8em;
         }
-
-        textarea { resize: vertical; }
-
-        .class-grid, .pool-options {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-
-        .class-option, .pool-option {
-            border: 2px solid #ddd;
-            padding: 8px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .class-option.selected, .pool-option.selected {
-            background: #ff006e;
-            color: white;
-            border-color: #ff006e;
-        }
-
-        .skills-selector { display: none; }
+        .class-option.selected { background: #ff006e; color: white; border-color: #ff006e; }
+        .class-option input { display: none; }
+        .skills-selector { display: none; background: #f0faff; border: 2px solid #00d9ff; border-radius: 8px; padding: 15px; margin-top: 10px; }
         .skills-selector.active { display: block; }
-
-        .skill-checkbox {
-            border-left: 3px solid #00d9ff;
-            padding: 8px;
-            background: #f9f9f9;
-            margin-bottom: 6px;
-        }
-
-        .pool-values { font-size: 1.2em; }
-
-        .cyber-item {
-            border: 2px solid #ddd;
-            padding: 6px;
-            margin-bottom: 5px;
-            display: flex;
-            gap: 8px;
-        }
-
-        .button-group {
-            margin-top: 25px;
-            text-align: center;
-        }
-
+        .skill-name { font-weight: bold; color: #00d9ff; }
+        .skill-desc { font-size: 0.8em; color: #555; margin-bottom: 5px; font-style: italic; }
+        .condition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .condition-box { background: #f5f5f5; border: 2px solid #ff006e; border-radius: 8px; padding: 10px; text-align: center; }
+        .button-group { text-align: center; margin: 30px 0; padding: 20px; border-top: 2px solid #eee; }
         button {
-            background: linear-gradient(135deg, #ff006e, #8b00ff);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            margin: 5px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
+            background: linear-gradient(135deg, #ff006e 0%, #8b00ff 100%);
+            color: white; border: none; padding: 12px 25px; font-size: 1em; border-radius: 5px;
+            cursor: pointer; margin: 5px; font-weight: bold; transition: 0.3s;
         }
-
-        @media (max-width: 1100px) {
-            .two-column-grid { grid-template-columns: 1fr; }
-        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 0, 110, 0.4); }
+        button.reset { background: #666; }
+        @media print { .button-group, .instruction { display: none; } body { background: white; padding: 0; } .container { box-shadow: none; border: 1px solid #eee; } }
     </style>
 </head>
-
 <body>
-<div class="container">
-
-    <div class="header">
-        <div class="title">ALICEPUNK</div>
-        <p>Scheda Personaggio</p>
-    </div>
-
-    <div class="two-column-grid">
-
-        <div>
-
-            <div class="section">
-                <div class="section-header">1. IDENTITÀ</div>
-                <label>Nome</label>
-                <input id="name">
-
-                <div class="instruction">Scegli una classe</div>
-                <div class="class-grid">
-                    <label class="class-option"><input type="radio" name="class" value="netrunner" onchange="showClassSkills('netrunner')">Netrunner</label>
-                    <label class="class-option"><input type="radio" name="class" value="solitario" onchange="showClassSkills('solitario')">Solitario</label>
-                    <label class="class-option"><input type="radio" name="class" value="corporativo" onchange="showClassSkills('corporativo')">Corporativo</label>
-                    <label class="class-option"><input type="radio" name="class" value="nomade" onchange="showClassSkills('nomade')">Nomade</label>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">2. ABILITÀ</div>
-
-                <div id="skills-netrunner" class="skills-selector">
-                    <div class="skill-checkbox"><input type="checkbox"> Deep Dive</div>
-                    <div class="skill-checkbox"><input type="checkbox"> Firewall Breach</div>
-                </div>
-
-                <div id="skills-solitario" class="skills-selector">
-                    <div class="skill-checkbox"><input type="checkbox"> Combat Sense</div>
-                    <div class="skill-checkbox"><input type="checkbox"> Weapon Master</div>
-                </div>
-
-                <div id="skills-corporativo" class="skills-selector">
-                    <div class="skill-checkbox"><input type="checkbox"> Negotiation</div>
-                    <div class="skill-checkbox"><input type="checkbox"> Authority</div>
-                </div>
-
-                <div id="skills-nomade" class="skills-selector">
-                    <div class="skill-checkbox"><input type="checkbox"> Vehicle Mastery</div>
-                    <div class="skill-checkbox"><input type="checkbox"> Scavenger</div>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">3. POOL</div>
-                <div class="pool-options">
-                    <label class="pool-option"><input type="radio" name="pool" value="balanced">3-3-2-2</label>
-                    <label class="pool-option"><input type="radio" name="pool" value="extreme">5-3-2</label>
-                </div>
-            </div>
-
+    <div class="container">
+        <div class="header">
+            <h1 class="title">ALICEPUNK</h1>
+            <p class="subtitle">Personalità, Cromo e Disperazione</p>
         </div>
 
-        <div>
+        <div class="two-column-grid">
+            <div class="column">
+                <div class="section">
+                    <div class="section-header">1. IDENTITÀ</div>
+                    <div class="form-group">
+                        <label for="name">Alias / Protocollo:</label>
+                        <input type="text" id="name" placeholder="Raven, Ghost, Alice...">
+                    </div>
+                    <div class="form-group">
+                        <label>Archetipo di Riferimento:</label>
+                        <div class="class-grid">
+                            <label class="class-option"><input type="radio" name="class" value="netrunner" onchange="updateUI(this)"><span>Netrunner</span></label>
+                            <label class="class-option"><input type="radio" name="class" value="solitario" onchange="updateUI(this)"><span>Solitario</span></label>
+                            <label class="class-option"><input type="radio" name="class" value="corporativo" onchange="updateUI(this)"><span>Corp</span></label>
+                            <label class="class-option"><input type="radio" name="class" value="nomade" onchange="updateUI(this)"><span>Nomade</span></label>
+                            <label class="class-option"><input type="radio" name="class" value="medtech" onchange="updateUI(this)"><span>Medtech</span></label>
+                            <label class="class-option"><input type="radio" name="class" value="fixer" onchange="updateUI(this)"><span>Fixer</span></label>
+                            <label class="class-option"><input type="radio" name="class" value="dreamer" onchange="updateUI(this)"><span>Dreamer</span></label>
+                            <label class="class-option"><input type="radio" name="class" value="ronin" onchange="updateUI(this)"><span>Ronin</span></label>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="section">
-                <div class="section-header">4. CYBERWARE</div>
-                <div class="cyber-item"><input type="checkbox"> Occhi Cyber</div>
-                <div class="cyber-item"><input type="checkbox"> Neural CPU</div>
-                <div class="cyber-item"><input type="checkbox"> Sandevistan</div>
+                <div class="section">
+                    <div class="section-header">2. ABILITÀ DI CLASSE (SCEGLI 2)</div>
+                    
+                    <div id="skills-netrunner" class="skills-selector">
+                        <div class="skill-item">
+                            <input type="checkbox" id="n1"> <label for="n1" class="skill-name">Deep Dive</label>
+                            <p class="skill-desc">Proietta la tua coscienza oltre il firewall. Vedi il codice grezzo della realtà digitale.</p>
+                        </div>
+                        <div class="skill-item">
+                            <input type="checkbox" id="n2"> <label for="n2" class="skill-name">Ghost Protocol</label>
+                            <p class="skill-desc">Cancellazione istantanea delle tracce. Sei un sussurro in un data-center in fiamme.</p>
+                        </div>
+                        <div class="skill-item">
+                            <input type="checkbox" id="n3"> <label for="n3" class="skill-name">System Override</label>
+                            <p class="skill-desc">I sistemi di sicurezza ora lavorano per te. Torrette e droni cambiano bandiera.</p>
+                        </div>
+                    </div>
+
+                    <div id="skills-solitario" class="skills-selector">
+                        <div class="skill-item">
+                            <input type="checkbox" id="s1"> <label for="s1" class="skill-name">Bullet Time</label>
+                            <p class="skill-desc">I tuoi riflessi sono accelerati elettricamente. Il mondo si muove al rallentatore.</p>
+                        </div>
+                        <div class="skill-item">
+                            <input type="checkbox" id="s2"> <label for="s2" class="skill-name">Death Dealer</label>
+                            <p class="skill-desc">Ogni colpo è chirurgico. Conosci i punti deboli di ogni corazza, organica o cyber.</p>
+                        </div>
+                        <div class="skill-item">
+                            <input type="checkbox" id="s3"> <label for="s3" class="skill-name">Pain Reaper</label>
+                            <p class="skill-desc">La tua soglia del dolore è artificialmente alta. Combatti finché il metallo non cede.</p>
+                        </div>
+                    </div>
+                    
+                    <p class="instruction">Seleziona una classe sopra per vedere le sue abilità speciali.</p>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">3. STATISTICHE (APPROCCI)</div>
+                    <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px;">
+                        <div><label>MUSCOLI</label><input type="number" id="muscoli" value="0"></div>
+                        <div><label>PUNK</label><input type="number" id="punk" value="0"></div>
+                        <div><label>SOCIAL</label><input type="number" id="social" value="0"></div>
+                        <div><label>VELOCITÀ</label><input type="number" id="velocita" value="0"></div>
+                        <div><label>MENTE</label><input type="number" id="mente" value="0"></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="section">
-                <div class="section-header">5. NOTE</div>
-                <textarea rows="6"></textarea>
-            </div>
+            <div class="column">
+                <div class="section">
+                    <div class="section-header">4. STATO VITALE</div>
+                    <div class="condition-grid">
+                        <div class="condition-box">
+                            <label style="color:#cc0000">DANNO (KO a 8)</label>
+                            <input type="number" id="danni" min="0" max="8" value="0">
+                        </div>
+                        <div class="condition-box">
+                            <label style="color:#ff6b35">STRESS (Max 4)</label>
+                            <input type="number" id="stress" min="0" max="4" value="0">
+                        </div>
+                    </div>
+                </div>
 
+                <div class="section">
+                    <div class="section-header">5. EQUIPAGGIAMENTO E CROMO</div>
+                    <textarea id="inventory" style="height: 200px;" placeholder="Armi, impianti cyber, debiti..."></textarea>
+                </div>
+                
+                <div class="section">
+                    <div class="section-header">6. BACKGROUND</div>
+                    <textarea id="bio" style="height: 100px;" placeholder="Perché sei ancora vivo?"></textarea>
+                </div>
+            </div>
         </div>
 
+        <div class="button-group">
+            <button onclick="window.print()">🖨️ Stampa PDF</button>
+            <button onclick="exportFinalSheet()">🎭 Scarica Scheda (Testo)</button>
+            <button class="reset" onclick="resetSheet()">🗑️ Reset Totale</button>
+        </div>
     </div>
 
-    <div class="button-group">
-        <button onclick="exportFinalSheet()">🎭 Scarica scheda finale</button>
-        <button onclick="location.reload()">🔄 Reset</button>
-    </div>
+    <script>
+        // Gestione UI Classi
+        function updateUI(radio) {
+            document.querySelectorAll('.class-option').forEach(el => el.classList.remove('selected'));
+            radio.parentElement.classList.add('selected');
+            
+            document.querySelectorAll('.skills-selector').forEach(el => el.classList.remove('active'));
+            const skillBox = document.getElementById('skills-' + radio.value);
+            if(skillBox) skillBox.classList.add('active');
+            
+            saveData();
+        }
 
-</div>
+        // Funzione di Export Reale
+        function exportFinalSheet() {
+            const data = {
+                Nome: document.getElementById('name').value,
+                Classe: document.querySelector('input[name="class"]:checked')?.value || 'Nessuna',
+                Statistiche: {
+                    Muscoli: document.getElementById('muscoli').value,
+                    Punk: document.getElementById('punk').value,
+                    Social: document.getElementById('social').value,
+                    Velocita: document.getElementById('velocita').value,
+                    Mente: document.getElementById('mente').value
+                },
+                Stato: {
+                    Danni: document.getElementById('danni').value,
+                    Stress: document.getElementById('stress').value
+                },
+                Inventario: document.getElementById('inventory').value,
+                Storia: document.getElementById('bio').value
+            };
 
-<script>
-function showClassSkills(cls) {
-    document.querySelectorAll('.skills-selector').forEach(e => e.classList.remove('active'));
-    document.getElementById('skills-' + cls)?.classList.add('active');
-    document.querySelectorAll('.class-option').forEach(o => o.classList.remove('selected'));
-    event.target.closest('.class-option').classList.add('selected');
-}
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'text/plain'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ALICEPUNK_${data.Nome || 'Sconosciuto'}.txt`;
+            a.click();
+        }
 
-function exportFinalSheet() {
-    const clone = document.documentElement.cloneNode(true);
-    const $$ = (s, r = clone) => Array.from(r.querySelectorAll(s));
+        // Reset
+        function resetSheet() {
+            if(confirm("Sei sicuro? Perderai tutti i progressi del personaggio.")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
 
-    $$('.instruction').forEach(e => e.remove());
+        // Auto-salvataggio
+        function saveData() {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if(input.type === 'radio') {
+                    if(input.checked) localStorage.setItem(input.name, input.value);
+                } else if(input.type === 'checkbox') {
+                    localStorage.setItem(input.id, input.checked);
+                } else {
+                    localStorage.setItem(input.id, input.value);
+                }
+            });
+        }
 
-    const cls = document.querySelector('input[name="class"]:checked')?.value;
-    $$('.class-option').forEach(o => {
-        if (o.querySelector('input')?.value !== cls) o.remove();
-    });
-
-    $$('.skills-selector').forEach(s => {
-        if (!s.id.endsWith(cls)) s.remove();
-    });
-
-    $$('.skill-checkbox').forEach(s => {
-        if (!s.querySelector('input').checked) s.remove();
-        else s.querySelector('input').remove();
-    });
-
-    const pool = document.querySelector('input[name="pool"]:checked')?.value;
-    $$('.pool-option').forEach(p => {
-        if (p.querySelector('input')?.value !== pool) p.remove();
-        else p.querySelector('input').remove();
-    });
-
-    $$('.cyber-item').forEach(c => {
-        if (!c.querySelector('input').checked) c.remove();
-        else c.querySelector('input').remove();
-    });
-
-    $$('.button-group, script').forEach(e => e.remove());
-
-    const html = '<!DOCTYPE html><html lang="it">' + clone.innerHTML + '</html>';
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'alicepunk_scheda_finale.html';
-    a.click();
-    URL.revokeObjectURL(url);
-}
-</script>
-
+        window.onload = () => {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                const val = localStorage.getItem(input.id || input.name);
+                if(!val) return;
+                
+                if(input.type === 'radio' && input.value === val) {
+                    input.checked = true;
+                    updateUI(input);
+                } else if(input.type === 'checkbox') {
+                    input.checked = (val === 'true');
+                } else {
+                    input.value = val;
+                }
+            });
+            
+            document.addEventListener('input', saveData);
+        };
+    </script>
 </body>
 </html>
