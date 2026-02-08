@@ -1303,37 +1303,60 @@
                 contacts: document.getElementById('contacts')?.value || ''
             };
 
-            // Genera il PDF lato client
-            const blob = await generatePDFBlob(characterData);
-            
-            // Download del PDF
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `alicepunk_${characterData.name || 'character'}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
+            // Mostra loading
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '⏳ Generando PDF...';
+            button.disabled = true;
 
-        async function generatePDFBlob(data) {
-            // Per ora usiamo jsPDF per generare il PDF lato client
-            // Questa è una versione semplificata - la versione completa richiede un server
-            
-            // Mostra messaggio temporaneo
-            const originalText = event.target.textContent;
-            event.target.textContent = '⏳ Generando PDF...';
-            event.target.disabled = true;
-            
-            // Simula generazione (per ora usa print)
-            setTimeout(() => {
-                event.target.textContent = originalText;
-                event.target.disabled = false;
-                alert('📄 Usa "Stampa" e salva come PDF per ora.\n\nPer PDF modificabile con campi form, serve un server Python.\n\nVuoi le istruzioni?');
-            }, 500);
-            
-            return new Blob([''], { type: 'application/pdf' });
+            try {
+                // Chiama il server Flask locale
+                const response = await fetch('http://localhost:5000/generate-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(characterData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Server non disponibile');
+                }
+
+                // Scarica il PDF
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `alicepunk_${characterData.name || 'personaggio'}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                alert('✅ PDF modificabile scaricato!');
+
+            } catch (error) {
+                console.error('Errore:', error);
+                
+                // Se il server non è attivo, mostra istruzioni
+                const startServer = confirm(
+                    '❌ Server PDF non attivo!\n\n' +
+                    'Per generare PDF modificabili serve il server Python.\n\n' +
+                    '1. Apri un terminale\n' +
+                    '2. Vai nella cartella dei file\n' +
+                    '3. Esegui: python3 server_pdf.py\n' +
+                    '4. Riprova a cliccare "Salva PDF"\n\n' +
+                    'Vuoi vedere le istruzioni dettagliate?'
+                );
+                
+                if (startServer) {
+                    window.open('README_PDF.md', '_blank');
+                }
+            } finally {
+                button.textContent = originalText;
+                button.disabled = false;
+            }
         }
 
         function getSelectedSkills() {
