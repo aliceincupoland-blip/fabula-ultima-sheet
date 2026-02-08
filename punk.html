@@ -39,35 +39,12 @@
             letter-spacing: 10px;
             margin-bottom: 5px;
         }
-        .subtitle {
-            font-size: 1.1em;
-            color: #666;
-            font-style: italic;
-        }
-        .two-column-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 20px;
-        }
+        .subtitle { font-size: 1.1em; color: #666; font-style: italic; }
+        .two-column-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
         .column { display: flex; flex-direction: column; gap: 20px; }
         .section-header {
             background: linear-gradient(135deg, #ff006e 0%, #8b00ff 100%);
-            color: white;
-            padding: 10px 15px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .instruction {
-            background: #f5f5f5;
-            padding: 10px 12px;
-            margin: 8px 0;
-            border-radius: 5px;
-            font-size: 0.85em;
-            color: #555;
-            border-left: 3px solid #ff006e;
+            color: white; padding: 10px 15px; font-size: 1.1em; font-weight: bold; border-radius: 5px; margin-bottom: 10px;
         }
         .form-group { margin: 12px 0; }
         label { display: block; font-weight: bold; color: #ff006e; margin-bottom: 5px; font-size: 0.95em; }
@@ -83,8 +60,9 @@
         .class-option input { display: none; }
         .skills-selector { display: none; background: #f0faff; border: 2px solid #00d9ff; border-radius: 8px; padding: 15px; margin-top: 10px; }
         .skills-selector.active { display: block; }
-        .skill-name { font-weight: bold; color: #00d9ff; }
-        .skill-desc { font-size: 0.8em; color: #555; margin-bottom: 5px; font-style: italic; }
+        .skill-item { margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px dashed #ccc; }
+        .skill-name { font-weight: bold; color: #00d9ff; display: inline; }
+        .skill-desc { font-size: 0.8em; color: #555; margin-top: 2px; font-style: italic; }
         .condition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .condition-box { background: #f5f5f5; border: 2px solid #ff006e; border-radius: 8px; padding: 10px; text-align: center; }
         .button-group { text-align: center; margin: 30px 0; padding: 20px; border-top: 2px solid #eee; }
@@ -132,40 +110,32 @@
                     <div class="section-header">2. ABILITÀ DI CLASSE (SCEGLI 2)</div>
                     
                     <div id="skills-netrunner" class="skills-selector">
-                        <div class="skill-item">
-                            <input type="checkbox" id="n1"> <label for="n1" class="skill-name">Deep Dive</label>
-                            <p class="skill-desc">Proietta la tua coscienza oltre il firewall. Vedi il codice grezzo della realtà digitale.</p>
-                        </div>
-                        <div class="skill-item">
-                            <input type="checkbox" id="n2"> <label for="n2" class="skill-name">Ghost Protocol</label>
-                            <p class="skill-desc">Cancellazione istantanea delle tracce. Sei un sussurro in un data-center in fiamme.</p>
-                        </div>
-                        <div class="skill-item">
-                            <input type="checkbox" id="n3"> <label for="n3" class="skill-name">System Override</label>
-                            <p class="skill-desc">I sistemi di sicurezza ora lavorano per te. Torrette e droni cambiano bandiera.</p>
-                        </div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="n1"> <label for="n1" class="skill-name">Deep Dive</label><p class="skill-desc">Vedi il codice grezzo della realtà digitale.</p></div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="n2"> <label for="n2" class="skill-name">Ghost Protocol</label><p class="skill-desc">Cancellazione istantanea di ogni traccia.</p></div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="n3"> <label for="n3" class="skill-name">System Override</label><p class="skill-desc">I sistemi nemici ora lavorano per te.</p></div>
                     </div>
 
                     <div id="skills-solitario" class="skills-selector">
-                        <div class="skill-item">
-                            <input type="checkbox" id="s1"> <label for="s1" class="skill-name">Bullet Time</label>
-                            <p class="skill-desc">I tuoi riflessi sono accelerati elettricamente. Il mondo si muove al rallentatore.</p>
-                        </div>
-                        <div class="skill-item">
-                            <input type="checkbox" id="s2"> <label for="s2" class="skill-name">Death Dealer</label>
-                            <p class="skill-desc">Ogni colpo è chirurgico. Conosci i punti deboli di ogni corazza, organica o cyber.</p>
-                        </div>
-                        <div class="skill-item">
-                            <input type="checkbox" id="s3"> <label for="s3" class="skill-name">Pain Reaper</label>
-                            <p class="skill-desc">La tua soglia del dolore è artificialmente alta. Combatti finché il metallo non cede.</p>
-                        </div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="s1"> <label for="s1" class="skill-name">Bullet Time</label><p class="skill-desc">Riflessi accelerati: il mondo rallenta.</p></div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="s2"> <label for="s2" class="skill-name">Death Dealer</label><p class="skill-desc">Colpi chirurgici sui punti deboli.</p></div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="s3"> <label for="s3" class="skill-name">Pain Reaper</label><p class="skill-desc">Ignori le penalità dei primi 3 danni.</p></div>
                     </div>
-                    
-                    <p class="instruction">Seleziona una classe sopra per vedere le sue abilità speciali.</p>
+
+                    <div id="skills-corporativo" class="skills-selector">
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="c1"> <label for="c1" class="skill-name">Asset Liquidator</label><p class="skill-desc">Risorse illimitate per corrompere o comprare.</p></div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="c2"> <label for="c2" class="skill-name">Bureaucratic Armor</label><p class="skill-desc">Legalmente intoccabile per i reati minori.</p></div>
+                    </div>
+
+                    <div id="skills-nomade" class="skills-selector">
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="no1"> <label for="no1" class="skill-name">Wasteland Ghost</label><p class="skill-desc">Invisibile nelle terre selvagge e zone industriali.</p></div>
+                        <div class="skill-item"><input type="checkbox" class="skill-cb" id="no2"> <label for="no2" class="skill-name">Gearhead</label><p class="skill-desc">Riparazioni d'emergenza con pezzi di scarto.</p></div>
+                    </div>
+
+                    <div id="skills-placeholder" style="padding:10px; color:#999; font-style:italic;">Seleziona un archetipo per caricare i file di sistema...</div>
                 </div>
 
                 <div class="section">
-                    <div class="section-header">3. STATISTICHE (APPROCCI)</div>
+                    <div class="section-header">3. APPROCCI (STATISTICHE)</div>
                     <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px;">
                         <div><label>MUSCOLI</label><input type="number" id="muscoli" value="0"></div>
                         <div><label>PUNK</label><input type="number" id="punk" value="0"></div>
@@ -180,86 +150,84 @@
                 <div class="section">
                     <div class="section-header">4. STATO VITALE</div>
                     <div class="condition-grid">
-                        <div class="condition-box">
-                            <label style="color:#cc0000">DANNO (KO a 8)</label>
-                            <input type="number" id="danni" min="0" max="8" value="0">
-                        </div>
-                        <div class="condition-box">
-                            <label style="color:#ff6b35">STRESS (Max 4)</label>
-                            <input type="number" id="stress" min="0" max="4" value="0">
-                        </div>
+                        <div class="condition-box"><label style="color:#cc0000">DANNO (KO a 8)</label><input type="number" id="danni" min="0" max="8" value="0"></div>
+                        <div class="condition-box"><label style="color:#ff6b35">STRESS (Max 4)</label><input type="number" id="stress" min="0" max="4" value="0"></div>
                     </div>
                 </div>
 
                 <div class="section">
-                    <div class="section-header">5. EQUIPAGGIAMENTO E CROMO</div>
-                    <textarea id="inventory" style="height: 200px;" placeholder="Armi, impianti cyber, debiti..."></textarea>
+                    <div class="section-header">5. CROMO & GEAR</div>
+                    <textarea id="inventory" style="height: 200px;" placeholder="Impianti oculari, Cyber-deck, Katana termica..."></textarea>
                 </div>
                 
                 <div class="section">
-                    <div class="section-header">6. BACKGROUND</div>
-                    <textarea id="bio" style="height: 100px;" placeholder="Perché sei ancora vivo?"></textarea>
+                    <div class="section-header">6. DISPERAZIONE (BIO)</div>
+                    <textarea id="bio" style="height: 100px;" placeholder="Qual è il tuo ultimo desiderio?"></textarea>
                 </div>
             </div>
         </div>
 
         <div class="button-group">
             <button onclick="window.print()">🖨️ Stampa PDF</button>
-            <button onclick="exportFinalSheet()">🎭 Scarica Scheda (Testo)</button>
-            <button class="reset" onclick="resetSheet()">🗑️ Reset Totale</button>
+            <button onclick="exportFinalSheet()">🎭 Esporta JSON/Testo</button>
+            <button class="reset" onclick="resetSheet()">🗑️ Reset</button>
         </div>
     </div>
 
     <script>
-        // Gestione UI Classi
         function updateUI(radio) {
             document.querySelectorAll('.class-option').forEach(el => el.classList.remove('selected'));
             radio.parentElement.classList.add('selected');
-            
             document.querySelectorAll('.skills-selector').forEach(el => el.classList.remove('active'));
+            document.getElementById('skills-placeholder').style.display = 'none';
             const skillBox = document.getElementById('skills-' + radio.value);
             if(skillBox) skillBox.classList.add('active');
-            
+            else document.getElementById('skills-placeholder').style.display = 'block';
             saveData();
         }
 
-        // Funzione di Export Reale
         function exportFinalSheet() {
+            const selectedSkills = [];
+            document.querySelectorAll('.skill-cb:checked').forEach(cb => {
+                selectedSkills.push(cb.nextElementSibling.textContent);
+            });
+
             const data = {
-                Nome: document.getElementById('name').value,
-                Classe: document.querySelector('input[name="class"]:checked')?.value || 'Nessuna',
-                Statistiche: {
-                    Muscoli: document.getElementById('muscoli').value,
-                    Punk: document.getElementById('punk').value,
-                    Social: document.getElementById('social').value,
-                    Velocita: document.getElementById('velocita').value,
-                    Mente: document.getElementById('mente').value
+                "GIOCO": "ALICEPUNK",
+                "ALIAS": document.getElementById('name').value || "SCONOSCIUTO",
+                "ARCHETIPO": document.querySelector('input[name="class"]:checked')?.value.toUpperCase() || "NON DEFINITO",
+                "ABILITA_SCELTE": selectedSkills,
+                "STATISTICHE": {
+                    "MUSCOLI": document.getElementById('muscoli').value,
+                    "PUNK": document.getElementById('punk').value,
+                    "SOCIAL": document.getElementById('social').value,
+                    "VELOCITA": document.getElementById('velocita').value,
+                    "MENTE": document.getElementById('mente').value
                 },
-                Stato: {
-                    Danni: document.getElementById('danni').value,
-                    Stress: document.getElementById('stress').value
+                "STATO": {
+                    "DANNI": document.getElementById('danni').value + "/8",
+                    "STRESS": document.getElementById('stress').value + "/4"
                 },
-                Inventario: document.getElementById('inventory').value,
-                Storia: document.getElementById('bio').value
+                "CROMO_EQUIP": document.getElementById('inventory').value,
+                "DISPERAZIONE": document.getElementById('bio').value
             };
 
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'text/plain'});
+            const blob = new Blob([JSON.stringify(data, null, 4)], {type: 'application/json'});
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `ALICEPUNK_${data.Nome || 'Sconosciuto'}.txt`;
+            a.download = `ALICEPUNK_SHEET_${data.ALIAS}.json`;
             a.click();
+            alert("Esportazione completata. File scaricato!");
         }
 
-        // Reset
         function resetSheet() {
-            if(confirm("Sei sicuro? Perderai tutti i progressi del personaggio.")) {
+            if(confirm("Cancellare i dati del soggetto?")) {
                 localStorage.clear();
                 location.reload();
             }
         }
 
-        // Auto-salvataggio
         function saveData() {
             const inputs = document.querySelectorAll('input, textarea');
             inputs.forEach(input => {
@@ -278,7 +246,6 @@
             inputs.forEach(input => {
                 const val = localStorage.getItem(input.id || input.name);
                 if(!val) return;
-                
                 if(input.type === 'radio' && input.value === val) {
                     input.checked = true;
                     updateUI(input);
@@ -288,7 +255,6 @@
                     input.value = val;
                 }
             });
-            
             document.addEventListener('input', saveData);
         };
     </script>
