@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALICEPUNK - Scheda Personaggio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 4px solid #ff006e;
+            padding-bottom: 15px;
+        }
+        .title {
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff006e, #00d9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            font-style: italic;
+        }
+        .two-column-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .section { page-break-inside: avoid; }
+        .section-header {
+            background: linear-gradient(135deg, #ff006e 0%, #8b00ff 100%);
+            color: white;
+            padding: 10px 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .instruction {
+            background: #f5f5f5;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            font-size: 0.85em;
+            color: #555;
+            border-left: 3px solid #ff006e;
+        }
+        .instruction strong { color: #ff006e; }
+        .form-group { margin: 12px 0; }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #ff006e;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #ff006e;
+            box-shadow: 0 0 5px rgba(255, 0, 110, 0.3);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .approaches-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .approach-item {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 100px 1fr 60px;
+            gap: 10px;
+            align-items: center;
+        }
+        .approach-name {
+            font-weight: bold;
+            color: #ff006e;
+            font-size: 1em;
+        }
+        .approach-desc {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.4;
+        }
+        .approach-value input {
+            width: 50px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 2px solid #ff006e;
+            border-radius: 5px;
+            padding: 6px;
+        }
+        .pool-total {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .pool-total.valid { background: #d4edda; border-color: #28a745; color: #155724; }
+        .pool-total.invalid { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .class-option {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .class-option:hover {
+            border-color: #ff006e;
+            transform: scale(1.03);
+        }
+        .class-option.selected {
+            background: #ff006e;
+            color: white;
+            border-color: #ff006e;
+        }
+        .class-option input[type="radio"] { display: none; }
+        .skills-selector {
+            background: #e8f8ff;
+            border: 2px solid #00d9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+        .skills-selector.active { display: block; }
+        .skill-item {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .skill-item:hover {
+            border-color: #00d9ff;
+            transform: translateX(3px);
+        }
+        .skill-item input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #00d9ff;
+        }
+        .skill-content {
+            flex: 1;
+        }
+        .skill-name {
+            font-weight: bold;
+            color: #00d9ff;
+            font-size: 0.95em;
+            margin-bottom: 3px;
+        }
+        .skill-desc {
+            font-size: 0.8em;
+            color: #666;
+            line-height: 1.4;
+        }
+        .cyberware-grid {
+            display: grid;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .cyberware-item {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cyberware-item:hover {
+            border-color: #8b00ff;
+            transform: translateX(3px);
+        }
+        .cyberware-item input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #8b00ff;
+        }
+        .cyberware-content {
+            flex: 1;
+        }
+        .cyberware-name {
+            font-weight: bold;
+            color: #8b00ff;
+            font-size: 0.95em;
+        }
+        .cyberware-effect {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 2px;
+        }
+        .cyberware-price {
+            font-weight: bold;
+            color: #ff006e;
+            font-size: 0.9em;
+            min-width: 120px;
+            text-align: right;
+        }
+        .cyberware-free {
+            color: #28a745;
+        }
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        .price-table th {
+            background: #ff006e;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .price-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .price-table tr:hover {
+            background: #f9f9f9;
+        }
+        .price-table input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #ff006e;
+        }
+        .condition-tracker {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .condition-box {
+            flex: 1;
+            min-width: 200px;
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .condition-label {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .condition-boxes {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .condition-boxes input[type="checkbox"] {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            accent-color: #ff006e;
+        }
+        .condition-note {
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 8px;
+        }
+        .rules-box {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        .rules-box h3 {
+            color: #ff006e;
+            margin: 12px 0 8px 0;
+            font-size: 1.1em;
+        }
+        .rules-box p {
+            margin: 6px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+        .button-group button {
+            background: linear-gradient(135deg, #ff006e 0%, #8b00ff 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
+        }
+        .button-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 110, 0.4);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            color: #666;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+            .button-group { display: none; }
+            .container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">ALICEPUNK</div>
+            <div class="subtitle">Scheda Personaggio - Sistema d10 Pool</div>
+        </div>
+
+        <div class="section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px; margin-bottom: 20px;">
+            <h3 style="color: #ff006e; font-size: 1.5em; margin-bottom: 15px; text-align: center;">🌆 IL MONDO DI ALICEPUNK</h3>
+            <p style="margin-bottom: 10px; line-height: 1.8;">
+                <strong style="color: #00d9ff;">Anno 2087.</strong> Le megacorporazioni controllano tutto: governi, risorse, vite. La tecnologia ha superato l'umanità. 
+                Il divario tra ultra-ricchi nelle torri scintillanti e disperati nelle strade al neon non è mai stato così ampio.
+            </p>
+            <p style="margin-bottom: 10px; line-height: 1.8;">
+                Tu sei un <strong style="color: #ff006e;">runner</strong> - un mercenario, un ribelle, un sopravvissuto. Il tuo corpo è metallo quanto carne. 
+                La rete è la tua seconda casa. Ogni lavoro potrebbe essere l'ultimo, ma i crediti chiamano e l'adrenalina scorre nel sangue sintetico.
+            </p>
+            <p style="line-height: 1.8;">
+                <strong style="color: #00d9ff;">Neon. Chrome. Cyberspazio. Sopravvivenza.</strong> Benvenuto nella giungla digitale.
+            </p>
+        </div>
+
+        <div class="section" style="margin-bottom: 30px;">
+            <h3 style="color: #ff006e; font-size: 1.3em; margin-bottom: 15px; text-align: center;">⚡ LE CLASSI</h3>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 15px;">
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/fTGpbQJy/netrunner.jpg" alt="Netrunner" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">💻 NETRUNNER</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Hacker della rete, infiltrato digitale</div>
+                </div>
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/7LjXNxqg/solitario.jpg" alt="Solitario" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">⚔️ SOLITARIO</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Mercenario letale, macchina da guerra</div>
+                </div>
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/90mLZGxB/corporativo.jpg" alt="Corporativo" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">💼 CORPORATIVO</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Agente aziendale, networker d'élite</div>
+                </div>
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/MGBh1HNG/nomade.jpg" alt="Nomade" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">🏍️ NOMADE</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Vagabondo delle badlands, clan mobile</div>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/B6nYZ7zZ/medtech.jpg" alt="Medtech" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">🏥 MEDTECH</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Medico cybernetico, salvatore di vite</div>
+                </div>
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/zv7hbpj7/fixer.jpg" alt="Fixer" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">🤝 FIXER</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Intermediario di strada, trafficante</div>
+                </div>
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/N0wdHfgG/dreamer.jpg" alt="Dreamer" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">🌐 DREAMER</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Coscienza digitale, fantasma nella rete</div>
+                </div>
+                <div style="text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 2px solid #ddd;">
+                    <img src="https://i.postimg.cc/rpBzLqcK/ronin.jpg" alt="Ronin" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #ff006e; font-size: 0.95em;">⛩️ RONIN</div>
+                    <div style="font-size: 0.75em; color: #666; margin-top: 5px;">Guerriero bushido, samurai cyber</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="two-column-grid">
+            <div class="column">
+                <div class="section">
+                    <div class="section-header">1. INFO BASE</div>
+                    <div class="form-group">
+                        <label for="name">Nome:</label>
+                        <input type="text" id="name" placeholder="Il tuo nome da runner...">
+                    </div>
+                    <div class="form-group">
+                        <label for="look">Look:</label>
+                        <input type="text" id="look" placeholder="Chrome, vestiti, vibe...">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">2. APPROCCI</div>
+                    <div class="instruction">
+                        <strong>Il totale DEVE essere 10.</strong> Minimo 0, massimo 5 per approccio.
+                    </div>
+                    <div id="poolTotal" class="pool-total">Totale: 0 / 10</div>
+                    <div class="approaches-grid">
+                        <div class="approach-item">
+                            <div class="approach-name">PUNK</div>
+                            <div class="approach-desc">Hack, tech, rete. Risolvi con cervello elettronico e conoscenza digitale.</div>
+                            <div class="approach-value"><input type="number" id="punk" min="0" max="5" value="0" oninput="updatePoolTotal()"></div>
+                        </div>
+                        <div class="approach-item">
+                            <div class="approach-name">CHROME</div>
+                            <div class="approach-desc">Forza bruta, cyberware, combattimento. Azione diretta con muscoli e metallo.</div>
+                            <div class="approach-value"><input type="number" id="chrome" min="0" max="5" value="0" oninput="updatePoolTotal()"></div>
+                        </div>
+                        <div class="approach-item">
+                            <div class="approach-name">EDGE</div>
+                            <div class="approach-desc">Riflessi, agilità, velocità. Schivi, ti muovi, reagisci. <strong>Usato come DIFESA.</strong></div>
+                            <div class="approach-value"><input type="number" id="edge" min="0" max="5" value="0" oninput="updatePoolTotal()"></div>
+                        </div>
+                        <div class="approach-item">
+                            <div class="approach-name">SOUL</div>
+                            <div class="approach-desc">Carisma, empatia, persuasione, umanità. Parli, senti, percepisci, negozi, convinci con stile e intuito.</div>
+                            <div class="approach-value"><input type="number" id="soul" min="0" max="5" value="0" oninput="updatePoolTotal()"></div>
+                        </div>
+                        <div class="approach-item">
+                            <div class="approach-name">BRAIN</div>
+                            <div class="approach-desc">Logica, analisi, memoria. Pensi, pianifichi, deduci con intelligenza pura.</div>
+                            <div class="approach-value"><input type="number" id="brain" min="0" max="5" value="0" oninput="updatePoolTotal()"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">3. CLASSE</div>
+                    <div class="instruction">
+                        <strong>Scegli UNA classe</strong> e poi <strong>2 abilità</strong> della classe.
+                    </div>
+                    <div class="class-grid">
+                        <label class="class-option">
+                            <input type="radio" name="class" value="netrunner" onclick="showClassSkills('netrunner')">
+                            💻 Netrunner
+                        </label>
+                        <label class="class-option">
+                            <input type="radio" name="class" value="solitario" onclick="showClassSkills('solitario')">
+                            ⚔️ Solitario
+                        </label>
+                        <label class="class-option">
+                            <input type="radio" name="class" value="corporativo" onclick="showClassSkills('corporativo')">
+                            💼 Corporativo
+                        </label>
+                        <label class="class-option">
+                            <input type="radio" name="class" value="nomade" onclick="showClassSkills('nomade')">
+                            🏍️ Nomade
+                        </label>
+                        <label class="class-option">
+                            <input type="radio" name="class" value="medtech" onclick="showClassSkills('medtech')">
+                            🏥 Medtech
+                        </label>
+                        <label class="class-option">
+                            <input type="radio" name="class" value="fixer" onclick="showClassSkills('fixer')">
+                            🤝 Fixer
+                        </label>
+                        <label class="class-option">
+                            <input type="radio" name="class" value="dreamer" onclick="showClassSkills('dreamer')">
+                            🌐 Dreamer
+                        </label>
+                        <label class="class-option">
+                            <input type="radio" name="class" value="ronin" onclick="showClassSkills('ronin')">
+                            ⛩️ Ronin
+                        </label>
+                    </div>
+
+                    <div id="skills-netrunner" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">💻 Abilità Netrunner (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_net1" onclick="limitSkills('netrunner')">
+                            <div class="skill-content">
+                                <div class="skill-name">Jack In</div>
+                                <div class="skill-desc">Ti colleghi alla rete istantaneamente e navighi nel cyberspazio come fosse casa tua. Bypassa firewall base e accedi a sistemi non militari con facilità.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_net2" onclick="limitSkills('netrunner')">
+                            <div class="skill-content">
+                                <div class="skill-name">ICE Breaker</div>
+                                <div class="skill-desc">Rompi protezioni digitali avanzate. +1d10 quando attacchi sistemi protetti o combatti programmi di sicurezza (ICE) nel cyberspazio.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_net3" onclick="limitSkills('netrunner')">
+                            <div class="skill-content">
+                                <div class="skill-name">Data Mining</div>
+                                <div class="skill-desc">Estrai informazioni nascoste da database e memorie. Trova quello che altri non vedono: file cancellati, cronologie, segreti sepolti nel codice.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_net4" onclick="limitSkills('netrunner')">
+                            <div class="skill-content">
+                                <div class="skill-name">Ghost Protocol</div>
+                                <div class="skill-desc">Lasci zero tracce digitali. Cancelli log, copri le tue tracce nella rete e diventi invisibile ai sistemi di sorveglianza elettronica.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_net5" onclick="limitSkills('netrunner')">
+                            <div class="skill-content">
+                                <div class="skill-name">System Override</div>
+                                <div class="skill-desc">Prendi controllo remoto di dispositivi connessi: porte, telecamere, veicoli, armi smart. Se ha un chip, puoi possederlo per 1 scena.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="skills-solitario" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">⚔️ Abilità Solitario (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_sol1" onclick="limitSkills('solitario')">
+                            <div class="skill-content">
+                                <div class="skill-name">Combat Sense</div>
+                                <div class="skill-desc">I tuoi riflessi da combattimento sono affinati. +1d10 in iniziativa e difesa. Percepisci il pericolo prima che arrivi.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_sol2" onclick="limitSkills('solitario')">
+                            <div class="skill-content">
+                                <div class="skill-name">Executioner</div>
+                                <div class="skill-desc">Infliggi +1 danno con TUTTE le armi. Sei addestrato a finire il lavoro velocemente e senza sprechi.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_sol3" onclick="limitSkills('solitario')">
+                            <div class="skill-content">
+                                <div class="skill-name">Threat Assessment</div>
+                                <div class="skill-desc">Analizzi nemici e situazioni tattiche istantaneamente. Il GM ti rivela punti deboli, numeri, e livello di minaccia reale.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_sol4" onclick="limitSkills('solitario')">
+                            <div class="skill-content">
+                                <div class="skill-name">Solo Reputation</div>
+                                <div class="skill-desc">Sei conosciuto nella scena mercenaria. +1d10 quando intimidisci o negozi con altri combattenti. Le tue gesta precedono la tua presenza.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_sol5" onclick="limitSkills('solitario')">
+                            <div class="skill-content">
+                                <div class="skill-name">Never Back Down</div>
+                                <div class="skill-desc">Una volta per sessione, ignora completamente 1 condizione di DANNO. Il dolore è solo un segnale che puoi silenziare.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="skills-corporativo" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">💼 Abilità Corporativo (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_corp1" onclick="limitSkills('corporativo')">
+                            <div class="skill-content">
+                                <div class="skill-name">Resources</div>
+                                <div class="skill-desc">Hai accesso a fondi aziendali. Una volta per sessione, ottieni equipaggiamento (max 500₡) o supporto logistico senza costi immediati.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_corp2" onclick="limitSkills('corporativo')">
+                            <div class="skill-content">
+                                <div class="skill-name">Corporate Network</div>
+                                <div class="skill-desc">+1d10 quando cerchi informazioni o contatti attraverso canali aziendali. Conosci gente che conosce gente in posti alti.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_corp3" onclick="limitSkills('corporativo')">
+                            <div class="skill-content">
+                                <div class="skill-name">Negotiator</div>
+                                <div class="skill-desc">Sei un professionista nelle trattative. +1d10 in negoziazioni, contratti e situazioni diplomatiche. Trasformi ogni affare in un vantaggio.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_corp4" onclick="limitSkills('corporativo')">
+                            <div class="skill-content">
+                                <div class="skill-name">Executive Privilege</div>
+                                <div class="skill-desc">Hai autorità corporativa. Accedi a zone riservate, richiedi assistenza di sicurezza aziendale, bypassi burocrazia di basso livello.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_corp5" onclick="limitSkills('corporativo')">
+                            <div class="skill-content">
+                                <div class="skill-name">Insider Trading</div>
+                                <div class="skill-desc">Conosci i segreti che contano. Una volta per sessione, ottieni un'informazione critica su un'organizzazione o piano corporativo in gioco.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="skills-nomade" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">🏍️ Abilità Nomade (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_nom1" onclick="limitSkills('nomade')">
+                            <div class="skill-content">
+                                <div class="skill-name">Family Network</div>
+                                <div class="skill-desc">Hai legami con clan nomadi. Ottieni rifugio, trasporto o backup in qualsiasi città dove opera la tua famiglia o alleati nomadi.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_nom2" onclick="limitSkills('nomade')">
+                            <div class="skill-content">
+                                <div class="skill-name">Vehicle Master</div>
+                                <div class="skill-desc">+1d10 quando guidi, ripari o modifichi veicoli. Auto, moto, droni volanti - se ha un motore, lo domini.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_nom3" onclick="limitSkills('nomade')">
+                            <div class="skill-content">
+                                <div class="skill-name">Pack Mentality</div>
+                                <div class="skill-desc">Quando agisci in squadra con alleati, tutti ricevono +1d10 su azioni coordinate. La tua esperienza di clan porta coesione.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_nom4" onclick="limitSkills('nomade')">
+                            <div class="skill-content">
+                                <div class="skill-name">Wasteland Survival</div>
+                                <div class="skill-desc">Sopravvivi in ambienti estremi: deserti, zone tossiche, badlands. Trovi risorse dove altri morirebbero. +1d10 in situazioni di sopravvivenza.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_nom5" onclick="limitSkills('nomade')">
+                            <div class="skill-content">
+                                <div class="skill-name">Mobile Arsenal</div>
+                                <div class="skill-desc">Il tuo veicolo personale è armato e potenziato. Montaggio armi pesanti, armatura rinforzata e modifiche custom senza costi extra.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="skills-medtech" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">🏥 Abilità Medtech (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_med1" onclick="limitSkills('medtech')">
+                            <div class="skill-content">
+                                <div class="skill-name">Trauma Team</div>
+                                <div class="skill-desc">Curi 3 danni invece di 2 con medikit. Stabilizzi persone morenti istantaneamente. Le tue mani salvano vite.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_med2" onclick="limitSkills('medtech')">
+                            <div class="skill-content">
+                                <div class="skill-name">Cyberware Tech</div>
+                                <div class="skill-desc">Installi, ripari e modifichi cyberware. +1d10 quando lavori su impianti cibernetici. Conosci il corpo umano aumentato meglio di chiunque altro.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_med3" onclick="limitSkills('medtech')">
+                            <div class="skill-content">
+                                <div class="skill-name">Pharma Knowledge</div>
+                                <div class="skill-desc">Conosci droghe, tossine e farmaci. Identifichi sostanze, crei antidoti, sintetizzi stimolanti o sedativi con materiali di base.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_med4" onclick="limitSkills('medtech')">
+                            <div class="skill-content">
+                                <div class="skill-name">Field Surgeon</div>
+                                <div class="skill-desc">Operi anche sotto fuoco nemico. Ignori penalità ambientali quando curi. Il caos non ti distrae dalla tua professione.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_med5" onclick="limitSkills('medtech')">
+                            <div class="skill-content">
+                                <div class="skill-name">Biotech Mastery</div>
+                                <div class="skill-desc">Una volta per sessione, crei un effetto biologico custom: booster temporaneo (+1d10 per 1 scena), antidoto specifico, o analisi forense completa.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="skills-fixer" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">🤝 Abilità Fixer (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_fix1" onclick="limitSkills('fixer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Street Deals</div>
+                                <div class="skill-desc">Ottieni sconto del 20% su TUTTO l'equipaggiamento. Le tue connessioni ti permettono di comprare a prezzi che altri solo sognano.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_fix2" onclick="limitSkills('fixer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Black Market Access</div>
+                                <div class="skill-desc">Procuri equipaggiamento illegale o raro senza problemi. Armi militari, cyberware vietato, prototipi - tutto ha un prezzo e tu hai il numero giusto.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_fix3" onclick="limitSkills('fixer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Info Broker</div>
+                                <div class="skill-desc">+1d10 quando raccolgi informazioni di strada. Conosci voci, rumors e verità nascoste prima che diventino notizie.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_fix4" onclick="limitSkills('fixer')">
+                            <div class="skill-content">
+                                <div class="skill-name">I Know A Guy</div>
+                                <div class="skill-desc">Una volta per sessione, hai "un contatto perfetto" per la situazione: un hacker, un pilota, un inside man. Il GM lo introduce nella scena.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_fix5" onclick="limitSkills('fixer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Reputation Economy</div>
+                                <div class="skill-desc">La tua reputazione vale crediti. Scambi favori al posto di denaro, ottieni servizi gratis promettendo lavori futuri. La fiducia è la tua valuta.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="skills-dreamer" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">🌐 Abilità Dreamer (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_dream1" onclick="limitSkills('dreamer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Full Virtual</div>
+                                <div class="skill-desc">Il tuo corpo biologico è in coma/stasi. Esisti solo come coscienza digitale. Immune a danni fisici ma vulnerabile a attacchi nella rete.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_dream2" onclick="limitSkills('dreamer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Hologram Projection</div>
+                                <div class="skill-desc">Proietti ologrammi solidi nel mondo reale. Crei avatar fisici temporanei, muri di luce, illusioni tattili. Durata: 1 scena.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_dream3" onclick="limitSkills('dreamer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Drone Army</div>
+                                <div class="skill-desc">Controlli fino a 3 droni simultaneamente come estensioni del tuo essere. Vedi attraverso i loro occhi, agisci attraverso i loro corpi.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_dream4" onclick="limitSkills('dreamer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Digital Immortality</div>
+                                <div class="skill-desc">Se un drone/corpo ospite viene distrutto, trasferisci la coscienza in un altro device connesso entro 1 round. Morte fisica non significa morte vera.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_dream5" onclick="limitSkills('dreamer')">
+                            <div class="skill-content">
+                                <div class="skill-name">Reality Hacking</div>
+                                <div class="skill-desc">+1d10 quando manipoli percezioni attraverso AR/VR (Realtà Aumentata/Virtuale). Sovrascrivi quello che le persone vedono, sentono, percepiscono attraverso i loro impianti neurali.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="skills-ronin" class="skills-selector">
+                        <h4 style="color: #00d9ff; margin-bottom: 10px;">⛩️ Abilità Ronin (scegli 2)</h4>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_ronin1" onclick="limitSkills('ronin')">
+                            <div class="skill-content">
+                                <div class="skill-name">Bushido Code</div>
+                                <div class="skill-desc">Il tuo codice d'onore è incrollabile. +1d10 quando mantieni la tua parola, proteggi i deboli o affronti sfide con onore. Il rispetto precede la vittoria.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_ronin2" onclick="limitSkills('ronin')">
+                            <div class="skill-content">
+                                <div class="skill-name">Katana Master</div>
+                                <div class="skill-desc">Con armi bianche (katana, wakizashi, coltelli) infliggi +2 danni invece di +1. La lama è estensione della tua volontà.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_ronin3" onclick="limitSkills('ronin')">
+                            <div class="skill-content">
+                                <div class="skill-name">Zen Focus</div>
+                                <div class="skill-desc">Ignori penalità da STRESS durante combattimento. La meditazione guerriera ti centra anche nel caos più totale.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_ronin4" onclick="limitSkills('ronin')">
+                            <div class="skill-content">
+                                <div class="skill-name">Iaijutsu Strike</div>
+                                <div class="skill-desc">Il tuo primo attacco in combattimento ottiene +1d10. L'arte del colpo singolo decisivo è la tua firma letale.</div>
+                            </div>
+                        </label>
+                        <label class="skill-item">
+                            <input type="checkbox" id="skill_ronin5" onclick="limitSkills('ronin')">
+                            <div class="skill-content">
+                                <div class="skill-name">Warrior's Resolve</div>
+                                <div class="skill-desc">Una volta per sessione, re-tira completamente un tiro fallito in combattimento. Il destino riconosce la determinazione del vero guerriero.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">4. CYBERWARE</div>
+                    
+                    <h4 style="color: #8b00ff; margin: 12px 0; font-size: 1em;">⚡ Cyberware Funzionale</h4>
+                    <div class="cyberware-grid">
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_neural">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Neural Link</div>
+                                <div class="cyberware-effect">+1d10 Punk</div>
+                            </div>
+                            <div class="cyberware-price">800₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_muscoli">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Muscoli Sintetici</div>
+                                <div class="cyberware-effect">+1d10 Chrome</div>
+                            </div>
+                            <div class="cyberware-price">900₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_riflessi">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Riflessi Boost</div>
+                                <div class="cyberware-effect">+1d10 Edge</div>
+                            </div>
+                            <div class="cyberware-price">1000₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_processor">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Brain Processor</div>
+                                <div class="cyberware-effect">+1d10 Brain</div>
+                            </div>
+                            <div class="cyberware-price">850₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_empath">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Empath Chip</div>
+                                <div class="cyberware-effect">+1d10 Soul</div>
+                            </div>
+                            <div class="cyberware-price">750₡</div>
+                        </label>
+                    </div>
+
+                    <h4 style="color: #8b00ff; margin: 12px 0; font-size: 1em;">🔧 Cyberware Generale</h4>
+                    <div class="cyberware-grid">
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_optics">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Optics Enhanced</div>
+                                <div class="cyberware-effect">Visione termica/zoom/low-light</div>
+                            </div>
+                            <div class="cyberware-price">600₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_armor">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Subdermal Armor</div>
+                                <div class="cyberware-effect">+1 Armatura permanente</div>
+                            </div>
+                            <div class="cyberware-price">1200₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_audio">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Audio Suite</div>
+                                <div class="cyberware-effect">Filtri suoni, amplificazione, registrazione</div>
+                            </div>
+                            <div class="cyberware-price">500₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_interface">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Interface Plug</div>
+                                <div class="cyberware-effect">Connessione diretta a dispositivi</div>
+                            </div>
+                            <div class="cyberware-price">400₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_toxin">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Toxin Binders</div>
+                                <div class="cyberware-effect">+1d10 vs veleni/droghe/tossine</div>
+                            </div>
+                            <div class="cyberware-price">700₡</div>
+                        </label>
+                    </div>
+
+                    <h4 style="color: #8b00ff; margin: 12px 0; font-size: 1em;">💅 Cyberware Estetico</h4>
+                    <div class="instruction">
+                        <strong>1 cyberware estetico GRATIS</strong>, il secondo costa 200₡
+                    </div>
+                    <div class="cyberware-grid">
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_mood">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Mood Skin</div>
+                                <div class="cyberware-effect">Cambia colore pelle/capelli</div>
+                            </div>
+                            <div class="cyberware-price cyberware-free">1° GRATIS / 2° 200₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_led">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">LED Tattoos</div>
+                                <div class="cyberware-effect">Tatuaggi luminosi programmabili</div>
+                            </div>
+                            <div class="cyberware-price cyberware-free">1° GRATIS / 2° 200₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_eyes">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Fashion Eyes</div>
+                                <div class="cyberware-effect">Occhi colorati/LED estetici</div>
+                            </div>
+                            <div class="cyberware-price cyberware-free">1° GRATIS / 2° 200₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_nails">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Chrome Nails</div>
+                                <div class="cyberware-effect">Unghie metalliche/luminose</div>
+                            </div>
+                            <div class="cyberware-price cyberware-free">1° GRATIS / 2° 200₡</div>
+                        </label>
+                        <label class="cyberware-item">
+                            <input type="checkbox" id="cyber_voice">
+                            <div class="cyberware-content">
+                                <div class="cyberware-name">Voice Modulator Lite</div>
+                                <div class="cyberware-effect">Cambia tono/timbro voce a piacere</div>
+                            </div>
+                            <div class="cyberware-price cyberware-free">1° GRATIS / 2° 200₡</div>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="cyberware_extra">Altri Cyberware custom:</label>
+                        <textarea id="cyberware_extra" rows="2" placeholder="Descrivi altro chrome..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="section">
+                    <div class="section-header">5. CONDIZIONI</div>
+                    <div class="condition-tracker">
+                        <div class="condition-box">
+                            <div class="condition-label" style="color: #ff006e;">💔 DANNI</div>
+                            <div class="condition-boxes">
+                                <input type="checkbox" id="danno1">
+                                <input type="checkbox" id="danno2">
+                                <input type="checkbox" id="danno3">
+                                <input type="checkbox" id="danno4">
+                                <input type="checkbox" id="danno5">
+                                <input type="checkbox" id="danno6">
+                                <input type="checkbox" id="danno7">
+                                <input type="checkbox" id="danno8">
+                            </div>
+                            <div class="condition-note">A 8 sei KO</div>
+                        </div>
+                        <div class="condition-box">
+                            <div class="condition-label" style="color: #ff6b35;">⚡ STRESS</div>
+                            <div class="condition-boxes">
+                                <input type="checkbox" id="stress1">
+                                <input type="checkbox" id="stress2">
+                                <input type="checkbox" id="stress3">
+                                <input type="checkbox" id="stress4">
+                            </div>
+                            <div class="condition-note">A 4 agisci disperato</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">6. EQUIPAGGIAMENTO</div>
+
+                    <h4 style="color: #ff006e; margin: 12px 0; font-size: 1em;">💰 Armi</h4>
+                    <table class="price-table">
+                        <tr><th style="width: 30px;"></th><th>Arma</th><th>Danni</th><th>Prezzo</th><th style="width: 50px;">Q.tà</th></tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_coltello"></td>
+                            <td>Coltello</td>
+                            <td>1</td>
+                            <td>50₡</td>
+                            <td><input type="number" id="qty_coltello" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_pistola_l"></td>
+                            <td>Pistola Leggera</td>
+                            <td>2</td>
+                            <td>200₡</td>
+                            <td><input type="number" id="qty_pistola_l" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_pistola_p"></td>
+                            <td>Pistola Pesante</td>
+                            <td>3</td>
+                            <td>400₡</td>
+                            <td><input type="number" id="qty_pistola_p" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_katana"></td>
+                            <td>Katana</td>
+                            <td>3</td>
+                            <td>350₡</td>
+                            <td><input type="number" id="qty_katana" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_fucile"></td>
+                            <td>Fucile d'Assalto</td>
+                            <td>4</td>
+                            <td>800₡</td>
+                            <td><input type="number" id="qty_fucile" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_shotgun"></td>
+                            <td>Shotgun</td>
+                            <td>5</td>
+                            <td>600₡</td>
+                            <td><input type="number" id="qty_shotgun" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                    </table>
+
+                    <h4 style="color: #ff006e; margin: 12px 0; font-size: 1em;">🛡️ Armature &amp; Gear</h4>
+                    <table class="price-table">
+                        <tr><th style="width: 30px;"></th><th>Oggetto</th><th>Effetto</th><th>Prezzo</th><th style="width: 50px;">Q.tà</th></tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_giacca"></td>
+                            <td>Giacca Rinforzata</td>
+                            <td>Armatura +1</td>
+                            <td>250₡</td>
+                            <td><input type="number" id="qty_giacca" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_armor_l"></td>
+                            <td>Armatura Leggera</td>
+                            <td>Armatura +2</td>
+                            <td>500₡</td>
+                            <td><input type="number" id="qty_armor_l" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_armor_p"></td>
+                            <td>Armatura Pesante</td>
+                            <td>Armatura +3</td>
+                            <td>900₡</td>
+                            <td><input type="number" id="qty_armor_p" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_deck"></td>
+                            <td>Cyberdeck Base</td>
+                            <td>+1d10 Punk</td>
+                            <td>600₡</td>
+                            <td><input type="number" id="qty_deck" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_medikit"></td>
+                            <td>Medikit</td>
+                            <td>Cura 2 danni</td>
+                            <td>150₡</td>
+                            <td><input type="number" id="qty_medikit" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_punkmedikit"></td>
+                            <td>PunkMedikit</td>
+                            <td>Cura 4 danni</td>
+                            <td>800₡</td>
+                            <td><input type="number" id="qty_punkmedikit" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="eq_stimpack"></td>
+                            <td>Stimpack</td>
+                            <td>Cura 1 stress</td>
+                            <td>100₡</td>
+                            <td><input type="number" id="qty_stimpack" min="0" max="99" value="0" style="width: 40px; padding: 3px; text-align: center;"></td>
+                        </tr>
+                    </table>
+
+                    <div class="form-group">
+                        <label for="equipment_other">Altro Gear:</label>
+                        <textarea id="equipment_other" rows="3" placeholder="Equipaggiamento aggiuntivo..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">7. CREDITI INIZIALI</div>
+                    <div class="instruction">
+                        <strong>Formula:</strong> Tira 4d10, × 100, +600₡<br>
+                        <strong>Bonus:</strong> Netrunner +100₡ | Solitario +50₡ | Corporativo +400₡ | Nomade +0₡ | Medtech +150₡ | Fixer +300₡ | Dreamer +200₡ | Ronin +100₡
+                    </div>
+                    <div class="form-group">
+                        <label for="credits">Crediti Attuali (₡):</label>
+                        <input type="number" id="credits" placeholder="1000-4600₡ + bonus classe">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">8. BACKGROUND</div>
+                    <div class="form-group">
+                        <label for="background">Storia:</label>
+                        <textarea id="background" rows="5" placeholder="Chi eri? Cosa vuoi?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contacts">Contatti:</label>
+                        <textarea id="contacts" rows="3" placeholder="2-3 persone importanti..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">9. XP & PROGRESSIONE</div>
+                    <div class="instruction">
+                        <strong>Guadagni XP:</strong><br>
+                        • Critico (3+ succ) con abilità: +1 XP<br>
+                        • Missione completata: 1-3 XP<br>
+                        • Premio Master + Giocatori: 0-2 XP<br><br>
+                        <strong>Spendi XP:</strong><br>
+                        • +1 a un approccio: 5 XP<br>
+                        • Nuova abilità classe: 3 XP<br>
+                        • Migliora cyberware: 5 XP
+                    </div>
+                    <div class="form-group">
+                        <label for="xp">Punti Esperienza:</label>
+                        <input type="number" id="xp" placeholder="0" min="0">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">REGOLE</div>
+                    <div class="rules-box">
+                        <h3>🎲 Sistema</h3>
+                        <p>1. Scegli approccio | 2. Tira Nd10 | 3. Conta 6+ = successi</p>
+                        
+                        <p><strong>Risultati:</strong><br>
+                        • 0 = Critico negativo<br>
+                        • 1 = Player sceglie complicazione<br>
+                        • 2 = Parziale (con costo)<br>
+                        • <strong>3+ = Critico (+1 XP!)</strong></p>
+                        
+                        <h3>⚔️ Combattimento</h3>
+                        <p>Attacco vs Difesa (EDGE) | Danno = arma - armatura</p>
+                        
+                        <h3>💭 Note</h3>
+                        <p><strong>AR/VR:</strong> Realtà Aumentata (sovrapposizioni digitali sul mondo reale) e Realtà Virtuale (immersione completa in mondo digitale).<br>
+                        <strong>Dreamer:</strong> Intrappolato nella rete, ologrammi/droni.<br>
+                        <strong>Ronin:</strong> Guerriero Bushido in mondo cyber.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button onclick="window.print()">🖨️ Stampa</button>
+            <button onclick="exportCharacter()">💾 Esporta Personaggio</button>
+            <button onclick="clearCharacter()">🗑️ Cancella</button>
+        </div>
+
+        <div class="footer">
+            <p><em>AlicePunk - Sistema d10 Pool. Hack it, fallo tuo.</em></p>
+        </div>
+    </div>
+
+    <script>
+        const classSkills = {
+            netrunner: ['skill_net1', 'skill_net2', 'skill_net3', 'skill_net4', 'skill_net5'],
+            solitario: ['skill_sol1', 'skill_sol2', 'skill_sol3', 'skill_sol4', 'skill_sol5'],
+            corporativo: ['skill_corp1', 'skill_corp2', 'skill_corp3', 'skill_corp4', 'skill_corp5'],
+            nomade: ['skill_nom1', 'skill_nom2', 'skill_nom3', 'skill_nom4', 'skill_nom5'],
+            medtech: ['skill_med1', 'skill_med2', 'skill_med3', 'skill_med4', 'skill_med5'],
+            fixer: ['skill_fix1', 'skill_fix2', 'skill_fix3', 'skill_fix4', 'skill_fix5'],
+            dreamer: ['skill_dream1', 'skill_dream2', 'skill_dream3', 'skill_dream4', 'skill_dream5'],
+            ronin: ['skill_ronin1', 'skill_ronin2', 'skill_ronin3', 'skill_ronin4', 'skill_ronin5']
+        };
+
+        function updatePoolTotal() {
+            const punk = parseInt(document.getElementById('punk').value) || 0;
+            const chrome = parseInt(document.getElementById('chrome').value) || 0;
+            const edge = parseInt(document.getElementById('edge').value) || 0;
+            const soul = parseInt(document.getElementById('soul').value) || 0;
+            const brain = parseInt(document.getElementById('brain').value) || 0;
+            
+            const total = punk + chrome + edge + soul + brain;
+            const display = document.getElementById('poolTotal');
+            display.textContent = `Totale: ${total} / 10`;
+            
+            if (total === 10) {
+                display.className = 'pool-total valid';
+            } else if (total > 10) {
+                display.className = 'pool-total invalid';
+            } else {
+                display.className = 'pool-total';
+            }
+        }
+
+        function showClassSkills(className) {
+            document.querySelectorAll('.skills-selector').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('skills-' + className).classList.add('active');
+            document.querySelectorAll('.class-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            event.target.closest('.class-option').classList.add('selected');
+        }
+
+        function limitSkills(className) {
+            const skills = classSkills[className];
+            const checked = skills.filter(id => document.getElementById(id).checked);
+            if (checked.length > 2) {
+                event.target.checked = false;
+                alert('⚠️ Puoi scegliere solo 2 abilità!');
+            }
+        }
+
+        // Auto-save functionality
+        const formInputs = document.querySelectorAll('input, textarea, select');
+        formInputs.forEach(input => {
+            const savedValue = localStorage.getItem(input.id);
+            if (savedValue !== null) {
+                if (input.type === 'checkbox') {
+                    input.checked = savedValue === 'true';
+                } else if (input.type === 'radio') {
+                    if (savedValue === input.value) {
+                        input.checked = true;
+                        if (input.name === 'class') showClassSkills(input.value);
+                    }
+                } else {
+                    input.value = savedValue;
+                }
+            }
+            input.addEventListener('input', () => {
+                if (input.type === 'checkbox') {
+                    localStorage.setItem(input.id, input.checked);
+                } else if (input.type === 'radio') {
+                    localStorage.setItem(input.id, input.value);
+                } else {
+                    localStorage.setItem(input.id, input.value);
+                }
+            });
+            if (input.type === 'radio') {
+                input.addEventListener('change', () => {
+                    localStorage.setItem(input.id, input.value);
+                });
+            }
+        });
+
+        // Initialize pool total on load
+        updatePoolTotal();
+
+        function clearCharacter() {
+            if (confirm('⚠️ Cancellare tutti i dati?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function exportCharacter() {
+            const characterData = {
+                nome: document.getElementById('name').value || 'Senza Nome',
+                look: document.getElementById('look').value || '',
+                approcci: {
+                    punk: document.getElementById('punk').value || '0',
+                    chrome: document.getElementById('chrome').value || '0',
+                    edge: document.getElementById('edge').value || '0',
+                    soul: document.getElementById('soul').value || '0',
+                    brain: document.getElementById('brain').value || '0'
+                },
+                classe: document.querySelector('input[name="class"]:checked')?.value || '',
+                abilita: [],
+                cyberware: [],
+                equipaggiamento: [],
+                danni: Array.from({length: 8}, (_, i) => document.getElementById(`danno${i+1}`).checked).filter(Boolean).length,
+                stress: Array.from({length: 4}, (_, i) => document.getElementById(`stress${i+1}`).checked).filter(Boolean).length,
+                equipaggiamento_altro: document.getElementById('equipment_other').value || '',
+                crediti: document.getElementById('credits').value || '0',
+                background: document.getElementById('background').value || '',
+                contatti: document.getElementById('contacts').value || '',
+                xp: document.getElementById('xp').value || '0'
+            };
+
+            // Raccogli abilità selezionate
+            const selectedClass = characterData.classe;
+            if (selectedClass && classSkills[selectedClass]) {
+                classSkills[selectedClass].forEach(skillId => {
+                    const checkbox = document.getElementById(skillId);
+                    if (checkbox && checkbox.checked) {
+                        const skillItem = checkbox.closest('.skill-item');
+                        const skillName = skillItem.querySelector('.skill-name').textContent;
+                        const skillDesc = skillItem.querySelector('.skill-desc').textContent;
+                        characterData.abilita.push({ nome: skillName, descrizione: skillDesc });
+                    }
+                });
+            }
+
+            // Raccogli cyberware selezionato
+            const cyberwareIds = ['cyber_neural', 'cyber_muscoli', 'cyber_riflessi', 'cyber_processor', 'cyber_empath', 'cyber_optics', 'cyber_armor', 'cyber_audio', 'cyber_interface', 'cyber_toxin', 'cyber_mood', 'cyber_led', 'cyber_eyes', 'cyber_nails', 'cyber_voice'];
+            cyberwareIds.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox && checkbox.checked) {
+                    const item = checkbox.closest('.cyberware-item');
+                    const name = item.querySelector('.cyberware-name').textContent;
+                    const effect = item.querySelector('.cyberware-effect').textContent;
+                    const price = item.querySelector('.cyberware-price').textContent;
+                    characterData.cyberware.push({ nome: name, effetto: effect, prezzo: price });
+                }
+            });
+
+            // Aggiungi cyberware extra
+            if (document.getElementById('cyberware_extra').value) {
+                characterData.cyberware.push({
+                    nome: 'Custom',
+                    effetto: document.getElementById('cyberware_extra').value,
+                    prezzo: ''
+                });
+            }
+
+            // Raccogli equipaggiamento selezionato
+            const equipIds = ['eq_coltello', 'eq_pistola_l', 'eq_pistola_p', 'eq_katana', 'eq_fucile', 'eq_shotgun', 'eq_giacca', 'eq_armor_l', 'eq_armor_p', 'eq_deck', 'eq_medikit', 'eq_punkmedikit', 'eq_stimpack'];
+            equipIds.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox && checkbox.checked) {
+                    const row = checkbox.closest('tr');
+                    const cells = row.querySelectorAll('td');
+                    const name = cells[1].textContent;
+                    const effect = cells[2].textContent;
+                    const price = cells[3].textContent;
+                    const qtyId = id.replace('eq_', 'qty_');
+                    const qty = document.getElementById(qtyId)?.value || '1';
+                    characterData.equipaggiamento.push({ nome: name, effetto: effect, prezzo: price, quantita: qty });
+                }
+            });
+
+            // Crea documento HTML pulito
+            const exportHTML = `<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${characterData.nome} - AlicePunk</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 4px solid #ff006e;
+            padding-bottom: 15px;
+        }
+        .title {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff006e, #00d9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+        }
+        .char-name {
+            font-size: 2em;
+            color: #ff006e;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #ff006e;
+        }
+        .section-title {
+            font-size: 1.3em;
+            color: #ff006e;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .info-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #8b00ff;
+            font-size: 0.9em;
+        }
+        .info-value {
+            color: #333;
+            margin-top: 3px;
+        }
+        .list-item {
+            background: white;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-left: 3px solid #00d9ff;
+        }
+        .item-name {
+            font-weight: bold;
+            color: #00d9ff;
+        }
+        .item-desc {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 3px;
+        }
+        .condition-bar {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        .condition-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff006e;
+            border-radius: 3px;
+            background: #ff006e;
+        }
+        .condition-box.empty {
+            background: white;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">ALICEPUNK</div>
+            <div class="char-name">${characterData.nome}</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📋 Info Base</div>
+            <div class="info-grid">
+                ${characterData.look ? `<div class="info-item"><div class="info-label">Look</div><div class="info-value">${characterData.look}</div></div>` : ''}
+                ${characterData.classe ? `<div class="info-item"><div class="info-label">Classe</div><div class="info-value">${characterData.classe}</div></div>` : ''}
+                <div class="info-item"><div class="info-label">Crediti</div><div class="info-value">${characterData.crediti}₡</div></div>
+                <div class="info-item"><div class="info-label">XP</div><div class="info-value">${characterData.xp}</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🎲 Approcci</div>
+            <div class="info-grid">
+                <div class="info-item"><div class="info-label">PUNK</div><div class="info-value">${characterData.approcci.punk}d10</div></div>
+                <div class="info-item"><div class="info-label">CHROME</div><div class="info-value">${characterData.approcci.chrome}d10</div></div>
+                <div class="info-item"><div class="info-label">EDGE (Difesa)</div><div class="info-value">${characterData.approcci.edge}d10</div></div>
+                <div class="info-item"><div class="info-label">SOUL</div><div class="info-value">${characterData.approcci.soul}d10</div></div>
+                <div class="info-item"><div class="info-label">BRAIN</div><div class="info-value">${characterData.approcci.brain}d10</div></div>
+            </div>
+        </div>
+
+        ${characterData.abilita.length > 0 ? `
+        <div class="section">
+            <div class="section-title">⚡ Abilità di Classe</div>
+            ${characterData.abilita.map(skill => `
+            <div class="list-item">
+                <div class="item-name">${skill.nome}</div>
+                <div class="item-desc">${skill.descrizione}</div>
+            </div>
+            `).join('')}
+        </div>
+        ` : ''}
+
+        ${characterData.cyberware.length > 0 ? `
+        <div class="section">
+            <div class="section-title">🔧 Cyberware</div>
+            ${characterData.cyberware.map(cyber => `
+            <div class="list-item">
+                <div class="item-name">${cyber.nome}${cyber.prezzo ? ' - ' + cyber.prezzo : ''}</div>
+                <div class="item-desc">${cyber.effetto}</div>
+            </div>
+            `).join('')}
+        </div>
+        ` : ''}
+
+        ${characterData.equipaggiamento.length > 0 || characterData.equipaggiamento_altro ? `
+        <div class="section">
+            <div class="section-title">🎒 Equipaggiamento</div>
+            ${characterData.equipaggiamento.map(eq => `
+            <div class="list-item">
+                <div class="item-name">${eq.nome}${eq.quantita && eq.quantita !== '1' && eq.quantita !== '0' ? ' x' + eq.quantita : ''} - ${eq.prezzo}</div>
+                <div class="item-desc">${eq.effetto}</div>
+            </div>
+            `).join('')}
+            ${characterData.equipaggiamento_altro ? `<div class="info-value" style="margin-top: 10px; padding: 10px; background: white; border-radius: 5px;">${characterData.equipaggiamento_altro}</div>` : ''}
+        </div>
+        ` : ''}
+
+        <div class="section">
+            <div class="section-title">💔 Condizioni</div>
+            <div style="margin-top: 10px;">
+                <div style="margin-bottom: 10px;">
+                    <strong>Danni (${characterData.danni}/8):</strong>
+                    <div class="condition-bar">
+                        ${Array.from({length: 8}, (_, i) => `<div class="condition-box ${i >= characterData.danni ? 'empty' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+                <div>
+                    <strong>Stress (${characterData.stress}/4):</strong>
+                    <div class="condition-bar">
+                        ${Array.from({length: 4}, (_, i) => `<div class="condition-box ${i >= characterData.stress ? 'empty' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        ${characterData.background ? `
+        <div class="section">
+            <div class="section-title">📖 Background</div>
+            <div class="info-value">${characterData.background.replace(/\n/g, '<br>')}</div>
+        </div>
+        ` : ''}
+
+        ${characterData.contatti ? `
+        <div class="section">
+            <div class="section-title">👥 Contatti</div>
+            <div class="info-value">${characterData.contatti.replace(/\n/g, '<br>')}</div>
+        </div>
+        ` : ''}
+
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd; color: #666;">
+            <p><em>AlicePunk - Sistema d10 Pool</em></p>
+            <p style="font-size: 0.9em; margin-top: 5px;">Critico a 3+ successi | EDGE = Difesa | AR/VR = Realtà Aumentata/Virtuale</p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            // Crea e scarica il file
+            const blob = new Blob([exportHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${characterData.nome.replace(/[^a-z0-9]/gi, '_')}_AlicePunk.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('✅ Personaggio esportato! Il file è stato scaricato.');
+        }
+    </script>
+</body>
+</html>
