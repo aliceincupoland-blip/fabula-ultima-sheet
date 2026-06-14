@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scheda Vampiro · Alice System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep:#1a0a14; --paper:#fdf3f4; --paper-2:#f6e3e8;
+    --rose:#b34a6a; --rose-light:#d98aa3; --rose-dark:#7a2a44;
+    --wine:#5e1d33; --gold:#c9a25a; --gold-soft:#e7cf9a;
+    --ink:#3a1420; --ink-soft:#6e4150;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background-color:#160710;
+    background-image:
+      radial-gradient(ellipse at 18% 12%, rgba(179,74,106,.28) 0%, transparent 55%),
+      radial-gradient(ellipse at 82% 88%, rgba(94,29,51,.30) 0%, transparent 55%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    min-height:100vh; display:flex; justify-content:center;
+    padding:40px 16px; font-family:'Cormorant Garamond',serif; color:var(--ink);
+  }
+  .sheet {
+    width:840px; max-width:100%;
+    background:linear-gradient(165deg,#fdf5f6 0%,#f6e3e8 45%,#efd3da 100%);
+    border-radius:6px; position:relative; overflow:hidden;
+    box-shadow:0 0 0 1px var(--rose-dark),0 0 0 6px rgba(179,74,106,.22),0 0 55px rgba(179,74,106,.28),0 30px 80px rgba(0,0,0,.8);
+    animation:fade .9s ease forwards;
+  }
+  @keyframes fade { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:none;} }
+  .sheet::before{ content:''; position:absolute; inset:10px; border:1px solid rgba(201,162,90,.45); border-radius:4px; pointer-events:none; }
+  .inner { padding:40px 42px 50px; position:relative; }
+  .header { text-align:center; margin-bottom:8px; }
+  .header .orn { font-family:'Pinyon Script',cursive; font-size:2rem; color:var(--rose); line-height:.8; }
+  .header .kicker { font-style:italic; letter-spacing:3px; color:var(--rose); font-size:.9rem; text-transform:uppercase; }
+  .header h1 { font-family:'Cinzel Decorative',serif; font-weight:900; font-size:2.4rem; color:var(--wine); letter-spacing:1px; margin:4px 0; }
+  .header .sub { font-family:'Pinyon Script',cursive; font-size:1.6rem; color:var(--rose-dark); }
+  .divider { height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:18px 0 4px; }
+  .section-title { font-family:'Cinzel Decorative',serif; font-weight:700; font-size:1.1rem; color:var(--wine); text-align:center; margin:30px 0 6px; letter-spacing:1px; display:flex; align-items:center; gap:14px; justify-content:center; }
+  .section-title::before,.section-title::after{ content:'❦'; color:var(--rose); font-size:.9rem; }
+  .hint { display:block; text-align:center; font-style:italic; color:var(--ink-soft); font-size:.92rem; margin:0 auto 14px; max-width:680px; }
+  .hint b { color:var(--rose-dark); font-style:normal; }
+  .grid { display:grid; gap:14px; } .grid-2 { grid-template-columns:1fr 1fr; } .grid-3 { grid-template-columns:repeat(3,1fr); }
+  .field label { display:block; font-family:'Cinzel Decorative',serif; font-size:.7rem; letter-spacing:1px; color:var(--rose-dark); text-transform:uppercase; margin-bottom:4px; }
+  .field input,.field select,.field textarea { width:100%; background:rgba(255,252,253,.7); border:1px solid var(--rose); border-radius:4px; padding:9px 11px; font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--ink); }
+  .field textarea { resize:vertical; min-height:54px; }
+  .field input::placeholder,.field textarea::placeholder { color:#b88; font-style:italic; }
+  .field input:focus,.field select:focus,.field textarea:focus { outline:none; border-color:var(--wine); background:#fff; box-shadow:0 0 0 3px rgba(179,74,106,.15); }
+  .clan-banner { margin-top:14px; border:1px solid var(--rose); border-radius:6px; background:linear-gradient(135deg,rgba(179,74,106,.1),rgba(201,162,90,.08)); padding:15px 17px; font-style:italic; color:var(--ink); min-height:54px; }
+  .clan-banner strong { font-style:normal; font-family:'Cinzel Decorative',serif; color:var(--wine); }
+  .approcci { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .approccio { background:rgba(255,252,253,.65); border:1px solid var(--rose); border-radius:8px; padding:15px; text-align:center; }
+  .approccio .ico { font-size:1.6rem; } .approccio .nome { font-family:'Cinzel Decorative',serif; font-weight:700; color:var(--wine); letter-spacing:1px; margin:4px 0; }
+  .approccio .desc { font-size:.85rem; color:var(--ink-soft); min-height:48px; }
+  .dice-row { display:flex; justify-content:center; gap:6px; margin-top:8px; }
+  .dot { width:21px; height:21px; border-radius:50%; border:1.5px solid var(--rose); cursor:pointer; transition:.15s; background:transparent; }
+  .dot.on { background:radial-gradient(circle at 35% 30%,var(--rose-light),var(--rose)); box-shadow:0 0 7px rgba(179,74,106,.55); }
+  .pool-total { text-align:center; margin-top:10px; font-family:'Cinzel Decorative',serif; font-size:.9rem; }
+  .pool-total.bad { color:var(--rose-dark); } .pool-total.ok { color:#3a7a52; }
+  .track-card { background:rgba(255,252,253,.65); border:1px solid var(--rose); border-radius:8px; padding:14px 16px; margin-bottom:12px; }
+  .track-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+  .track-name { font-family:'Cinzel Decorative',serif; font-weight:700; color:var(--wine); letter-spacing:.5px; }
+  .track-note { font-size:.82rem; color:var(--ink-soft); font-style:italic; }
+  .pips { display:flex; gap:6px; flex-wrap:wrap; }
+  .pip { width:22px; height:22px; border:1.5px solid var(--rose-dark); border-radius:4px; cursor:pointer; transition:.15s; background:transparent; }
+  .pip.hum { border-radius:50%; }
+  .pip.on-hum { background:radial-gradient(circle at 35% 30%,var(--gold-soft),var(--gold)); }
+  .pip.on-fame { background:radial-gradient(circle at 35% 30%,var(--rose-light),var(--wine)); }
+  .pip.on-vol { background:radial-gradient(circle at 35% 30%,#c9a2c9,#7a3a7a); }
+  .pip.on-hp { background:radial-gradient(circle at 35% 30%,#d98aa3,#5e1d33); }
+  .disc-list { display:flex; flex-direction:column; gap:10px; }
+  .disc { background:rgba(255,252,253,.65); border:1px solid var(--rose); border-left:4px solid var(--wine); border-radius:6px; padding:12px 15px; }
+  .disc-name { font-family:'Cinzel Decorative',serif; font-weight:700; color:var(--wine); display:flex; justify-content:space-between; align-items:center; }
+  .disc-bonus { background:var(--wine); color:var(--paper); font-family:'Cormorant Garamond',serif; font-size:.85rem; padding:2px 10px; border-radius:12px; }
+  .disc-desc { font-size:.96rem; color:var(--ink); margin-top:5px; }
+  .disc-cost { font-size:.83rem; color:var(--rose-dark); font-style:italic; margin-top:4px; }
+  .disc-empty { font-style:italic; color:#a8758a; text-align:center; padding:14px; }
+  .disc-dots { display:inline-flex; gap:4px; }
+  .disc-dot { width:16px; height:16px; border-radius:50%; border:1.5px solid var(--wine); cursor:pointer; transition:.15s; background:transparent; display:inline-block; }
+  .disc-dot.on { background:radial-gradient(circle at 35% 30%,var(--rose-light),var(--wine)); box-shadow:0 0 5px rgba(122,14,14,.5); }
+  .disc-dot:hover { transform:scale(1.15); }
+  .disc-budget { background:rgba(201,162,90,.12); border:1px solid var(--gold); border-radius:6px; padding:10px 12px; text-align:center; font-size:.92rem; color:var(--ink); margin-bottom:4px; }
+  .disc-budget.over { border-color:var(--blood); background:rgba(122,14,14,.1); color:var(--blood); }
+  .disc-levels { margin-top:8px; display:flex; flex-direction:column; gap:5px; }
+  .disc-lv { font-size:.92rem; line-height:1.35; padding:5px 9px; border-radius:5px; border:1px solid rgba(122,14,14,.15); opacity:.42; transition:.15s; }
+  .disc-lv.have { opacity:1; background:rgba(179,74,106,.1); border-color:var(--rose); }
+  .lv-tag { font-family:'Cinzel Decorative',serif; font-size:.7rem; letter-spacing:.5px; color:var(--wine); }
+  .disc-lv.have .lv-tag { color:var(--blood); }
+  .lv-dadi { font-family:'Cinzel Decorative',serif; font-size:.72rem; background:var(--wine); color:var(--paper); padding:1px 7px; border-radius:8px; margin:0 4px; }
+  .lv-text { color:var(--ink); }
+  .rules { background:linear-gradient(135deg,rgba(179,74,106,.08),rgba(201,162,90,.07)); border:1px solid var(--rose); border-radius:8px; padding:18px; }
+  .rule { margin-bottom:12px; font-size:1rem; line-height:1.45; } .rule:last-child{ margin-bottom:0; }
+  .rule b { font-family:'Cinzel Decorative',serif; color:var(--wine); display:block; font-size:.94rem; letter-spacing:.5px; margin-bottom:2px; }
+  .tag { display:inline-block; background:var(--wine); color:var(--paper); padding:2px 8px; border-radius:4px; font-size:.85rem; margin:1px 2px; }
+  .diff-list { list-style:none; } .diff-list li { padding:3px 0; } .diff-list li b { display:inline; color:var(--rose-dark); }
+  .toolbar { display:flex; gap:12px; justify-content:center; margin-top:34px; flex-wrap:wrap; }
+  .btn { font-family:'Cinzel Decorative',serif; font-size:.85rem; letter-spacing:.5px; cursor:pointer; padding:11px 22px; border-radius:30px; border:1px solid var(--wine); color:var(--paper); background:linear-gradient(135deg,var(--rose),var(--wine)); transition:.2s; box-shadow:0 4px 14px rgba(94,29,51,.4); }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 7px 20px rgba(94,29,51,.5); }
+  .btn.alt { background:linear-gradient(135deg,#5865F2,#404EED); border-color:#404EED; box-shadow:0 4px 14px rgba(64,78,237,.4); }
+  .btn.ghost { background:transparent; color:var(--wine); }
+  .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--wine); color:var(--paper); padding:12px 22px; border-radius:30px; font-family:'Cinzel Decorative',serif; font-size:.85rem; opacity:0; transition:.35s; z-index:50; }
+  .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+  /* LOVE ALARM */
+  .love-grades { display:flex; gap:8px; flex-wrap:wrap; }
+  .love-grade { flex:1; min-width:90px; text-align:center; border:1.5px solid var(--rose); border-radius:8px; padding:10px 6px; cursor:pointer; transition:.18s; background:rgba(255,252,253,.5); }
+  .love-grade .heart { font-size:1.3rem; filter:grayscale(1) opacity(.5); transition:.18s; }
+  .love-grade .lbl { font-family:'Cinzel Decorative',serif; font-size:.7rem; color:var(--rose-dark); margin-top:3px; letter-spacing:.5px; }
+  .love-grade .num { font-family:'Pinyon Script',cursive; font-size:1.4rem; color:var(--rose); line-height:.8; }
+  .love-grade:hover { border-color:var(--wine); }
+  .love-grade.on { background:linear-gradient(135deg,rgba(179,74,106,.22),rgba(94,29,51,.18)); border-color:var(--wine); box-shadow:0 0 12px rgba(179,74,106,.4); }
+  .love-grade.on .heart { filter:none; transform:scale(1.15); }
+  .love-grade.danger.on { background:linear-gradient(135deg,rgba(122,14,14,.3),rgba(94,29,51,.25)); border-color:#7a0e0e; box-shadow:0 0 14px rgba(122,14,14,.5); }
+  /* XP */
+  .xp-btn { width:30px; height:30px; border-radius:50%; border:1px solid var(--wine); background:linear-gradient(135deg,var(--rose),var(--wine)); color:var(--paper); font-size:1.1rem; cursor:pointer; line-height:1; }
+  .xp-btn:hover { transform:scale(1.1); }
+  /* MILESTONES */
+  .milestones { display:flex; flex-direction:column; gap:8px; }
+  .ms { display:flex; gap:10px; align-items:flex-start; cursor:pointer; padding:6px 8px; border-radius:6px; transition:.15s; }
+  .ms:hover { background:rgba(179,74,106,.08); }
+  .ms .box { width:20px; height:20px; min-width:20px; border:1.5px solid var(--rose-dark); border-radius:4px; margin-top:2px; transition:.15s; }
+  .ms.done .box { background:radial-gradient(circle at 35% 30%,var(--gold-soft),var(--gold)); }
+  .ms .txt { font-size:.95rem; } .ms .txt b { color:var(--wine); }
+  .ms.done .txt { color:var(--ink-soft); }
+  .foot { text-align:center; margin-top:26px; font-family:'Pinyon Script',cursive; font-size:1.5rem; color:var(--rose-dark); }
+  @media(max-width:680px){ .grid-2,.grid-3,.approcci{grid-template-columns:1fr;} .inner{padding:26px 18px 40px;} .header h1{font-size:1.8rem;} }
+  @media print { body{background:#fff;} .sheet{box-shadow:none;} .sheet::before{display:none;} .toolbar{display:none;} .dot,.pip{cursor:default;} }
+</style>
+</head>
+<body>
+<div class="sheet"><div class="inner" id="sheetRoot">
+  <div class="header">
+    <div class="orn">⚜</div>
+    <div class="kicker">— Cronache della Notte · Alice System —</div>
+    <h1>Scheda del Vampiro</h1>
+    <div class="sub">tra sangue e desiderio</div>
+    <div class="divider"></div>
+  </div>
+
+  <div class="section-title">Chi eri, cosa sei</div>
+  <span class="hint">Compila con frasi brevi ed evocative. Il <b>Concept</b> è una riga sola: chi eri da vivo + cosa la non-vita ti ha fatto. Es. «pianista che ora suona solo per le ombre».</span>
+  <div class="grid grid-2">
+    <div class="field"><label>Nome / Soprannome</label><input data-k="Nome" placeholder="es. Vera Korhonen — «la Cenere»"></div>
+    <div class="field"><label>Concept</label><input data-k="Concept" placeholder="ex-detective divorata dalla Sete"></div>
+  </div>
+  <div class="grid grid-3" style="margin-top:14px;">
+    <div class="field"><label>Clan</label>
+      <select id="clan" data-k="Clan" onchange="setClan(this.value)">
+        <option value="">— scegli —</option>
+        <option value="brujah">Brujah · i Ribelli</option>
+        <option value="ventrue">Ventrue · i Sovrani</option>
+        <option value="toreador">Toreador · gli Esteti</option>
+        <option value="gangrel">Gangrel · i Selvaggi</option>
+        <option value="malkavian">Malkavian · i Veggenti</option>
+        <option value="lasombra">Lasombra · gli Ombrosi</option>
+        <option value="ravnos">Ravnos · gli Erranti</option>
+      </select>
+    </div>
+    <div class="field"><label>Sire / Chi ti amò</label><input data-k="Sire" placeholder="chi ti ha Abbracciato"></div>
+    <div class="field"><label>Posizione</label>
+      <select data-k="Posizione"><option>Camarilla</option><option>Anarchici</option></select>
+    </div>
+  </div>
+  <div class="clan-banner" id="clanBanner"><em>Scegli un clan: ne cambieranno gli Approcci consigliati, la debolezza e le Discipline.</em></div>
+
+  <div class="section-title">I Tre Approcci</div>
+  <span class="hint">Clicca i pallini per assegnare i dadi. <b>10 dadi in totale</b>, min 1, max 5 per approccio. Scegliere un clan compila già una distribuzione consigliata: spostala come preferisci.</span>
+  <div class="approcci">
+    <div class="approccio"><div class="ico">🩸</div><div class="nome">FEROCIA</div><div class="desc">Forza, intimidazione, violenza, frenesia, sopraffare.</div><div class="dice-row" id="dots-ferocia"></div></div>
+    <div class="approccio"><div class="ico">🌹</div><div class="nome">FASCINO</div><div class="desc">Seduzione, manipolazione, controllo sociale, la Mascherata.</div><div class="dice-row" id="dots-fascino"></div></div>
+    <div class="approccio"><div class="ico">👁</div><div class="nome">LUCIDITÀ</div><div class="desc">Percezione, astuzia, memoria, sangue freddo, Autocontrollo.</div><div class="dice-row" id="dots-lucidita"></div></div>
+  </div>
+  <div class="pool-total" id="poolTotal">Totale: 3 / 10</div>
+
+  <div class="section-title">Le Tracce dell'Anima</div>
+  <span class="hint">Clicca un quadretto per riempire fino a lì; ri-clicca l'ultimo per scalare. <b>Umanità</b> alta = più umano; <b>Fame</b> bassa = sazio.</span>
+  <div class="track-card"><div class="track-head"><span class="track-name">🕊 Umanità ↔ Bestia</span><span class="track-note">bassa = il Narratore chiede più tiri di Autocontrollo</span></div><div class="pips" id="pips-hum"></div></div>
+  <div class="track-card"><div class="track-head"><span class="track-name">🩸 Fame / Sete</span><span class="track-note">brucia 1 Fame = +1 dado · a 5 → frenesia imminente</span></div><div class="pips" id="pips-fame"></div></div>
+  <div class="grid grid-2">
+    <div class="track-card"><div class="track-head"><span class="track-name">✦ Volontà</span></div><div class="pips" id="pips-vol"></div><div class="track-note" style="margin-top:6px;">Spendi 1 per ri-tirare o resistere alla Bestia senza tiro.</div></div>
+    <div class="track-card"><div class="track-head"><span class="track-name">🖤 Salute</span></div><div class="pips" id="pips-hp"></div><div class="track-note" style="margin-top:6px;">A 0: Torpore. Fuoco e sole bruciano comunque.</div></div>
+  </div>
+
+  <div class="section-title">Discipline di Clan</div>
+  <span class="hint">Ogni Disciplina ha <b>3 livelli di potenza</b> (più dadi bonus e effetti più forti). Clicca i pallini per impostarli. <b>In creazione</b>: 5 punti totali tra le tre, <b>max livello 2</b> ciascuna — nessun potere può partire al massimo. Su azioni minori agiscono senza tiro, ma <b>hanno sempre un costo</b>.</span>
+  <div class="disc-list" id="discList"><div class="disc-empty">Scegli un clan per rivelare le sue Discipline.</div></div>
+
+  <div class="section-title">Tratti Liberi</div>
+  <span class="hint">Tre <b>frasi giocabili</b> tra virgolette. Invocane una nella fiction: il Narratore può concederti l'azione senza tiro, o +1 dado. Scrivile come affermazioni, non come abilità.</span>
+  <div class="grid" style="gap:10px;">
+    <div class="field"><textarea data-k="Tratto 1" placeholder="«Conosco i bassifondi come le mie tasche»"></textarea></div>
+    <div class="field"><textarea data-k="Tratto 2" placeholder="«Nessuno sospetta della vecchia bibliotecaria»"></textarea></div>
+    <div class="field"><textarea data-k="Tratto 3" placeholder="«Ho ancora un cuore, e questo è il mio problema»"></textarea></div>
+  </div>
+
+  <div class="section-title">Legami & Desideri</div>
+  <span class="hint">Il <b>Tocco mortale</b> è la tua leva emotiva: chi ami e potresti perdere. Il <b>Vincolo</b> è il legame di sangue. Il <b>Desiderio</b> guida le tue notti.</span>
+  <div class="grid grid-3">
+    <div class="field"><label>Tocco mortale</label><textarea data-k="Tocco mortale" placeholder="1-2 persone/luoghi a cui tieni"></textarea></div>
+    <div class="field"><label>Vincolo di sangue</label><textarea data-k="Vincolo" placeholder="a chi sei legato / chi a te"></textarea></div>
+    <div class="field"><label>Desiderio</label><textarea data-k="Desiderio" placeholder="cosa insegui ogni notte"></textarea></div>
+  </div>
+
+  <div class="section-title">Love Alarm · l'Amore Centrale</div>
+  <span class="hint">Un solo amore che conta davvero. Clicca un grado per impostarlo. Più sale, più ti dà <b>potere</b> — e più la Bestia lo vuole. Oltre il <b>3</b> il sangue rischia di parlare al posto del cuore.</span>
+  <div class="track-card" style="border-color:var(--wine);">
+    <div class="grid grid-2" style="margin-bottom:12px;">
+      <div class="field"><label>Chi ami</label><input data-k="Amato" placeholder="nome / chi è per te"></div>
+      <div class="field"><label>Cosa rischi a perderlo</label><input data-k="Posta amore" placeholder="cosa diventeresti senza"></div>
+    </div>
+    <div id="loveGrades"></div>
+    <div class="clan-banner" id="loveBanner" style="margin-top:12px;"><em>Imposta un grado per vedere effetto e rischio.</em></div>
+  </div>
+
+  <div class="section-title">Avanzamento</div>
+  <span class="hint">Tre vie che si sommano. <b>XP</b> da spendere · <b>Traguardi</b> narrativi che sbloccano gratis · crescita per <b>scene vissute</b>.</span>
+
+  <div class="track-card">
+    <div class="track-head"><span class="track-name">✦ Esperienza (XP)</span>
+      <span style="display:flex;align-items:center;gap:8px;">
+        <button class="xp-btn" onclick="chgXP(-1)">−</button>
+        <span id="xpVal" style="font-family:'Cinzel Decorative',serif;font-size:1.3rem;color:var(--wine);min-width:30px;text-align:center;">0</span>
+        <button class="xp-btn" onclick="chgXP(1)">+</button>
+      </span>
+    </div>
+    <div class="track-note">Guadagni a fine sessione: +1 sopravvivere alla notte · +1 scena memorabile · +1 onorare o tradire l'Umanità.</div>
+    <ul class="diff-list" style="margin-top:10px;">
+      <li>💠 <b>+1 dado</b> a un Approccio — costo: <b>nuovo valore ×2 XP</b></li>
+      <li>🩸 <b>nuova Disciplina</b> (fuori clan) — <b>8 XP</b></li>
+      <li>🕊 <b>recupera 1 Umanità</b> permanente — <b>10 XP</b> + una scena di redenzione</li>
+      <li>✦ <b>+1 Volontà</b> massima — <b>6 XP</b></li>
+    </ul>
+  </div>
+
+  <div class="track-card">
+    <div class="track-head"><span class="track-name">🏆 Traguardi Narrativi</span><span class="track-note">spuntali quando accadono: ognuno sblocca gratis</span></div>
+    <div class="milestones" id="milestones"></div>
+  </div>
+
+  <div class="track-card">
+    <div class="track-head"><span class="track-name">📖 Cicatrici & Scene</span></div>
+    <div class="field"><textarea data-k="Diario" placeholder="Annota le notti che ti hanno cambiato: ogni 3 scene segnate, il Narratore può concederti un piccolo sblocco o una svolta del personaggio." style="min-height:70px;"></textarea></div>
+  </div>
+
+  <div class="section-title">Come si Risolve</div>
+  <div class="rules">
+    <div class="rule"><b>Default: autorità del Narratore</b>L'azione riesce o fallisce in base alla fiction. Si tira <em>solo</em> con posta reale, esito incerto e conseguenza interessante.</div>
+    <div class="rule"><b>Il Tiro (Alice System)</b>Scegli l'Approccio pertinente → tira quei <span class="tag">d10</span>. Ogni dado <b>5+</b> è un successo. Un <b>10</b> è un critico. Basta <b>1 successo</b> per riuscire.</div>
+    <div class="rule"><b>Difficoltà (successi richiesti)</b><ul class="diff-list"><li><b>1</b> facile · <b>2</b> medio · <b>3</b> difficile · <b>4</b> molto difficile · <b>5+</b> quasi impossibile</li></ul></div>
+    <div class="rule"><b>Discipline & Fame</b>Disciplina pertinente: <b>+1 dado</b>. Ogni Fame bruciata: <b>+1 dado</b> extra. Più potere usi, più la Sete ti consuma.</div>
+    <div class="rule"><b>La Bestia</b>0 successi su un tiro carico di Bestia → la Bestia <em>interviene</em>: drammatico, mai ridicolo. Quando la fiction lo impone, tira <b>Autocontrollo</b> (Lucidità, 5+) o spendi 1 Volontà per dominarti.</div>
+  </div>
+
+  <div class="section-title">Background</div>
+  <span class="hint">La tua storia: chi eri da viva, com'è avvenuto l'Abbraccio, cosa ti porti dietro. Scrivi liberamente — è la radice del personaggio.</span>
+  <div class="field"><textarea data-k="Background" placeholder="Racconta la tua storia: la vita mortale, la notte dell'Abbraccio, i legami spezzati e quelli rimasti, ciò che insegui ora nell'eternità…" style="min-height:160px;"></textarea></div>
+
+  <div class="toolbar">
+    <button class="btn" onclick="exportHTML()">⬇ Esporta HTML</button>
+    <button class="btn alt" onclick="exportDiscord()">💬 Copia per Discord</button>
+    <button class="btn ghost" onclick="window.print()">🖨 Stampa / PDF</button>
+  </div>
+  <div class="foot">~ ogni notte, una scelta tra ciò che eri e la Sete ~</div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const CLANS = {
+    brujah:{ banner:"<strong>Brujah — i Ribelli.</strong> La passione e la rabbia sono la stessa fiamma. Idealisti che bruciano, amanti che non si arrendono. La Bestia, in te, parla con voce di rivolta.",
+      suggest:{ferocia:5,fascino:3,lucidita:2}, penalty:"🔥 Sangue Caldo: i tiri di Autocontrollo per non andare in frenesia sono di una difficoltà più alta.",
+      discs:[{n:"Potenza",d:"Forza sovrumana: spezzi, sollevi, devasti.",c:"Costo: infliggi sempre più danno del previsto. Testimoni.",lv:["Sollevi un uomo con una mano, sfondi una porta.","Pieghi sbarre d'acciaio, scagli un corpo attraverso una stanza.","Spezzi pietra e metallo, fermi un'auto in corsa."]},
+             {n:"Robustezza",d:"Ignori ferite che fermerebbero un uomo.",c:"Costo: la pelle si segna, mostri ciò che sei.",lv:["Incassi colpi che stenderebbero un mortale.","Ignori coltellate e cadute rovinose.","Resisti al fuoco per un istante, sopravvivi a ferite mortali."]},
+             {n:"Celerità",d:"Ti muovi più veloce dell'occhio mortale.",c:"Costo: +1 Fame per ogni scatto innaturale.",lv:["Reagisci prima di chiunque, un'azione fulminea.","Ti muovi tra due punti come un lampo, eviti proiettili.","Agisci più volte nel tempo di un battito altrui."]}]},
+    ventrue:{ banner:"<strong>Ventrue — i Sovrani.</strong> Amare ed essere obbediti, per te, sono gemelli. Eleganza, controllo, il peso del sangue antico. Disprezzi la debolezza — la tua più di tutte.",
+      suggest:{ferocia:2,fascino:5,lucidita:3}, penalty:"👑 Palato Raffinato: ti nutri solo da un tipo preciso di preda. Altro sangue ti ripugna e non ti sazia.",
+      discs:[{n:"Dominazione",d:"Imponi la tua volontà con sguardo e voce.",c:"Costo: il bersaglio, dopo, sa che qualcosa non andava.",lv:["Un ordine breve e secco a una mente debole.","Comandi complessi, cancelli un ricordo recente.","Pieghi più menti, impianti convinzioni durature."]},
+             {n:"Presenza",d:"Muovi le emozioni altrui.",c:"Costo: attiri ogni attenzione, anche quella sbagliata.",lv:["Susciti soggezione o simpatia in chi ti guarda.","Domini l'umore di una stanza intera.","Una folla ti segue, ammaliata, ovunque tu voglia."]},
+             {n:"Robustezza",d:"La tua autorità si fa carne: resisti al dolore.",c:"Costo: spendi 1 Volontà per mantenerla sotto pressione.",lv:["Incassi colpi senza vacillare.","Ignori ferite gravi mantenendo il contegno.","Sopporti torture e mutilazioni senza cedere."]}]},
+    toreador:{ banner:"<strong>Toreador — gli Esteti.</strong> Schiavo della bellezza. Senti tutto troppo intensamente: un amore, un'opera, un volto possono inchiodarti per ore.",
+      suggest:{ferocia:2,fascino:5,lucidita:3}, penalty:"🌹 Estasi: davanti a qualcosa di sublime devi tirare Lucidità o restare rapito, immobile, finché qualcosa non ti scuote.",
+      discs:[{n:"Auspex",d:"Percezioni che vanno oltre i sensi mortali.",c:"Costo: ciò che senti ti travolge; +1 Fame o esponi la Bestia.",lv:["Acuisci i sensi, cogli dettagli invisibili agli altri.","Leggi le emozioni e le aure, fiuti la menzogna.","Percepisci pensieri superficiali e tracce del passato di un luogo."]},
+             {n:"Presenza",d:"Seduci, ispiri, paralizzi di soggezione.",c:"Costo: chi affascini ti si lega in modi scomodi.",lv:["Il tuo sguardo attrae e affascina.","Ispiri devozione o terrore in chi ti ascolta.","Una sala intera pende dalle tue labbra."]},
+             {n:"Celerità",d:"Grazia innaturale: danzi tra i colpi.",c:"Costo: +1 Fame per ogni scatto.",lv:["Ti muovi con rapidità impossibile.","Schivi e colpisci prima che gli altri reagiscano.","Più azioni nel tempo di un respiro altrui."]}]},
+    gangrel:{ banner:"<strong>Gangrel — i Selvaggi.</strong> Tra il vampiro e l'animale il confine è sottile. Errante, libero, fedele a un solo amore alla volta. La Bestia non è nemica: è compagna.",
+      suggest:{ferocia:5,fascino:2,lucidita:3}, penalty:"🐺 Marchio Ferino: ogni frenesia ti lascia un tratto animale permanente (occhi, zanne, pelo). Si accumulano.",
+      discs:[{n:"Protean",d:"Muti forma e fondi il corpo con la natura.",c:"Costo: la trasformazione richiede tempo e lascia tracce.",lv:["Artigli affilati, occhi che vedono nel buio.","Ti muti in lupo o pipistrello.","Diventi nebbia, ti fondi con la terra per riposare."]},
+             {n:"Animalità",d:"Parli e comandi il mondo delle bestie.",c:"Costo: la tua Bestia interna risponde più facilmente al richiamo.",lv:["Calmi o agiti un animale, ne intuisci l'umore.","Comandi una bestia, ne usi i sensi.","Convochi un branco, vedi attraverso i loro occhi."]},
+             {n:"Robustezza",d:"Pelle di cuoio, resistenza selvaggia.",c:"Costo: assomigli sempre meno a un uomo.",lv:["Incassi ferite che fermerebbero un uomo.","Ignori il dolore di colpi gravi.","Sopravvivi a ciò che incenerirebbe un altro vampiro."]}]},
+    malkavian:{ banner:"<strong>Malkavian — i Veggenti.</strong> La maledizione ti ha aperto una porta che gli altri non vedono. Poeti, profeti, amanti imprevedibili: dici verità che nessuno vuole sentire.",
+      suggest:{ferocia:2,fascino:4,lucidita:4}, penalty:"🌙 Lucida Follia: porti una fissazione o visione che il Narratore può attivare nei momenti peggiori, condizionando le tue scelte.",
+      discs:[{n:"Dementia",d:"Insinui visioni e paure nella mente altrui.",c:"Costo: ciò che evochi a volte resta anche in te.",lv:["Semini un dubbio o un'inquietudine.","Scateni una paura paralizzante o un'allucinazione.","Spezzi temporaneamente la lucidità di chi ti ascolta."]},
+             {n:"Auspex",d:"Premonizioni, aure, intuizioni impossibili.",c:"Costo: non distingui sempre la profezia dal delirio.",lv:["Cogli dettagli e umori nascosti.","Leggi aure e presagi.","Visioni del passato o di ciò che sta per accadere."]},
+             {n:"Oscurazione",d:"Sfuggi alla percezione, ti dimenticano.",c:"Costo: un gesto brusco rompe l'effetto all'istante.",lv:["Passi inosservato se resti immobile.","Ti muovi non visto tra la gente.","Svanisci dalla memoria di chi ti ha appena visto."]}]},
+    lasombra:{ banner:"<strong>Lasombra — gli Ombrosi.</strong> Nobili dell'oscurità, seducenti e spietati. L'ombra ti obbedisce come un'amante gelosa. Ambizione e desiderio si confondono.",
+      suggest:{ferocia:3,fascino:5,lucidita:2}, penalty:"🪞 Senza Riflesso: specchi e superfici non ti restituiscono. Difficile fingersi vivo dove qualcuno potrebbe accorgersene.",
+      discs:[{n:"Potere delle Tenebre",d:"Pieghi l'ombra al tuo volere.",c:"Costo: il buio che chiami attira altri predatori.",lv:["Smorzi le luci, allunghi le ombre attorno a te.","Solidifichi l'ombra per afferrare o accecare.","Tentacoli di buio, un manto che divora la luce."]},
+             {n:"Dominazione",d:"Imponi la tua volontà con un comando.",c:"Costo: il bersaglio percepisce la tua mano fredda.",lv:["Un ordine breve a una mente debole.","Comandi complessi, cancelli un ricordo.","Pieghi più menti, impianti convinzioni."]},
+             {n:"Presenza",d:"Magnetismo oscuro: attrai e soggioghi.",c:"Costo: chi seduci sviluppa un'ossessione per te.",lv:["Susciti attrazione o timore.","Domini l'umore di una stanza.","Una folla ti venera o ti teme."]}]},
+    ravnos:{ banner:"<strong>Ravnos — gli Erranti.</strong> Viandanti, illusionisti, amanti di passaggio. Non resti mai abbastanza da farti amare davvero — o forse è ciò che vuoi farti credere.",
+      suggest:{ferocia:3,fascino:4,lucidita:3}, penalty:"🎴 Vizio Errante: hai un'inclinazione (inganno, furto, gioco…) a cui cedi quando l'occasione è troppo ghiotta, anche a tuo rischio.",
+      discs:[{n:"Chimerismo",d:"Crei illusioni che sembrano reali.",c:"Costo: l'illusione svanisce se qualcuno la mette davvero alla prova.",lv:["Una piccola illusione: un suono, un volto, un oggetto.","Illusioni complesse che ingannano più sensi.","Scenari interi e convincenti, illusioni che 'feriscono'."]},
+             {n:"Animalità",d:"Parli con le bestie, le guidi.",c:"Costo: chiedono qualcosa in cambio.",lv:["Intuisci e calmi un animale.","Comandi una bestia.","Convochi e guidi più creature."]},
+             {n:"Celerità",d:"Rapido come un trucco di mano.",c:"Costo: +1 Fame per ogni scatto.",lv:["Reazioni fulminee.","Ti muovi come un lampo.","Più azioni in un solo istante."]}]}
+  };
+  const LV_DADI=["+1 dado","+2 dadi","+3 dadi"];
+
+  const APPS=["ferocia","fascino","lucidita"];
+  const values={ferocia:1,fascino:1,lucidita:1};
+  const tracks={hum:7,fame:1,vol:4,hp:7};
+
+  /* LOVE ALARM */
+  const LOVE=[
+    {n:"Eco",h:"🤍",e:"Un pensiero ricorrente. +1 dado a un'azione fatta <em>per</em> lui/lei, una volta a scena.",r:"Nessun rischio. Solo dolcezza.",danger:false},
+    {n:"Battito",h:"💗",e:"Il cuore morto finge di battere. +1 dado a Fascino in sua presenza; recuperi 1 Volontà se lo proteggi.",r:"Distrazione: −1 dado a Lucidità quando è in pericolo.",danger:false},
+    {n:"Bruciore",h:"❤️",e:"Bruci per lui/lei. Puoi spendere 1 Volontà per un successo automatico in un'azione che lo salva.",r:"La Sete si lega al desiderio: nutrirti vicino a lui/lei richiede Autocontrollo.",danger:false},
+    {n:"Ossessione",h:"🔥",e:"Lo metti sopra ogni cosa. +2 dadi per difenderlo, ma…",r:"…il Narratore può chiederti tiri di Autocontrollo per non agire d'impulso. La Bestia lo vede come <em>tuo</em>.",danger:true},
+    {n:"Vincolo",h:"🩸",e:"Sangue e cuore sono una cosa sola. Potere enorme: 3 dadi e azioni quasi impossibili in suo nome.",r:"Non sei più del tutto libero. Tradirlo o perderlo può farti precipitare l'Umanità o scatenare frenesia.",danger:true}
+  ];
+  let loveLevel=0;
+
+  /* XP */
+  let xp=0;
+  function chgXP(n){ xp=Math.max(0,xp+n); document.getElementById("xpVal").textContent=xp; }
+
+  /* MILESTONES */
+  const MILESTONES=[
+    {t:"<b>Prima frenesia dominata</b> — hai trattenuto la Bestia quando contava. <em>Sblocca:</em> +1 Volontà massima.",d:false},
+    {t:"<b>Primo mortale risparmiato</b> — potevi ucciderlo e non l'hai fatto. <em>Sblocca:</em> +1 Umanità.",d:false},
+    {t:"<b>Il sangue del cuore</b> — il tuo amore ha raggiunto il grado 3+. <em>Sblocca:</em> una Disciplina di clan a scelta.",d:false},
+    {t:"<b>Notte che ti ha cambiato</b> — una scena ti ha segnato per sempre. <em>Sblocca:</em> un nuovo Tratto Libero.",d:false}
+  ];
+  const milestonesDone=[false,false,false,false];
+
+  function buildDots(app){
+    const c=document.getElementById("dots-"+app); c.innerHTML="";
+    for(let i=1;i<=5;i++){ const d=document.createElement("div");
+      d.className="dot"+(i<=values[app]?" on":"");
+      d.onclick=()=>{ values[app]=(values[app]===i&&i===1)?1:i; renderDots(); };
+      c.appendChild(d); }
+  }
+  function renderDots(){ APPS.forEach(buildDots); const t=values.ferocia+values.fascino+values.lucidita;
+    const el=document.getElementById("poolTotal"); el.textContent="Totale: "+t+" / 10"; el.className="pool-total "+(t===10?"ok":"bad"); }
+  function buildTrack(id,count,cls){
+    const c=document.getElementById(id); c.innerHTML="";
+    for(let i=1;i<=count;i++){ const p=document.createElement("div");
+      p.className="pip "+(cls==="hum"?"hum ":"")+(i<=tracks[cls]?"on-"+cls:"");
+      p.onclick=()=>{ tracks[cls]=(tracks[cls]===i)?i-1:i; buildTrack(id,count,cls); };
+      c.appendChild(p); }
+  }
+  function setClan(key){
+    const banner=document.getElementById("clanBanner"), list=document.getElementById("discList");
+    if(!key||!CLANS[key]){ banner.innerHTML="<em>Scegli un clan: ne cambieranno gli Approcci consigliati, la debolezza e le Discipline.</em>";
+      list.innerHTML='<div class="disc-empty">Scegli un clan per rivelare le sue Discipline.</div>'; return; }
+    const C=CLANS[key];
+    banner.innerHTML=C.banner+'<div style="margin-top:8px;font-size:.92rem;color:#7a2a44;"><strong>Debolezza —</strong> '+C.penalty+'</div>';
+    APPS.forEach(a=>values[a]=C.suggest[a]); renderDots();
+    discLevels=[1,1,1]; // ogni disciplina parte a 1
+    renderDiscs();
+  }
+  let discLevels=[1,1,1];
+  let creationMode=true; // in creazione vale il limite 5 punti / max 2
+  function renderDiscs(){
+    const list=document.getElementById("discList");
+    const key=document.getElementById("clan").value; const C=CLANS[key];
+    if(!C){ list.innerHTML='<div class="disc-empty">Scegli un clan per rivelare le sue Discipline.</div>'; return; }
+    list.innerHTML="";
+    // contatore budget creazione
+    const used=discLevels.reduce((a,b)=>a+b,0);
+    const budget=document.createElement("div");
+    budget.className="disc-budget"+(creationMode&&used>5?" over":"");
+    const capLabel = creationMode ? "max 2 per potere · 5 punti totali (nessuno a 3)" : "libero · max 3 per potere";
+    budget.innerHTML='<label style="display:flex;align-items:center;gap:8px;justify-content:center;font-size:.85rem;cursor:pointer;">'+
+      '<input type="checkbox" id="creaToggle" '+(creationMode?'checked':'')+' onchange="toggleCrea(this.checked)"> Modalità creazione</label>'+
+      '<div style="margin-top:4px;">Punti spesi: <b>'+used+(creationMode?' / 5':'')+'</b> · <span style="font-style:italic;">'+capLabel+'</span></div>';
+    list.appendChild(budget);
+
+    C.discs.forEach((d,idx)=>{ const el=document.createElement("div"); el.className="disc";
+      const lvl=discLevels[idx];
+      let dots="";
+      for(let i=1;i<=3;i++){ dots+='<span class="disc-dot'+(i<=lvl?" on":"")+'" data-i="'+idx+'" data-l="'+i+'"></span>'; }
+      let livelli="";
+      for(let i=1;i<=3;i++){
+        const posseduto = i<=lvl;
+        livelli+='<div class="disc-lv'+(posseduto?" have":"")+'">'+
+          '<span class="lv-tag">Liv. '+i+'</span> '+
+          '<span class="lv-dadi">'+LV_DADI[i-1]+'</span> '+
+          '<span class="lv-text">'+d.lv[i-1]+'</span>'+
+        '</div>';
+      }
+      el.innerHTML='<div class="disc-name"><span>'+d.n+'</span>'+
+        '<span class="disc-dots">'+dots+'</span></div>'+
+        '<div class="disc-levels">'+livelli+'</div>'+
+        '<div class="disc-cost">'+d.c+'</div>';
+      list.appendChild(el);
+    });
+    list.querySelectorAll(".disc-dot").forEach(dot=>{
+      dot.onclick=()=>{
+        const i=+dot.getAttribute("data-i"), l=+dot.getAttribute("data-l");
+        let nuovo=(discLevels[i]===l && l===1)?1:l;
+        // limiti creazione
+        if(creationMode){
+          if(nuovo>2){ toast("In creazione nessun potere può superare il livello 2"); return; }
+          const altri=discLevels.reduce((a,b,j)=>j===i?a:a+b,0);
+          if(altri+nuovo>5){ toast("Solo 5 punti totali in creazione"); return; }
+        }
+        discLevels[i]=nuovo; renderDiscs();
+      };
+    });
+  }
+  function toggleCrea(v){ creationMode=v; if(v){ discLevels=discLevels.map(x=>Math.min(x,2)); } renderDiscs(); }
+  function setClanDone(){}
+  function collect(){
+    const o={}; document.querySelectorAll("[data-k]").forEach(el=>{ o[el.getAttribute("data-k")]=el.value.trim(); });
+    o.__app=Object.assign({},values); o.__tr=Object.assign({},tracks);
+    const k=document.getElementById("clan").value; o.__clan=CLANS[k]||null; o.__clanName=k; return o;
+  }
+  function clanLabel(k){ const t={brujah:"Brujah",ventrue:"Ventrue",toreador:"Toreador",gangrel:"Gangrel",malkavian:"Malkavian",lasombra:"Lasombra",ravnos:"Ravnos"}; return t[k]||""; }
+  function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+
+  function exportHTML(){
+    const html="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+    const blob=new Blob([html],{type:"text/html"}); const url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); const nome=(collect().Nome||"vampiro").replace(/[^\w]+/g,"_");
+    a.href=url; a.download="scheda_"+nome+".html"; a.click(); URL.revokeObjectURL(url); toast("Scheda HTML esportata");
+  }
+  function exportDiscord(){
+    const o=collect(); const C=o.__clan; const L=[];
+    L.push("# 🦇 "+(o.Nome||"Vampiro senza nome"));
+    if(o.Concept) L.push("*"+o.Concept+"*");
+    L.push("");
+    const meta=[]; if(o.__clanName) meta.push("**Clan:** "+clanLabel(o.__clanName));
+    if(o.Posizione) meta.push("**Posizione:** "+o.Posizione); if(o.Sire) meta.push("**Sire:** "+o.Sire);
+    if(meta.length) L.push(meta.join(" · ")); L.push("");
+    L.push("**🎲 Approcci** *(soglia 5+ su d10)*");
+    L.push("> 🩸 Ferocia `"+o.__app.ferocia+"`  ·  🌹 Fascino `"+o.__app.fascino+"`  ·  👁 Lucidità `"+o.__app.lucidita+"`");
+    L.push("");
+    const bar=(v,m,f,e)=>f.repeat(v)+e.repeat(Math.max(0,m-v));
+    L.push("**Tracce**");
+    L.push("> 🕊 Umanità  "+bar(o.__tr.hum,10,"◆","◇")+" `"+o.__tr.hum+"/10`");
+    L.push("> 🩸 Fame      "+bar(o.__tr.fame,5,"●","○")+" `"+o.__tr.fame+"/5`");
+    L.push("> ✦ Volontà   "+bar(o.__tr.vol,6,"●","○")+" `"+o.__tr.vol+"/6`");
+    L.push("> 🖤 Salute    "+bar(o.__tr.hp,7,"●","○")+" `"+o.__tr.hp+"/7`");
+    L.push("");
+    if(C){ L.push("**🩸 Debolezza di Clan**"); L.push("> "+C.penalty.replace(/^[^\s]+\s/,"")); L.push("");
+      L.push("**✨ Discipline**"); C.discs.forEach((d,idx)=>{ const lvl=discLevels[idx]||1;
+        L.push("> **"+d.n+"** ["+("●".repeat(lvl))+("○".repeat(3-lvl))+"]");
+        for(let i=1;i<=lvl;i++){ L.push("> • Liv."+i+" ("+LV_DADI[i-1]+"): "+d.lv[i-1]); }
+      }); L.push(""); }
+    const tr=[o["Tratto 1"],o["Tratto 2"],o["Tratto 3"]].filter(Boolean);
+    if(tr.length){ L.push("**🎭 Tratti Liberi**"); tr.forEach(t=>L.push("> "+(t.startsWith("«")?t:"«"+t+"»"))); L.push(""); }
+    if(loveLevel>0){ const g=LOVE[loveLevel-1];
+      L.push("**💞 Love Alarm**");
+      L.push("> "+g.h+" **"+g.n+"** "+("❤️".repeat(loveLevel))+" `"+loveLevel+"/5`"+(o.Amato?" — *"+o.Amato+"*":""));
+      L.push("> "+g.e.replace(/<[^>]+>/g,"")); L.push(""); }
+    else if(o.Amato){ L.push("**💞 Amore centrale:** "+o.Amato); L.push(""); }
+    const leg=[]; if(o["Tocco mortale"])leg.push("**Tocco mortale:** "+o["Tocco mortale"]);
+    if(o.Vincolo)leg.push("**Vincolo:** "+o.Vincolo); if(o.Desiderio)leg.push("**Desiderio:** "+o.Desiderio);
+    if(leg.length){ L.push("**🔗 Legami & Desideri**"); leg.forEach(x=>L.push("> "+x)); L.push(""); }
+    const msDone=MILESTONES.filter((m,i)=>milestonesDone[i]);
+    if(xp>0||msDone.length){ L.push("**📈 Avanzamento**");
+      if(xp>0) L.push("> XP disponibili: `"+xp+"`");
+      msDone.forEach(m=>L.push("> 🏆 "+m.t.replace(/<[^>]+>/g,"").split("—")[0].trim())); L.push(""); }
+    if(o.Background){ L.push("**📜 Background**"); L.push("> "+o.Background.replace(/\n+/g," ")); L.push(""); }
+    L.push("-# Cronache della Notte · Alice System · d10, successo 5+");
+    const text=L.join("\n");
+    navigator.clipboard.writeText(text).then(()=>toast("Copiato! Incolla su Discord")).catch(()=>{
+      const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast("Copiato! Incolla su Discord"); });
+  }
+
+  function renderLove(){
+    const c=document.getElementById("loveGrades"); c.innerHTML='<div class="love-grades"></div>';
+    const row=c.firstChild;
+    LOVE.forEach((g,i)=>{ const lvl=i+1; const el=document.createElement("div");
+      el.className="love-grade"+(g.danger?" danger":"")+(loveLevel===lvl?" on":"");
+      el.innerHTML='<div class="heart">'+g.h+'</div><div class="num">'+lvl+'</div><div class="lbl">'+g.n+'</div>';
+      el.onclick=()=>{ loveLevel=(loveLevel===lvl)?0:lvl; renderLove(); };
+      row.appendChild(el); });
+    const b=document.getElementById("loveBanner");
+    if(loveLevel===0){ b.innerHTML="<em>Imposta un grado per vedere effetto e rischio.</em>"; }
+    else { const g=LOVE[loveLevel-1];
+      b.innerHTML='<strong>'+g.h+' '+g.n+' —</strong> <span style="color:#2a6a3a;">'+g.e+'</span>'+
+        '<div style="margin-top:6px;color:#7a2a44;"><strong>Rischio —</strong> '+g.r+'</div>'; }
+  }
+
+  function renderMilestones(){
+    const c=document.getElementById("milestones"); c.innerHTML="";
+    MILESTONES.forEach((m,i)=>{ const el=document.createElement("div");
+      el.className="ms"+(milestonesDone[i]?" done":"");
+      el.innerHTML='<div class="box"></div><div class="txt">'+m.t+'</div>';
+      el.onclick=()=>{ milestonesDone[i]=!milestonesDone[i]; renderMilestones(); };
+      c.appendChild(el); });
+  }
+
+  renderDots();
+  buildTrack("pips-hum",10,"hum"); buildTrack("pips-fame",5,"fame");
+  buildTrack("pips-vol",6,"vol"); buildTrack("pips-hp",7,"hp");
+  renderLove(); renderMilestones();
+</script>
+</body>
+</html>
